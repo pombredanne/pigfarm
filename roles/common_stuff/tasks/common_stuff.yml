@@ -1,6 +1,6 @@
 ---
 - name: Check if there are any hosts vars for the hypervisor
-  local_action: stat "path=host_vars/{{ hypervisor }}.yml"
+  stat: "path=host_vars/{{ hypervisor }}.yml"
   register: hypervisor_vars_exist
 
 - name: Include hypervisors vars

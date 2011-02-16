@@ -135,7 +135,6 @@
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
-
 - name: Find currently installed git plugins
   shell: "ls -1 /{{ item if item == 'root' else 'home/' + item }}/.vim/bundle/"
   changed_when: false
