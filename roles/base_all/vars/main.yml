@@ -16,6 +16,7 @@ base_all_added_packages:
     - links
     - lsof
     - man
+    - moreutils
     - ncdu
     - net-tools
     - patch
@@ -25,7 +26,6 @@ base_all_added_packages:
     - python
     - python-pycurl
     - rsync
-    - sponge
     - strace
     - sudo
     - sysstat
