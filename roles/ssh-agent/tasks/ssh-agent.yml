@@ -12,6 +12,7 @@
     name: "ssh-agent@{{ item  }}.service"
     state: stopped
     enabled: false
+  ignore_errors: True
   with_items: users.keys()
   when: item in local_users or item == 'root'
 
