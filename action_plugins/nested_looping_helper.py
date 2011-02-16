@@ -2,11 +2,13 @@
 
 import re
 
-from ansible.utils import template
-from ansible import utils
+from ansible.plugins.action import ActionBase
 from ansible import errors
-from ansible.callbacks import vv
-from ansible.runner.return_data import ReturnData
+try:
+    from __main__ import display
+except ImportError:
+    from ansible.utils.display import Display
+    display = Display()
 
 DOCUMENTATION = """
 ---
@@ -35,33 +37,16 @@ author: Pawel Rozlach
 """
 
 
-class ActionModule(object):
+class ActionModule(ActionBase):
 
     _MODULE_ARGUMENTS = ["current_elements_hash", "output_variable_name",
                          "desired_elements_list"]
 
     TRANSFERS_FILES = False
 
-    def __init__(self, runner):
-        self.runner = runner
-
-    def _parse_commandline(self, inject, module_args, complex_args):
-        args = {}
-        if complex_args:
-            args.update(complex_args)
-        kv = utils.parse_kv(module_args)
-        args.update(kv)
-
-        for key in [x for x in self._MODULE_ARGUMENTS if x in args]:
-            data = args[key]
-            data = template.template(self.runner.basedir, data, inject)
-            args[key] = data
-
-        return args
-
     def _validate_output_variable_name(self, var_name):
-        if not isinstance(var_name, str):
-            return ["'output_variable_name' param must be a string"]
+        if not isinstance(var_name, unicode):
+            return ["'output_variable_name' param must be a string, currently: `{}`".format(var_name)]
         elif not re.match(r'^[a-zA-Z0-9_]{3,}$', var_name):
             return ["'output_variable_name' is not a proper variable name"]
 
@@ -94,53 +79,58 @@ class ActionModule(object):
                 if tmp['rc'] != 0:
                     txt = 'Non-zero exit status found for result {0}'
                     msg.append(txt.format(tmp))
-                if not isinstance(tmp['item'], str):
-                    txt = "Non-string item element found for result {0}"
-                    msg.append(txt.format(tmp))
+                if not isinstance(tmp['item'], unicode):
+                    txt = "Non-string item element `{}` found in result {}"
+                    msg.append(txt.format(tmp['item'], tmp))
 
         return msg
 
-    def _validate_input_data(self, conn, args):
+    def _validate_input_data(self):
         msg = []
 
         for key in self._MODULE_ARGUMENTS:
-            if key not in args:
+            if key not in self._task.args:
                 msg.append("{0} is a mandatory argument and it's missing".format(key))
 
         msg.extend(
-            self._validate_output_variable_name(args["output_variable_name"]))
-        msg.extend(self._validate_elements_list(args["desired_elements_list"]))
-        msg.extend(self._validate_elements_hash(args["current_elements_hash"]))
+            self._validate_output_variable_name(self._templar.template(self._task.args["output_variable_name"])))
+        msg.extend(self._validate_elements_list(self._templar.template(self._task.args["desired_elements_list"])))
+        msg.extend(self._validate_elements_hash(self._templar.template(self._task.args["current_elements_hash"])))
 
         if len(msg):
             txt = ', '.join(msg) + '.'
             raise errors.AnsibleError(txt)
 
         for key in self._MODULE_ARGUMENTS:
-            vv("{0}: {1}".format(key, args[key]))
+            display.vv("{0}: {1}".format(key, self._task.args[key]))
 
-    def run(
-        self, conn, tmp, module_name, module_args, inject, complex_args=None,
-            **kwargs):
+    def run(self, tmp=None, task_vars=None):
         """Please refer to Ansible API documentation for more details on
         ActionModules.
         """
+        if task_vars is None:
+            task_vars = dict()
 
-        args = self._parse_commandline(inject, module_args, complex_args)
-        self._validate_input_data(conn, args)
+        result = super(ActionModule, self).run(tmp, task_vars)
+        facts = dict()
+
+        self._validate_input_data()
 
         output = []
 
-        for tmp in args["current_elements_hash"]['results']:
+        for tmp in self._task.args["current_elements_hash"]['results']:
             if 'skipped' in tmp and tmp['skipped']:
                 continue
             for entry in tmp['stdout_lines']:
-                if entry in args['desired_elements_list']:
+                if entry in self._task.args['desired_elements_list']:
                     continue
                 output_element = {'item_key': tmp['item'],
                                   'item_val': entry}
-                vv("Adding {} to output".format(output_element))
+                display.vv("Adding {} to output".format(output_element))
                 output.append(output_element)
 
-        result = dict(ansible_facts={args['output_variable_name']: output})
-        return ReturnData(conn=conn, comm_ok=True, result=result)
+        facts[self._task.args['output_variable_name']] = output
+
+        result['changed'] = False
+        result['ansible_facts'] = facts
+        return result
