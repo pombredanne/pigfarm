@@ -1,0 +1,5 @@
+---
+- include: packer.yml
+  tags: packer
+
+- meta: flush_handlers

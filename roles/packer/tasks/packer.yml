@@ -1,0 +1,88 @@
+---
+# packer does not provide a repository, so we need to manually check for
+# upgrades:
+- name: Check if packer is installed
+  stat:
+    path: /opt/packer
+  register: packer_stat
+
+- name: Remove old packer setup
+  file:
+    name: /opt/packer
+    state: absent
+  when: >
+    packer_stat.stat.exists == True and
+    packer_stat.stat.isreg == True
+
+- name: Find the current version of packer available
+  shell: curl "{{ packer_base_download_url }}" -s | grep href | grep packer| sort -rn | head -n 1 | cut -d\" -f 2 | cut -d\/ -f 3
+  always_run: true
+  changed_when: false
+  register: packer_version_available
+
+- debug: var=packer_version_available
+
+- name: Find currently instaled version of packer
+  shell: /opt/packer/packer -v
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: packer_version_installed
+  when: >
+    packer_stat.stat.exists == True and
+    packer_stat.stat.isdir == True
+
+- debug: var=packer_version_installed
+  when: >
+    packer_stat.stat.exists == True and
+    packer_stat.stat.isdir == True
+
+- name: Download newest version of packer
+  get_url:
+    url: "{{ packer_base_download_url  }}{{ packer_version_available.stdout }}/packer_{{ packer_version_available.stdout }}_linux_amd64.zip"
+    dest: "/tmp/packer-linux-amd64-{{ packer_version_available.stdout }}.zip"
+    force: yes
+    owner: root
+    group: root
+    mode: 0400
+  register: packer_downloaded
+  when: >
+    packer_stat.stat.exists == False or
+    packer_stat.stat.isdir == False or
+    packer_version_installed.stdout != packer_version_available.stdout
+
+- name: Remove current version of packer
+  file:
+    name: /opt/packer/
+    state: absent
+  when: >
+    packer_stat.stat.exists == True and
+    packer_stat.stat.isdir == True and
+    packer_version_installed.stdout != packer_version_available.stdout
+
+- name: Create packer directory
+  file:
+    state: directory
+    name: /opt/packer/
+    owner: root
+    group: root
+    mode: 0755
+
+- name: Unpack newest version of packer
+  unarchive:
+    copy: false
+    dest: /opt/packer/
+    creates: "/opt/packer/packer"
+    mode: 0755
+    owner: root
+    group: root
+    src: "/tmp/packer-linux-amd64-{{ packer_version_available.stdout }}.zip"
+  when: >
+    packer_stat.stat.exists == False or
+    packer_stat.stat.isdir == False or
+    packer_version_installed.stdout != packer_version_available.stdout
+
+- name: Remove temporary file
+  file:
+    name: "/tmp/packer-linux-amd64-{{ packer_version_available.stdout }}.zip"
+    state: absent

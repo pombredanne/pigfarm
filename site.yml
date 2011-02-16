@@ -18,6 +18,7 @@
     - disk_schedulers
     - ssh-agent
     - vagrant
+    - packer
     - clamav
     - google-stuff
     - flash

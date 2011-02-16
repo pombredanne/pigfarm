@@ -67,3 +67,6 @@ export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
 {% endif %}
 {% endif %}
+{% if (item in local_users or item == 'root') and users[item]["is_packer_user"] %}
+export PATH=/opt/packer/:$PATH
+{% endif %}
