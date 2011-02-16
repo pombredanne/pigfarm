@@ -1,6 +1,7 @@
 ---
 - hosts: all
-  sudo: True
+  become: True
+  become_method: sudo
   roles:
     - users_all
     - base_all
@@ -9,7 +10,8 @@
     - vim
 
 - hosts: hypervisors
-  sudo: True
+  become: True
+  become_method: sudo
   roles:
     - base_hypervisors
     - users_hypervisors
@@ -27,7 +29,8 @@
     - ansible
 
 - hosts: budrys
-  sudo: True
+  become: True
+  become_method: sudo
   roles:
     - multiseat
 
@@ -42,13 +45,15 @@
     - proxy_settings
 
 - hosts: jumphosts
-  sudo: True
+  become: True
+  become_method: sudo
   roles:
     - fw_base
     - fw_jumphost
 
 - hosts: mplay:c7t.tr
-  sudo: True
+  become: True
+  become_method: sudo
   roles:
     - vagrant
 
