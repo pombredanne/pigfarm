@@ -37,7 +37,8 @@
   with_items: authorized_login_keys
   when: >
     item.user in local_users and
-    users[item.user]['ssh_login_permitted'] == True
+    users[item.user]['ssh_login_permitted'] == True or
+    item.user == 'root'
 
 - name: remove ssh-keys from users denied login
   authorized_key:
@@ -47,5 +48,5 @@
     key: "{{ login_key[item.host] }}"
   with_items: authorized_login_keys
   when: >
-    users[item.user]['ssh_login_permitted'] == False or
+    (item.user != 'root' and users[item.user]['ssh_login_permitted'] == False) or
     item.state != 'present'

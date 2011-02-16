@@ -1,3 +1,3 @@
-[submodule "roles/apache2_base"]
-	path = roles/apache2_base
+[submodule "playbooks/roles/apache2_base"]
+	path = playbooks/roles/apache2_base
 	url = git@github.com:vespian/apache2_base.git
