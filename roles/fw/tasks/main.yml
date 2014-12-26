@@ -1,0 +1,3 @@
+---
+- include: base.yml tags=firewall
+- include: rules.yml tags=firewall

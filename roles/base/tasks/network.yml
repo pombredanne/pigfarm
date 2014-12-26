@@ -1,0 +1,25 @@
+---
+- name: Make ip configuration static instead of DHCP (Centos)
+  template:
+    src: ifcfg-eth0.centos.j2
+    dest: /etc/sysconfig/network-scripts/ifcfg-eth0
+    mode: 0644
+    owner: root
+    group: root
+  notify: "reload {{ ansible_distribution }} networking"
+  when: ansible_distribution == 'CentOS'
+
+- name: Create networking configuration snippets dir (Debian)
+  file:
+    path: /etc/network/interfaces.d/
+    state: directory
+    mode: 0750
+    owner: root
+    group: root
+  when: ansible_distribution == 'Debian'
+
+- name: Upload lo network configuration snippet (Debian)
+  copy:
+
+
+
