@@ -1,0 +1,13 @@
+#jinja2:trim_blocks: False
+TYPE="Ethernet"
+ONBOOT="yes"
+BOOTPROTO=none
+NM_CONTROLLED="no"
+DEFROUTE="yes"
+PEERDNS=no
+IPV6INIT=no
+{#- IP data is initially provided by DHCP, Ansible just needs to read it #}
+IPADDR={{ ansible_eth0.ipv4.address }}
+NETMASK={{ ansible_eth0.ipv4.netmask }}
+GATEWAY={{ ansible_default_ipv4.gateway | mandatory }}
+HWADDR={{ ansible_eth0.macaddress | mandatory}}

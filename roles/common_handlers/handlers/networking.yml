@@ -1,0 +1,19 @@
+---
+- name: reload CentOS networking
+  service:
+    name: network
+    status: restarted
+
+- name: reload Debian networking
+  assemble:
+    src: /etc/network/interfaces.d/
+    dest: /etc/network/interfaces
+    mode: 0644
+    owner: root
+    group: root
+  notify: reload Debian networking - restart networking
+
+- name: reload Debian networking - restart networking
+  service:
+    name: networking
+    state: restarted

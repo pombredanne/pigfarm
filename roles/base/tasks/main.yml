@@ -1,6 +1,6 @@
 ---
 - include: network.yml tags=base
+- include: basics.yml tags=base
 - include: ssh.yml tags=base
 - include: extra_repos.yml tags=base
-- include: basics.yml tags=base
 - include: python.yml tags=base

@@ -1,4 +1,10 @@
 ---
+- name: Remove Network Manager
+  yum:
+    name: NetworkManager
+    state: absent
+  when: ansible_distribution == 'CentOS'
+
 - name: Make ip configuration static instead of DHCP (Centos)
   template:
     src: ifcfg-eth0.centos.j2
@@ -6,7 +12,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: "reload {{ ansible_distribution }} networking"
+  notify: "reload CentOS networking"
   when: ansible_distribution == 'CentOS'
 
 - name: Create networking configuration snippets dir (Debian)
@@ -16,10 +22,33 @@
     mode: 0750
     owner: root
     group: root
+  notify: "reload Debian networking"
   when: ansible_distribution == 'Debian'
 
 - name: Upload lo network configuration snippet (Debian)
   copy:
+    src: interfaces.lo.debian
+    dest: /etc/network/interfaces.d/interfaces.lo
+    mode: 0644
+    owner: root
+    group: root
+  notify: "reload Debian networking"
+  when: ansible_distribution == 'Debian'
 
+- name: Upload eth0 network configuration snippet (Debian)
+  template:
+    src: interfaces.eth0.debian.j2
+    dest: /etc/network/interfaces.d/interfaces.eth0
+    mode: 0644
+    owner: root
+    group: root
+  notify: "reload Debian networking"
+  when: ansible_distribution == 'Debian'
 
-
+- name: Upload resolv.conf configuration
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    mode: 0644
+    owner: root
+    group: root

@@ -1,0 +1,27 @@
+---
+- name: Provide a list of common packages for Debian and Centos
+  set_fact:
+    common_packages:
+      - sudo
+      - vim
+
+- name: Install base packages for CentOS
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - libselinux-python
+    - common_packages
+  when: ansible_distribution == 'CentOS'
+
+- name: Install base packages for Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - python-apt
+    - python-selinux
+    - common_packages
+  when: ansible_distribution == 'Debian'
+
+# FIXME tty allocation for sudo

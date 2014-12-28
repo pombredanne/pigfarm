@@ -1,0 +1,8 @@
+#jinja2:trim_blocks: False
+allow-hotplug eth0
+iface eth0 inet static
+{#- IP data is initially provided by DHCP, Ansible just needs to read it #}
+    address {{ ansible_eth0.ipv4.address }}
+    netmask {{ ansible_eth0.ipv4.netmask }}
+    gateway {{ ansible_default_ipv4.gateway | mandatory }}
+
