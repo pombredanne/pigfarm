@@ -2,16 +2,52 @@
 - name: Provide a list of common packages for Debian and Centos
   set_fact:
     common_packages:
+      - htop
+      - iproute
+      - iptables
+      - less
+      - lsof
+      - ncdu
+      - psmisc
+      - pv
+      - python-pycurl
+      - strace
       - sudo
-      - vim
+      - sysstat
+      - tcpdump
+      - telnet
+      - tree
+      - zsh
+      - pigz
 
-- name: Install base packages for CentOS
+- name: Install CentOS 6 specific packages
   yum:
     name: "{{ item }}"
     state: present
   with_flattened:
-    - libselinux-python
+    - nc
+    - pbzip2
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+- name: Install CentOS 7 specific packages
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - nmap-ncat
+    # - pbzip2 # not in EPEL yet
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Install base packages for CentOS (all versions)
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
     - common_packages
+    - bind-utils
+    - libselinux-python
+    - mtr
+    - vim-enhanced
   when: ansible_distribution == 'CentOS'
 
 - name: Install base packages for Debian
@@ -19,9 +55,29 @@
     name: "{{ item }}"
     state: present
   with_flattened:
+    - common_packages
+    - bmon
+    - aptitude
+    - bind9-host
+    - dnsutils
+    - mtr-tiny
     - python-apt
     - python-selinux
-    - common_packages
+    - netcat
+    - pbzip2
+    - vim-nox
   when: ansible_distribution == 'Debian'
+
+- name: discourage kernel from using the swap
+  sysctl:
+    name: vm.swappiness
+    value: "0"
+    state: present
+    sysctl_set: yes
+    reload: yes
+
+#- name: remove redundant packages (Debian)
+#  apt:
+#    - cups
 
 # FIXME tty allocation for sudo

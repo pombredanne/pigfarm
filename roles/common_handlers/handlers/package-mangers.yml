@@ -1,0 +1,4 @@
+---
+- name: Debian update repos
+  apt:
+    update_cache: yes

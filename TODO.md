@@ -12,4 +12,9 @@ For provisioning:
 
 
 - sysdig tool
-
+- gcc and other devtools
+- cleanup processes (cups, iwl, alsa, lm_sensors, atmel-firmware, *firmware*,
+  exim, postfix,) remove redundant packages
+- xfs tools
+- io schedulers to noop
+- 
