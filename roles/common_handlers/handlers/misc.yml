@@ -1,0 +1,6 @@
+---
+- name: sysctl reload
+  command: sysctl -p /etc/sysctl.conf
+
+- name: udev reload
+  command: udevadm control --reload-rules

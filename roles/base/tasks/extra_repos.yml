@@ -11,11 +11,54 @@
     state: present
   when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
 
+- name: install IUS repository (CentOS 6)
+  yum:
+    name: http://dl.iuscommunity.org/pub/ius/stable/RedHat/6/x86_64/ius-release-1.0-13.ius.el6.noarch.rpm
+    state: present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+- name: install IUS repository (CentOS 7)
+  yum:
+    name: http://dl.iuscommunity.org/pub/ius/stable/RedHat/7/x86_64/ius-release-1.0-13.ius.el7.noarch.rpm
+    state: present
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: import Draios repository key (Centos)
+  rpm_key:
+    key: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: import Draios repository key (Debian)
+  apt_key:
+    url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: install Draios repository (Centos)
+  copy:
+    src: draios.repo.centos
+    dest: /etc/yum.repos.d/draios.repo
+    mode: 0644
+    owner: root
+    group: root
+  when: ansible_distribution == 'CentOS'
+
+- name: install Draios repository (Debian)
+  copy:
+    src: draios.list.debian
+    dest: /etc/apt/sources.list.d/draios.list
+    mode: 0644
+    owner: root
+    group: root
+  when: ansible_distribution == 'Debian'
+
 - name: purge default repos configuration (Debian)
   file:
     name: /etc/apt/sources.list
     state: absent
   when: ansible_distribution == 'Debian'
+  notify: Debian update repos
 
 # netselect-apt: http://ftp.agh.edu.pl/debian/
 - name: add debian stable/testing/backport repositories

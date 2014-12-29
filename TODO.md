@@ -10,11 +10,10 @@ For provisioning:
  - sudo
  - ttyallocation disable for sudo
 
-
+###
+TO DO
 - sysdig tool
-- gcc and other devtools
-- cleanup processes (cups, iwl, alsa, lm_sensors, atmel-firmware, *firmware*,
-  exim, postfix,) remove redundant packages
+- python
 - xfs tools
-- io schedulers to noop
-- 
+- ipdb for debian/python3, and centos/python2&3, using PIP
+- ipython
