@@ -12,7 +12,7 @@
       - pigz
       - psmisc
       - pv
-      - python-pip
+      - python
       - python-pycurl
       - strace
       - sudo
@@ -49,8 +49,6 @@
     - bind-utils
     - libselinux-python
     - mtr
-    - python34u
-    - python34u-pip
     - vim-enhanced
   when: ansible_distribution == 'CentOS'
 
@@ -68,10 +66,7 @@
     - netcat
     - pbzip2
     - python-apt
-    - python-ipdb
     - python-selinux
-    - python3
-    - python3-pip
     - vim-nox
   when: ansible_distribution == 'Debian'
 

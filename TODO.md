@@ -12,8 +12,4 @@ For provisioning:
 
 ###
 TO DO
-- sysdig tool
-- python
 - xfs tools
-- ipdb for debian/python3, and centos/python2&3, using PIP
-- ipython

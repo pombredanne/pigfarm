@@ -1,0 +1,40 @@
+---
+- name: Install Python packages for Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python3
+    - python3-pip
+  when: ansible_distribution == 'Debian'
+
+- name: Install Python packages for CentOS
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python-pip
+    - python34u
+    - python34u-pip
+  when: ansible_distribution == 'CentOS'
+
+- name: Install missing ipdb/ipython packages for Debian - python3
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'ipython', 'ipdb' ]
+    - [ 'pip-3.2', 'pip' ]
+  when: ansible_distribution == 'Debian'
+
+- name: Install missing ipdb/ipython packages for CentOS
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'ipython', 'ipdb' ]
+    - [ 'pip3.4', 'pip' ]
+  when: ansible_distribution == 'CentOS'
