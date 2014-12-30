@@ -4,3 +4,4 @@
 - include: basics.yml tags=base
 - include: ssh.yml tags=base
 - include: python.yml tags=base
+- include: sysdig.yml tags=base

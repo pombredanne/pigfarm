@@ -16,7 +16,6 @@
       - python-pycurl
       - strace
       - sudo
-      - sysdig
       - sysstat
       - tcpdump
       - telnet
@@ -48,7 +47,6 @@
   with_flattened:
     - common_packages
     - bind-utils
-    - kernel-devel
     - libselinux-python
     - mtr
     - python34u
@@ -66,7 +64,6 @@
     - bind9-host
     - bmon
     - dnsutils
-    - linux-headers-amd64
     - mtr-tiny
     - netcat
     - pbzip2
@@ -120,3 +117,11 @@
     owner: root
     group: root
   notify: udev reload
+
+- name: remove motd
+  copy:
+    content: ""
+    dest: /etc/motd
+    mode: 0644
+    owner: root
+    group: root

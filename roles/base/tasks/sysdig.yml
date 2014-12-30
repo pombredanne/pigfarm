@@ -1,0 +1,54 @@
+---
+- name: import Draios repository key (Centos)
+  rpm_key:
+    key: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: import Draios repository key (Debian)
+  apt_key:
+    url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: install Draios repository (Centos)
+  copy:
+    src: draios.repo.centos
+    dest: /etc/yum.repos.d/draios.repo
+    mode: 0644
+    owner: root
+    group: root
+  when: ansible_distribution == 'CentOS'
+
+- name: install Draios repository (Debian)
+  copy:
+    src: draios.list.debian
+    dest: /etc/apt/sources.list.d/draios.list
+    mode: 0644
+    owner: root
+    group: root
+  when: ansible_distribution == 'Debian'
+
+- name: Install kernel headers for CentOS (all versions)
+  yum:
+    name: "kernel-devel-{{ ansible_kernel }}"
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Install kernel headers for Debian
+  apt:
+    name: "linux-headers-{{ ansible_kernel }}"
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: Install sysdig (Debian)
+  apt:
+    name: sysdig
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: Install sysdig (Centos)
+  yum:
+    name: sysdig
+    state: present
+  when: ansible_distribution == 'CentOS'
