@@ -12,4 +12,4 @@ For provisioning:
 
 ###
 TO DO
-- xfs tools
+- firewall

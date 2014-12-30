@@ -8,6 +8,7 @@
       - iptables
       - less
       - lsof
+      - net-tools
       - ncdu
       - pigz
       - psmisc
@@ -20,6 +21,7 @@
       - tcpdump
       - telnet
       - tree
+      - xfsprogs
       - zsh
 
 - name: Install CentOS 6 specific packages

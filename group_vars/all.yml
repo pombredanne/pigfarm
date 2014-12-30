@@ -1,0 +1,6 @@
+---
+distribution_specific:
+    Debian:
+        sshd_service_name: ssh
+    CentOS:
+        sshd_service_name: sshd
