@@ -13,8 +13,8 @@ For provisioning:
 ###
 TO DO
 - firewall
-- sudo
-- customrepo for yum and apt??
+- customrepo for local yum and apt packages ??
+- caching proxy for packages instead of local copies of repos
 
 http://wiki.centos.org/EdHeron/EditorDefaultNano
 
