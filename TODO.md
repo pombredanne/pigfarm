@@ -1,4 +1,4 @@
-For provisioning:
+### Kickstart/preseed:
  Debian:
  - python-apt
  - python-selinux
@@ -9,15 +9,19 @@ For provisioning:
  Common:
  - sudo
  - ttyallocation disable for sudo
+ - root password setup
+ - ssh keys upload
+ - xfs, one common partition, swap ?
 
-###
-TO DO
+### Playbook:
 - firewall
 - customrepo for local yum and apt packages ??
 - caching proxy for packages instead of local copies of repos
 
-http://wiki.centos.org/EdHeron/EditorDefaultNano
 
-custom repo on cobbler:
-http://wiki.centos.org/HowTos/CreateLocalRepos
+### Misc:
+http://wiki.centos.org/EdHeron/EditorDefaultNano
 http://www.linuxsysadmintutorials.com/build-and-install-vim-7-4-on-centos-6-using-rpm/
+
+### custom repo on cobbler:
+http://wiki.centos.org/HowTos/CreateLocalRepos

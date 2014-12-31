@@ -3,27 +3,35 @@
   set_fact:
     common_packages:
       - binutils
+      - dstat
+      - git
+      - hping3
       - htop
+      - iotop
       - iproute
       - iptables
       - less
+      - links
       - lsof
-      - net-tools
+      - man
       - ncdu
+      - ncdu
+      - net-tools
       - pigz
       - psmisc
       - pv
       - python
       - python-pycurl
+      - rsync
       - strace
       - sudo
       - sysstat
       - tcpdump
       - telnet
+      - tmux
       - tree
+      - wget
       - xfsprogs
-      - git
-      - zsh
 
 - name: Install CentOS 6 specific packages
   yum:
@@ -52,6 +60,11 @@
     - bind-utils
     - libselinux-python
     - mtr
+    - yum-utils
+    - setools-console
+    - pykickstart
+    - policycoreutils-python
+    - iputils
   when: ansible_distribution == 'CentOS'
 
 - name: Install base packages for Debian
@@ -61,6 +74,7 @@
   with_flattened:
     - common_packages
     - aptitude
+    - apt-file
     - bind9-host
     - bmon
     - dnsutils

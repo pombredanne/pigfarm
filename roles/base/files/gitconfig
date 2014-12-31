@@ -1,0 +1,10 @@
+[user]
+	name = Vespian
+	email = vespian@wp.pl
+[core]
+	excludesfile = /root/.gitignore
+[color]
+    diff = auto
+    grep = auto
+[push]
+	default = tracking
