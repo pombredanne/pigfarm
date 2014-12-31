@@ -22,6 +22,7 @@
       - telnet
       - tree
       - xfsprogs
+      - git
       - zsh
 
 - name: Install CentOS 6 specific packages
@@ -51,7 +52,6 @@
     - bind-utils
     - libselinux-python
     - mtr
-    - vim-enhanced
   when: ansible_distribution == 'CentOS'
 
 - name: Install base packages for Debian
@@ -69,7 +69,6 @@
     - pbzip2
     - python-apt
     - python-selinux
-    - vim-nox
   when: ansible_distribution == 'Debian'
 
 - name: provide a common list of redundant packages

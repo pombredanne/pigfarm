@@ -1,0 +1,97 @@
+---
+- name: Install vim packages for CentOS (all versions)
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - vim-enhanced
+  when: ansible_distribution == 'CentOS'
+
+- name: Install vim packages for Debian
+  apt:
+    name: "{{ item }}"
+    state: present
+    default_release: wheezy-backports
+  with_flattened:
+    - vim-nox
+  when: ansible_distribution == 'Debian'
+
+- name: Install vim-related python packages for Debian
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'jedi', 'flake8' ]
+    - [ 'pip-3.2', 'pip' ]
+  when: ansible_distribution == 'Debian'
+
+- name: Install vim-related python packages for CentOS
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'jedi', 'flake8' ]
+    - [ 'pip3.4', 'pip' ]
+  when: ansible_distribution == 'CentOS'
+
+- name: Upload vimrc file
+  copy:
+    src: vimrc
+    dest: /root/.vimrc
+    mode: 0640
+    owner: root
+    group: root
+
+- name: Create vim directories
+  file:
+    name: "{{ item }}"
+    state: directory
+    mode: 0755
+    owner: root
+    group: root
+  with_items:
+    - /root/.vim/
+    - /root/.vim/colors/
+    - /root/.vim/autoload/
+    - /root/.vim/bundle
+    - /root/.vim/ftplugin/
+
+- name: Upload vim plugins/configs
+  copy:
+    src: "{{ item.name }}"
+    dest: "/root/.vim/{{ item.location }}/{{ item.name }}"
+    mode: 0640
+    owner: root
+    group: root
+  with_items:
+    - { name: "python_editing.vim", location: "ftplugin/"}
+    - { name: "wombat256mod.vim", location: "colors/"}
+    - { name: "pathogen.vim", location: "autoload/"}
+
+- name: checkout plugins from git repos
+  git:
+    repo: "{{ item.url }}"
+    dest: "/root/.vim/bundle/{{ item.location }}"
+  with_items:
+    - { url: "https://github.com/kien/ctrlp.vim.git", location: "ctrlp.vim"}
+    - { url: "https://github.com/davidhalter/jedi-vim.git", location: "jedi-vim"}
+    - { url: "https://github.com/scrooloose/nerdtree", location: "nerdtree"}
+    - { url: "https://github.com/bling/vim-airline.git", location: "vim-airline"}
+    - { url: "https://github.com/Chiel92/vim-autoformat.git", location: "vim-autoformat"}
+    - { url: "https://github.com/nvie/vim-flake8.git", location: "vim-flake8"}
+
+- name: Set vim as default editor for Debian
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.nox
+  when: ansible_distribution == 'Debian'
+
+- name: Set vim as default editor for Centos
+  copy:
+    content: "export VISUAL='/usr/bin/vim'\nexport EDITOR='/usr/bin/vim'\n"
+    dest: /etc/profile.d/editor.sh
+    mode: 0755
+    owner: root
+    group: root
