@@ -1,0 +1,90 @@
+---
+- name: make sure firewalld is not installed on Centos7
+  yum:
+    name: firewalld
+    state: absent
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: disable old iptables scripts on Centos6
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  with_items:
+    - iptables
+    - ip6tables
+
+- name: Install Ferm
+  apt:
+    name: ferm
+    state: present
+  when: ansible_distribution == 'Debian'
+
+- name: Install Ferm
+  yum:
+    name: ferm
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Create ferm directories
+  file:
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    name: "{{ item.name }}"
+  with_items:
+    - { name: "/etc/ferm", mode: "0770"}
+    - { name: "/etc/ferm/conf.d/", mode: "0770"}
+    - { name: "/etc/ferm/rules.d/", mode: "0770"}
+    - { name: "/var/cache/ferm/", mode: "0755"}
+
+- name: Upload ferm init script (Centos 6)
+  copy:
+    src: ferm.init.centos6
+    dest: /etc/init.d/ferm
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - restart ferm
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+- name: Upload systemd service file (Centos 7)
+  copy:
+    src: ferm.service
+    dest: /usr/lib/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart ferm
+  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+
+- name: Upload ferm startup configuration (Debian 7)
+  copy:
+    src: ferm.default.debian
+    dest: /etc/default/ferm
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - restart ferm
+  when: ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+
+- name: Upload ferm configuration/base chains
+  template:
+    src: ferm.conf.j2
+    dest: /etc/ferm/ferm.conf
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - reload ferm
+
+- name: Enable ferm service on boot (CentOS 7)
+  service:
+    name: ferm
+    state: started
+    enabled: true
