@@ -17,6 +17,8 @@
 ### Playbook:
 - locales
 - timezone
+- review the running processes, check if there is something that can be removed/stopped
+- remove lvm stuff after re-installing machines on non-lvs drives
 - password root setup
 - customrepo for local yum and apt packages, packages uploaded by ansible
 - caching proxy for packages instead of local copies of repos
