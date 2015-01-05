@@ -4,7 +4,7 @@
     name: "{{ item }}"
     state: present
   with_flattened:
-    - vim-enhanced
+    - vim-enhanced-7.4.160
   when: ansible_distribution == 'CentOS'
 
 - name: Install vim packages for Debian
