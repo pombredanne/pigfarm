@@ -106,6 +106,7 @@
   with_flattened:
     - iprutils
     - autofs
+    - tuned
     - lm_sensors
     - unwanted_packages
   when: ansible_distribution == 'CentOS'
