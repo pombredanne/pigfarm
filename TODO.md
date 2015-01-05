@@ -12,12 +12,15 @@
  - root password setup
  - ssh keys upload
  - xfs, one common partition, swap ?
+ - define amount of ram and disk ?
 
 ### Playbook:
-- firewall
-- customrepo for local yum and apt packages ??
+- locales
+- timezone
+- password root setup
+- customrepo for local yum and apt packages, packages uploaded by ansible
 - caching proxy for packages instead of local copies of repos
-
+- local copies of git repositories on cobbler
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
