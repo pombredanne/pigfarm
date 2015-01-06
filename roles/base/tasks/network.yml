@@ -29,7 +29,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: "reload CentOS networking"
+  notify: "restart CentOS networking"
   when: ansible_distribution == 'CentOS'
 
 - name: Create networking configuration snippets dir (Debian)
@@ -39,7 +39,7 @@
     mode: 0750
     owner: root
     group: root
-  notify: "reload Debian networking"
+  notify: "restart Debian networking"
   when: ansible_distribution == 'Debian'
 
 - name: Upload lo network configuration snippet (Debian)
