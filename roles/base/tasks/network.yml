@@ -1,9 +1,26 @@
 ---
+# On Centos7, rpm removal does not stop the service and after removing the rpm
+# we cannot stop the service. OTOH later there is no NetworkManger script and
+# service module fails. So we first test if rpm package is present.
+- name: Check if NetworkManager is installed
+  command:
+    rpm -q NetworkManager
+  ignore_errors: True
+  register: rpm_nm_out
+  when: ansible_distribution == 'CentOS'
+
+- name: Stop the Network Manager
+  service:
+    name: NetworkManager
+    state: stopped
+    enabled: false
+  when: ansible_distribution == 'CentOS' and rpm_nm_out.rc == 0
+
 - name: Remove Network Manager
   yum:
     name: NetworkManager
     state: absent
-  when: ansible_distribution == 'CentOS'
+  when: ansible_distribution == 'CentOS' and rpm_nm_out.rc == 0
 
 - name: Make ip configuration static instead of DHCP (Centos)
   template:
