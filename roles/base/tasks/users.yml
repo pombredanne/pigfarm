@@ -1,0 +1,41 @@
+---
+- name: create non-root groups
+  group:
+    name: "{{ item.key }}"
+    gid: "{{ item.value.gid }}"
+    state: present
+  with_dict: users
+  when: item.key != 'root'
+
+- name: create non-root users
+  user:
+    name: "{{ item.key }}"
+    uid: "{{ item.value.uid }}"
+    group: "{{ item.key }}"
+    createhome: yes
+    state: present
+  with_dict: users
+  when: item.key != 'root'
+
+- name: set passwords for all the users
+  user:
+    name: "{{ item.key }}"
+    password: "{{ item.value.pass_crypted }}"
+  with_dict: users
+
+- name: set ssh-keys for users permitted to login
+  authorized_key:
+    user: "{{ item.key }}"
+    manage_dir: yes
+    state: present
+    key: "{{ login_key }}"
+  with_dict: users
+  when: item.key == 'root' or item.value['ssh_login_permitted'] == True
+
+- name: remove ssh-keys from users denied ssh login
+  authorized_key:
+    user: "{{ item.key }}"
+    manage_dir: yes
+    state: absent
+  with_dict: users
+  when: item.key != 'root' and item.value['ssh_login_permitted'] == False

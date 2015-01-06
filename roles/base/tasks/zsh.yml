@@ -14,25 +14,32 @@
 - name: Clone oh-my-zsh repo
   git:
    repo: https://github.com/robbyrussell/oh-my-zsh.git
-   dest: /root/.oh-my-zsh/
+   dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
+  with_items: users.keys()
+  when: users[item]['shell'] == '/bin/zsh'
 
 - name: Upload zshrc file
   copy:
     src: zshrc
-    dest: /root/.zshrc
+    dest: "/{{ item if item == 'root' else 'home/' + item }}/.zshrc"
     mode: 0640
-    owner: root
-    group: root
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: users.keys()
+  when: users[item]['shell'] == '/bin/zsh'
 
 - name: Upload custom oh-my-zsh theme
   copy:
     src: vesclean.zsh-theme
-    dest: /root/.oh-my-zsh/themes/vesclean.zsh-theme
+    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/themes/vesclean.zsh-theme"
     mode: 0640
-    owner: root
-    group: root
+    owner: "{{ item }}"
+    group: "{{ item }}"
+  with_items: users.keys()
+  when: users[item]['shell'] == '/bin/zsh'
 
-- name: Set roots shell to zsh
+- name: Set users shell
   user:
-    name: root
-    shell: /bin/zsh
+    name: '{{ item.key }}'
+    shell: '{{ item.value.shell }}'
+  with_dict: users

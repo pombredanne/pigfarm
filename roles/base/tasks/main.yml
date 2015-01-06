@@ -1,10 +1,17 @@
 ---
+- name: Include secrets
+  include_vars: secrets/group_vars/all
+  tags: base,users
+
 - include: network.yml tags=base
 - include: extra_repos.yml tags=base
 - include: basics.yml tags=base
 - include: ssh.yml tags=base
-- include: zsh.yml tags=base
-- include: git.yml tags=base
 - include: python.yml tags=base
 - include: sysdig.yml tags=base
-- include: vim.yml tags=base
+
+# User specific:
+- include: users.yml tags=base,users
+- include: git.yml tags=base
+- include: zsh.yml tags=base,users
+- include: vim.yml tags=base,users
