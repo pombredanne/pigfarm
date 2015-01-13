@@ -4,3 +4,8 @@
   roles:
     - base
     - fw
+
+- hosts: pigs
+  sudo: True
+  roles:
+    - cobbler
