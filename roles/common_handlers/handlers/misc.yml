@@ -9,3 +9,13 @@
   service:
     name: '{{ distribution_specific[ansible_distribution]["sshd_service_name"] }}'
     state: restarted
+
+- name: restart cobbler
+  service:
+    name: cobblerd
+    state: restarted
+
+- name: restart httpd
+  service:
+    name: cobblerd
+    state: restarted
