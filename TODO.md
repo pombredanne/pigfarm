@@ -16,12 +16,13 @@
 
 Pig host:
  - cobbler
+ - apache2_base
  - customrepo for local yum and apt packages, packages uploaded by ansible
  - caching proxy for packages instead of local copies of repos
  - local copies of git repositories on cobbler
 
 ### Playbook:
-- review the running processes, check if there is something that can be removed/stopped
+- <None>
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
