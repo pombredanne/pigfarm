@@ -15,10 +15,10 @@
  - timezone
 
 Pig host:
- - cobbler
- - apache2_base
+ - adapt apache2_base to CentOS 7
+ - cobbler role
  - customrepo for local yum and apt packages, packages uploaded by ansible
- - caching proxy for packages instead of local copies of repos
+ - squid forward proxy for packages instead of local copies of repos
  - local copies of git repositories on cobbler
 
 ### Playbook:
