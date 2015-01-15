@@ -49,7 +49,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: "reload Debian networking"
+  notify: "restart Debian networking"
   when: ansible_distribution == 'Debian'
 
 - name: Upload eth0 network configuration snippet (Debian)
@@ -59,7 +59,7 @@
     mode: 0644
     owner: root
     group: root
-  notify: "reload Debian networking"
+  notify: "restart Debian networking"
   when: ansible_distribution == 'Debian'
 
 - name: Upload resolv.conf configuration
