@@ -8,6 +8,7 @@
   ignore_errors: True
   register: rpm_nm_out
   when: ansible_distribution == 'CentOS'
+  changed_when: False
 
 - name: Stop the Network Manager
   service:
