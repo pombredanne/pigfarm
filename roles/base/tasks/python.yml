@@ -1,13 +1,28 @@
 ---
 - name: Install Python packages for Debian
   apt:
-    name: "{{ item }}"
+    name: "{{ item.package }}"
     state: present
+    default_release: "{{ item.release }}"
   with_items:
-    - python-pip
-    - python3
-    - python3-pip
+    - {"package": "python-pip", "release":"stable"}
+    - {"package": "python3", "release":"stable"}
+    - {"package": "python3-pip", "release":"stable"}
+    - {"package": "python-ipdb", "release":"stable"}
+    - {"package": "ipython", "release":"wheezy-backports"}
+    - {"package": "ipython3", "release":"wheezy-backports"}
   when: ansible_distribution == 'Debian'
+
+# No ipdb for python3.2, niether backport, niether pip
+#- name: Install missing ipdb packages for Debian - python3
+#  pip:
+#    executable: "{{ item[1] }}"
+#    name: "{{ item[0] }}"
+#    state: present
+#  with_nested:
+#    - [ 'ipdb' ]
+#    - [ 'pip-3.2' ]
+#  when: ansible_distribution == 'Debian'
 
 - name: Install Python packages for CentOS
   yum:
@@ -15,19 +30,16 @@
     state: present
   with_items:
     - python-pip
+    - python-ipython
     - python34u
     - python34u-pip
-  when: ansible_distribution == 'CentOS'
-
-- name: Install missing ipdb/ipython packages for Debian - python3
-  pip:
-    executable: "{{ item[1] }}"
-    name: "{{ item[0] }}"
-    state: present
-  with_nested:
-    - [ 'ipython', 'ipdb' ]
-    - [ 'pip-3.2', 'pip' ]
-  when: ansible_distribution == 'Debian'
+    - python27
+    - python27-pip
+  when: ansible_distribution == 'CentOS' and 
+  when: "ansible_distribution == 'CentOS' and \
+        (ansible_distribution_major_version == '6' or \
+        ansible_distribution_major_version == '7' and item not in \
+        ['python-ipython', 'python27', 'python27-pip'])"
 
 - name: Install missing ipdb/ipython packages for CentOS
   pip:
@@ -36,5 +48,5 @@
     state: present
   with_nested:
     - [ 'ipython', 'ipdb' ]
-    - [ 'pip3.4', 'pip' ]
+    - [ 'pip3.4', 'pip2.7' ]
   when: ansible_distribution == 'CentOS'
