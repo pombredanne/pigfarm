@@ -1,0 +1,3 @@
+[submodule "roles/apache2_base"]
+	path = roles/apache2_base
+	url = git@github.com:vespian/apache2_base.git
