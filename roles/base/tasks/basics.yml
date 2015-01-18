@@ -40,7 +40,7 @@
   with_flattened:
     - nc
     - pbzip2
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: Install CentOS 7 specific packages
   yum:
@@ -49,7 +49,7 @@
   with_flattened:
     - nmap-ncat
     # - pbzip2 # not in EPEL yet
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: Install base packages for CentOS (all versions)
   yum:
@@ -65,7 +65,7 @@
     - pykickstart
     - policycoreutils-python
     - iputils
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Install base packages for Debian
   apt:
@@ -83,7 +83,7 @@
     - pbzip2
     - python-apt
     - python-selinux
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: provide a common list of redundant packages
   set_fact:
@@ -97,7 +97,7 @@
   with_flattened:
     - lm-sensors
     - unwanted_packages
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: remove redundant packages (Centos)
   yum:
@@ -109,7 +109,7 @@
     - tuned
     - lm_sensors
     - unwanted_packages
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Tune sysctls
   template:

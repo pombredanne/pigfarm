@@ -3,31 +3,31 @@
   yum:
     name: http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
     state: present
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: install EPEL repository (CentOS 7)
   yum:
     name: http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
     state: present
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: install IUS repository (CentOS 6)
   yum:
     name: http://dl.iuscommunity.org/pub/ius/stable/RedHat/6/x86_64/ius-release-1.0-13.ius.el6.noarch.rpm
     state: present
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: install IUS repository (CentOS 7)
   yum:
     name: http://dl.iuscommunity.org/pub/ius/stable/RedHat/7/x86_64/ius-release-1.0-13.ius.el7.noarch.rpm
     state: present
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: purge default repos configuration (Debian)
   file:
     name: /etc/apt/sources.list
     state: absent
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
   notify: Debian update repos
 
 # netselect-apt: http://ftp.agh.edu.pl/debian/
@@ -47,7 +47,7 @@
     - "deb-src http://ftp.agh.edu.pl/debian jessie main contrib non-free"
     - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main contrib non-free"
     - "deb http://security.debian.org/ jessie/updates main contrib non-free"
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
   notify: Debian update repos
 
 - name: select default Debian release to use
@@ -57,7 +57,7 @@
     mode: 0644
     owner: root
     group: root
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: bump backports priority to 750 (Debian)
   template:
@@ -66,4 +66,4 @@
     mode: 0644
     owner: root
     group: root
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'

@@ -3,14 +3,14 @@
   yum:
     name: firewalld
     state: absent
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: disable old iptables scripts on Centos6
   service:
     name: "{{ item }}"
     state: stopped
     enabled: no
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
   with_items:
     - iptables
     - ip6tables
@@ -19,13 +19,13 @@
   apt:
     name: ferm
     state: present
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Install Ferm
   yum:
     name: ferm
     state: present
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Create ferm directories
   file:
@@ -49,7 +49,7 @@
     mode: 0755
   notify:
     - restart ferm
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: Upload systemd service file (Centos 7)
   copy:
@@ -60,7 +60,7 @@
     mode: 0644
   notify:
     - restart ferm
-  when: ansible_distribution == 'CentOS' and ansible_distribution_major_version == '7'
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
 - name: Upload ferm startup configuration (Debian 7)
   copy:
@@ -71,7 +71,7 @@
     mode: 0660
   notify:
     - restart ferm
-  when: ansible_distribution == 'Debian' or ansible_distribution == 'CentOS' and ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
 - name: Upload ferm configuration/base chains
   template:

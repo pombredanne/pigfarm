@@ -3,13 +3,13 @@
   apt:
     name: zsh
     state: present
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Install zsh shell (CentOS)
   yum:
     name: zsh
     state: present
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Clone oh-my-zsh repo
   git:

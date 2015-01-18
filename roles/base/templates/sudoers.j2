@@ -82,9 +82,9 @@ Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY
 # commands via sudo.
 #
 # Defaults   env_keep += "HOME"
-{% if ansible_distribution == 'CentOS' %}
+{% if ansible_os_family == 'RedHat' %}
 Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin
-{% elif ansible_distribution == 'Debian' %}
+{% elif ansible_os_family == 'Debian' %}
 Defaults    secure_path = /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 {% endif %}
 
@@ -105,9 +105,9 @@ root	ALL=(ALL) 	ALL
 # %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS
 
 ## Allows people in group wheel to run all commands
-{% if ansible_distribution == 'CentOS' %}
+{% if ansible_os_family == 'RedHat' %}
 %wheel	ALL=(ALL)	ALL
-{% elif ansible_distribution == 'Debian' %}
+{% elif ansible_os_family == 'Debian' %}
 # Allow members of group sudo to execute any command
 %sudo   ALL=(ALL:ALL) ALL
 {% endif %}

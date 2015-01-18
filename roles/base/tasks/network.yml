@@ -7,7 +7,7 @@
     rpm -q NetworkManager
   ignore_errors: True
   register: _rpm_nm_out
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
   changed_when: False
 
 - name: Stop the Network Manager
@@ -15,13 +15,13 @@
     name: NetworkManager
     state: stopped
     enabled: false
-  when: ansible_distribution == 'CentOS' and _rpm_nm_out.rc == 0
+  when: ansible_os_family == 'RedHat' and _rpm_nm_out.rc == 0
 
 - name: Remove Network Manager
   yum:
     name: NetworkManager
     state: absent
-  when: ansible_distribution == 'CentOS' and _rpm_nm_out.rc == 0
+  when: ansible_os_family == 'RedHat' and _rpm_nm_out.rc == 0
 
 - name: Make ip configuration static instead of DHCP (Centos)
   template:
@@ -31,7 +31,7 @@
     owner: root
     group: root
   notify: "restart CentOS networking"
-  when: ansible_distribution == 'CentOS'
+  when: ansible_os_family == 'RedHat'
 
 - name: Create networking configuration snippets dir (Debian)
   file:
@@ -41,7 +41,7 @@
     owner: root
     group: root
   notify: "restart Debian networking"
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Upload lo network configuration snippet (Debian)
   copy:
@@ -51,7 +51,7 @@
     owner: root
     group: root
   notify: "restart Debian networking"
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Upload eth0 network configuration snippet (Debian)
   template:
@@ -61,7 +61,7 @@
     owner: root
     group: root
   notify: "restart Debian networking"
-  when: ansible_distribution == 'Debian'
+  when: ansible_os_family == 'Debian'
 
 - name: Upload resolv.conf configuration
   template:
