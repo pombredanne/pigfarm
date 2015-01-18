@@ -8,4 +8,5 @@
 - hosts: pigs
   sudo: True
   roles:
+    - apache2_base
     - cobbler
