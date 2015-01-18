@@ -5,7 +5,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: Install zsh shell (CentOS)
+- name: Install zsh shell (RHEL/CentOS)
   yum:
     name: zsh
     state: present

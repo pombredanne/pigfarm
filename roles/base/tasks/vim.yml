@@ -1,5 +1,5 @@
 ---
-- name: Install vim packages for CentOS (all versions)
+- name: Install vim packages for RHEL/CentOS (all versions)
   yum:
     name: "{{ item }}"
     state: present
@@ -26,7 +26,7 @@
     - [ 'pip-3.2', 'pip' ]
   when: ansible_os_family == 'Debian'
 
-- name: Install vim-related python packages for CentOS
+- name: Install vim-related python packages for RHEL/CentOS
   pip:
     executable: "{{ item[1] }}"
     name: "{{ item[0] }}"
@@ -85,7 +85,7 @@
     path: /usr/bin/vim.nox
   when: ansible_os_family == 'Debian'
 
-- name: Set vim as default editor for Centos
+- name: Set vim as default editor for RHEL/CentOS
   copy:
     content: "export VISUAL='/usr/bin/vim'\nexport EDITOR='/usr/bin/vim'\n"
     dest: /etc/profile.d/editor.sh

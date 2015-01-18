@@ -5,7 +5,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: Install git (CentOS)
+- name: Install git (RHEL/CentOS)
   yum:
     name: git
     state: present

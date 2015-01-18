@@ -1,5 +1,5 @@
 ---
-- name: restart CentOS networking
+- name: restart RHEL/CentOS networking
   service:
     name: network
     state: restarted

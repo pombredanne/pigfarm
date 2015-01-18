@@ -1,5 +1,5 @@
 ---
-- name: Provide a list of common packages for Debian and Centos
+- name: Provide a list of common packages for Debian and RHEL/CentOS
   set_fact:
     common_packages:
       - binutils
@@ -33,7 +33,7 @@
       - wget
       - xfsprogs
 
-- name: Install CentOS 6 specific packages
+- name: Install RHEL/CentOS 6 specific packages
   yum:
     name: "{{ item }}"
     state: present
@@ -42,7 +42,7 @@
     - pbzip2
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
 
-- name: Install CentOS 7 specific packages
+- name: Install RHEL/CentOS 7 specific packages
   yum:
     name: "{{ item }}"
     state: present
@@ -51,7 +51,7 @@
     # - pbzip2 # not in EPEL yet
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
 
-- name: Install base packages for CentOS (all versions)
+- name: Install base packages for RHEL/CentOS (all versions)
   yum:
     name: "{{ item }}"
     state: present
@@ -99,7 +99,7 @@
     - unwanted_packages
   when: ansible_os_family == 'Debian'
 
-- name: remove redundant packages (Centos)
+- name: remove redundant packages (RHEL/CentOS)
   yum:
     name: "{{ item }}"
     state: absent

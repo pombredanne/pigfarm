@@ -1,7 +1,7 @@
 ---
-- name: Fail if not run on Centos 7
+- name: Fail if not run on RHEL/CentOS 7
   fail:
-    msg: "This role is suitable/was tested on Centos 7"
+    msg: "This role is suitable/was tested on RHEL/CentOS 7"
   when: "ansible_os_family != 'RedHat' or \
         ansible_os_family == 'RedHat'and ansible_distribution_major_version <= 7"
 
