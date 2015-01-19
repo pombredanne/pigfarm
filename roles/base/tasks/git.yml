@@ -1,15 +1,9 @@
 ---
 - name: Install git (Debian)
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr }}"
     name: git
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Install git (RHEL/CentOS)
-  yum:
-    name: git
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: Upload gitconfig and gitignore files
   copy:

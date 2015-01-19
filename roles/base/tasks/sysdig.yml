@@ -42,13 +42,7 @@
   when: ansible_os_family == 'Debian'
 
 - name: Install sysdig (Debian)
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr }}"
     name: sysdig
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Install sysdig (RHEL/CentOS)
-  yum:
-    name: sysdig
-    state: present
-  when: ansible_os_family == 'RedHat'

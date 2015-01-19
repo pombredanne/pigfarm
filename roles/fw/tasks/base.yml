@@ -16,16 +16,10 @@
     - ip6tables
 
 - name: Install Ferm
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr }}"
     name: ferm
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Install Ferm
-  yum:
-    name: ferm
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: Create ferm directories
   file:

@@ -1,15 +1,9 @@
 ---
 - name: Install zsh shell (Debian)
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr }}"
     name: zsh
     state: present
-  when: ansible_os_family == 'Debian'
-
-- name: Install zsh shell (RHEL/CentOS)
-  yum:
-    name: zsh
-    state: present
-  when: ansible_os_family == 'RedHat'
 
 - name: Clone oh-my-zsh repo
   git:
