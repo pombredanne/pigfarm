@@ -3,13 +3,13 @@
   apt:
     name: "{{ item.package }}"
     state: present
-    default_release: "{{ item.release }}"
+    default_release: "{{ item.release | default('stable') }}"
   with_items:
-    - {"package": "python-pip", "release":"stable"}
-    - {"package": "python-ipdb", "release":"stable"}
-    - {"package": "python-virtualenv", "release":"stable"}
-    - {"package": "python3", "release":"stable"}
-    - {"package": "python3-pip", "release":"stable"}
+    - {"package": "python-pip"}
+    - {"package": "python-ipdb"}
+    - {"package": "python-virtualenv"}
+    - {"package": "python3"}
+    - {"package": "python3-pip"}
     - {"package": "ipython", "release":"wheezy-backports"}
     - {"package": "ipython3", "release":"wheezy-backports"}
   when: ansible_os_family == 'Debian'
