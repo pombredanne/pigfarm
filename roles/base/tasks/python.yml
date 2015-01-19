@@ -6,23 +6,24 @@
     default_release: "{{ item.release }}"
   with_items:
     - {"package": "python-pip", "release":"stable"}
+    - {"package": "python-ipdb", "release":"stable"}
+    - {"package": "python-virtualenv", "release":"stable"}
     - {"package": "python3", "release":"stable"}
     - {"package": "python3-pip", "release":"stable"}
-    - {"package": "python-ipdb", "release":"stable"}
     - {"package": "ipython", "release":"wheezy-backports"}
     - {"package": "ipython3", "release":"wheezy-backports"}
   when: ansible_os_family == 'Debian'
 
 # No ipdb for python3.2, niether backport, niether pip
-#- name: Install missing ipdb packages for Debian - python3
-#  pip:
-#    executable: "{{ item[1] }}"
-#    name: "{{ item[0] }}"
-#    state: present
-#  with_nested:
-#    - [ 'ipdb' ]
-#    - [ 'pip-3.2' ]
-#  when: ansible_os_family == 'Debian'
+- name: Install missing ipdb packages for Debian - python3
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'ipdb', 'virtualenv' ]
+    - [ 'pip-3.2' ]
+  when: ansible_os_family == 'Debian'
 
 - name: Install Python packages for RHEL/CentOS
   yum:
@@ -31,14 +32,16 @@
   with_items:
     - python-pip
     - python-ipython
+    - python-virtualenv
     - python34u
     - python34u-pip
     - python27
     - python27-pip
+    - python27-virtualenv
   when: "ansible_os_family == 'RedHat' and \
         (ansible_distribution_major_version == '6' or \
         ansible_distribution_major_version == '7' and item not in \
-        ['python-ipython', 'python27', 'python27-pip'])"
+        ['python-ipython', 'python27', 'python27-pip', 'python27-virtualenv'])"
 
 - name: Install missing ipdb/ipython packages for RHEL/CentOS
   pip:
