@@ -28,7 +28,7 @@
     user: "{{ item.key }}"
     manage_dir: yes
     state: present
-    key: "{{ login_key }}"
+    key: "{{ login_key[hypervisor] }}"
   with_dict: users
   when: item.key == 'root' or item.value['ssh_login_permitted'] == True
 
