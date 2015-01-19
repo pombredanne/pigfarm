@@ -19,3 +19,8 @@
   service:
     name: cobblerd
     state: restarted
+
+- name: restart journalctl
+  service:
+    name: systemd-journaldsystemd-journald
+    state: restarted
