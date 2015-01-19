@@ -1,0 +1,10 @@
+---
+- include: Debian.yml
+  when: ansible_os_family == 'Debian'
+  tags:
+    - base
+
+- include: RedHat.yml
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - base
