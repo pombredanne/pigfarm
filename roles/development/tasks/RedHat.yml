@@ -1,0 +1,37 @@
+---
+- name: Install development packages for RHEL/CentOS
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libyaml
+    - libyaml-devel
+    - python-mock
+    - PyYAML
+    - python-coverage
+    - python-dns
+    - python-nose
+    - python-devel
+    - python34u-devel.x86_64
+    - python27-devel
+#    - python-pymisc
+#    - python3-pymisc
+  when: item != 'python27-devel' or item == 'python27-devel' and ansible_distribution_major_version == "6"
+
+- name: Install remaining development stuff using PIP (RHEL/CentOS)
+  pip:
+    executable: "{{ item.exec | default('pip3.4') }}"
+    name: "{{ item.name }}"
+    state: present
+  with_items:
+    - { "name": "pyaml" }
+    - { "name": "pyaml", "exec": "pip2.7", "release": "6" }
+    - { "name": "mock" }
+    - { "name": "mock", "exec": "pip2.7", "release": "6" }
+    - { "name": "coverage" }
+    - { "name": "coverage", "exec": "pip2.7", "release": "6" }
+    - { "name": "dnspython" }
+    - { "name": "dnspython", "exec": "pip2.7", "release": "6" }
+    - { "name": "nose" }
+    - { "name": "nose", "exec": "pip2.7", "release": "6" }
+  when: '"release" not in item or item["release"] == ansible_distribution_major_version'
