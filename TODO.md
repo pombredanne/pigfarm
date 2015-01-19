@@ -15,7 +15,6 @@
  - timezone
 
 Pig host:
- - adapt apache2_base to RHEL/CentOS 7
  - cobbler role
  - customrepo for local yum and apt packages, packages uploaded by ansible
  - squid forward proxy for packages instead of local copies of repos
