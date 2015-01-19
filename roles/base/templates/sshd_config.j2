@@ -108,15 +108,15 @@ GSSAPICleanupCredentials yes
 #UsePAM no
 UsePAM yes
 
-AllowAgentForwarding no
-AllowTcpForwarding no
+AllowAgentForwarding yes
+AllowTcpForwarding yes
 #GatewayPorts no
-X11Forwarding no
-#X11Forwarding yes
+#X11Forwarding no
+X11Forwarding yes
 #X11DisplayOffset 10
 #X11UseLocalhost yes
 PrintMotd no
-PrintLastLog yes
+PrintLastLog no
 TCPKeepAlive yes
 #UseLogin no
 {%- if ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6' %}
