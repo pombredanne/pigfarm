@@ -15,10 +15,16 @@
  - timezone
 
 Pig host:
- - cobbler role
- - customrepo for local yum and apt packages, packages uploaded by ansible
+ - cobbler WWW interface
+ - cobbler centos provisioning
+ - cobbler debian provisioning
  - squid forward proxy for packages instead of local copies of repos
  - local copies of git repositories on cobbler
+ - customrepo for local yum and apt packages, packages uploaded by ansible
+ - optional:
+    - inventory tool
+    - further automation of provisioning
+
 
 ### Playbook:
 - <None>
