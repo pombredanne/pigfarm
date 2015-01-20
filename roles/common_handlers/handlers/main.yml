@@ -3,3 +3,4 @@
 - include: package-mangers.yml
 - include: misc.yml
 - include: fw.yml
+- include: apache2.yml
