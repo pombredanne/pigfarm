@@ -7,8 +7,12 @@
 
 - name: Install cobbler
   yum:
-    name: cobbler
+    name: "{{ item }}"
     state: present
+  with_items:
+    - cobbler
+    - cobbler-web
+  notify: Restart Apache
 
 - name: Enable cobbler services
   service:

@@ -1,2 +1,3 @@
 ---
 - include: base.yml tags=service
+- include: fw.yml tags=fw

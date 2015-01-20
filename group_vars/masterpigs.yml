@@ -2,6 +2,7 @@
 apache2_base_extra_modules:
   RedHat:
     - 10-wsgi.conf
+    - 00-ssl.conf
 apache2_base_extra_packages:
   RedHat:
     - mod_wsgi
