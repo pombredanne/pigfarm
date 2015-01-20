@@ -5,7 +5,7 @@
     - base
     - fw
 
-- hosts: pigs
+- hosts: masterpigs
   sudo: True
   roles:
     - apache2_base
