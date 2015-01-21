@@ -14,6 +14,61 @@
     - cobbler-web
   notify: Restart Apache
 
+- name: Include apache2 vars file
+  include_vars: ../../apache2_base/vars/main.yml
+
+- name: Create SSL dir for HTTPd
+  file:
+    name: /etc/httpd/ssl/
+    state: directory
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+    mode: 0710
+
+- name: Upload certificate
+  copy:
+    src: "peppa.{{ hypervisor }}.vespian.net.pem"
+    dest: "/etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.pem"
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+    mode: 0640
+  notify: Restart apache
+
+- name: Upload certificate key
+  copy:
+    content: "{{ cobbler_cert_keys[hypervisor] | b64decode}}"
+    dest: "/etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.key"
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+    mode: 0640
+  notify: Restart apache
+
+- name: Remove default ssl and cobbler configuration
+  file:
+    name: "/etc/httpd/conf.d/{{ item }}.conf"
+    state: absent
+  notify: Restart apache
+  with_items:
+    - cobbler_web
+
+- name: Configure cobbler vhosts
+  template:
+    src: cobbler.conf.j2
+    dest: /etc/httpd/conf.d/cobbler.conf
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+    mode: 0640
+  notify: Reload apache
+
+- name: Configure mod_wsgi
+  copy:
+    src: mod_wsgi.conf
+    dest: /etc/httpd/conf.modules.d/10-wsgi.conf
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+    mode: 0640
+  notify: Restart apache
+
 - name: Enable cobbler services
   service:
     name: "{{ item }}"
@@ -22,3 +77,4 @@
   with_items:
     - cobblerd
     - httpd
+

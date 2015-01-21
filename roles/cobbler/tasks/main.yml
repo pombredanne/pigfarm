@@ -1,3 +1,8 @@
 ---
+- name: Include secrets
+  include_vars: secrets/group_vars/masterpigs
+  tags:
+    - service
+
 - include: base.yml tags=service
 - include: fw.yml tags=fw

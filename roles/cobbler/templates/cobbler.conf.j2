@@ -1,0 +1,71 @@
+<VirtualHost {{apache2_base_host}}:443>
+
+    ServerName peppa.{{ hypervisor }}.vespian.net
+
+    # SSL
+    SSLEngine on
+    SSLProtocol all -SSLv2
+    SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
+    SSLCertificateFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.pem
+    SSLCertificateKeyFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.key
+
+    # Logging
+    LogLevel debug
+    ErrorLog logs/cobbler.error.log
+    CustomLog logs/cobbler.access.log combined_time
+
+    # Use separate process group for wsgi
+    WSGIScriptAlias /cobbler_web /usr/share/cobbler/web/cobbler.wsgi
+    WSGIDaemonProcess cobbler_web display-name=%{GROUP}
+    WSGIProcessGroup cobbler_web
+    WSGIPassAuthorization On
+    WSGIScriptAliasMatch ^/cblr/svc/([^/]*) /var/www/cobbler/svc/services.py
+
+    AliasMatch ^/cblr(?!/svc/)(.*)?$ "/var/www/cobbler$1"
+    AliasMatch ^/cobbler_track(.*)?$ "/var/www/cobbler$1"
+    #AliasMatch ^/cobbler(.*)?$ "/var/www/cobbler$1"
+    Alias /cobbler /var/www/cobbler
+    Alias /cobbler_webui_content /var/www/cobbler_webui_content
+
+    ProxyRequests off
+    ProxyPass /cobbler_api http://localhost:25151/
+    ProxyPassReverse /cobbler_api http://localhost:25151/
+
+    BrowserMatch "MSIE" AuthDigestEnableQueryStringHack=On
+    BrowserMatch "MSIE [2-5]" \
+        nokeepalive ssl-unclean-shutdown \
+        downgrade-1.0 force-response-1.0
+
+    <Directory "/var/www/cobbler">
+        SetEnv VIRTUALENV
+        Options Indexes FollowSymLinks
+        Require all granted
+    </Directory>
+
+    <Directory "/var/www/cobbler/web/">
+        Options Indexes FollowSymLinks
+        Require all granted
+        Order allow,deny
+        Allow from all
+    </Directory>
+
+    <Directory "/usr/share/cobbler/web/">
+        SSLRequireSSL
+        SetEnv VIRTUALENV
+        Options Indexes MultiViews
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Directory "/var/www/cobbler_webui_content/">
+        SSLRequireSSL
+        Options +Indexes +FollowSymLinks
+        AllowOverride None
+        Require all granted
+    </Directory>
+
+    <Location /cobbler_web>
+        Require all granted
+    </Location>
+
+</VirtualHost>
