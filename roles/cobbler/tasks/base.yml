@@ -43,22 +43,17 @@
     mode: 0640
   notify: Restart apache
 
-- name: Remove default ssl and cobbler configuration
-  file:
-    name: "/etc/httpd/conf.d/{{ item }}.conf"
-    state: absent
-  notify: Restart apache
-  with_items:
-    - cobbler_web
-
 - name: Configure cobbler vhosts
   template:
-    src: cobbler.conf.j2
-    dest: /etc/httpd/conf.d/cobbler.conf
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/httpd/conf.d/{{ item }}.conf"
     owner: root
     group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0640
   notify: Reload apache
+  with_items:
+    - cobbler
+    - cobbler_web
 
 - name: Configure mod_wsgi
   copy:
