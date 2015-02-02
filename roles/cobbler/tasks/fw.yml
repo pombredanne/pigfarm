@@ -1,8 +1,8 @@
 ---
 - name: Upload ferm rules
   template:
-    src: cobbler_web.ferm.conf.j2
-    dest: /etc/ferm/rules.d/cobbler_web.ferm.conf.j2
+    src: cobbler.ferm.conf.j2
+    dest: /etc/ferm/rules.d/cobbler.ferm.conf.j2
     owner: root
     group: root
     mode: 0644
