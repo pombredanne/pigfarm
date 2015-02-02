@@ -5,4 +5,5 @@
     - service
 
 - include: base.yml tags=service
+- include: service.yml tags=service
 - include: fw.yml tags=fw

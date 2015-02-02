@@ -1,0 +1,26 @@
+---
+- name: Remove cobbler's default cruft
+  file:
+    name: "/etc/cobbler/{{ item }}"
+    state: absent
+  with_items:
+    - cheetah_macros
+    - cobbler_bash
+    - completions
+    - mongodb.conf
+
+- name: Find default fencing scripts
+  command: ls -1
+  args:
+    chdir: /etc/cobbler/power/
+  register: power_scripts
+  always_run: true
+  changed_when: false
+
+- name: Remove default fencing scripts
+  file:
+    name: "/etc/cobbler/power/{{ item }}"
+    state: absent
+  with_flattened:
+    - power_scripts.stdout_lines
+  when: "item != 'fence_virsh.template'"
