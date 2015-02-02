@@ -64,6 +64,24 @@
     mode: 0640
   notify: Restart apache
 
+- name: Upload authorization information for Cobbler
+  copy:
+    src: users.digest
+    dest: /etc/cobbler/users.digest
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Setup SELinux for cobbler
+  seboolean:
+    name: "{{ item }}"
+    state: yes
+    persistent: true
+  with_items:
+    - httpd_serve_cobbler_files
+    - httpd_can_network_connect_cobbler
+    - cobbler_can_network_connect
+
 - name: Enable cobbler services
   service:
     name: "{{ item }}"
