@@ -1,5 +1,10 @@
 ---
-- name: Include secrets
+- name: Include global secrets
+  include_vars: secrets/group_vars/all
+  tags:
+    - service
+
+- name: Include group secrets
   include_vars: secrets/group_vars/masterpigs
   tags:
     - service

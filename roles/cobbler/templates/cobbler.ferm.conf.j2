@@ -2,12 +2,12 @@
 
 table filter {
     chain "SERVICES" {
-        proto tcp dport ( 80 443 ) @subchain "COBBLER_WEB_CLIENTS" {
+        proto tcp dport ( 443 ) @subchain "COBBLER_WEB_CLIENTS" {
 {% for host in trusted_hosts[hypervisor] %}
             saddr {{ host  }}/32 ACCEPT;
 {% endfor %}
         }
-        proto tcp dport ( 53 69 ) @subchain "COBBLER_PROVISIONING" {
+        proto tcp dport ( 53 69 80 ) @subchain "COBBLER_PROVISIONING" {
             ACCEPT;
         }
         proto udp dport ( 53 69 ) @subchain "COBBLER_PROVISIONING" {

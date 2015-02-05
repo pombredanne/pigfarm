@@ -4,7 +4,6 @@
     name: "/etc/cobbler/{{ item }}"
     state: absent
   with_items:
-    - cheetah_macros
     - cobbler_bash
     - completions
     - mongodb.conf
@@ -24,3 +23,30 @@
   with_flattened:
     - power_scripts.stdout_lines
   when: "item != 'fence_virsh.template'"
+
+- name: Upload configuration
+  template:
+    src: settings.j2
+    dest: /etc/cobbler/settings
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart cobblerd
+
+- name: Upload DHCP template
+  template:
+    src: dhcp.template.j2
+    dest: /etc/cobbler/dhcp.template
+    owner: root
+    group: root
+    mode: 0640
+  notify: sync cobbler
+
+- name: Upload modules configuration
+  copy:
+    src: modules.conf
+    dest: /etc/cobbler/modules.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart cobblerd
