@@ -15,16 +15,15 @@
  - timezone
 
 Pig host:
- - cobbler WWW interface
  - cobbler centos provisioning
+    - disabling network boot after instalation
+    - ssh keys
  - cobbler debian provisioning
- - squid forward proxy for packages instead of local copies of repos
- - local copies of git repositories on cobbler
- - customrepo for local yum and apt packages, packages uploaded by ansible
  - optional:
+    - local copies of git repositories on cobbler
+    - customrepo for local yum and apt packages, packages uploaded by ansible
     - inventory tool
     - further automation of provisioning
-
 
 ### Playbook:
 - <None>
@@ -35,3 +34,12 @@ http://www.linuxsysadmintutorials.com/build-and-install-vim-7-4-on-centos-6-usin
 
 ### custom repo on cobbler:
 http://wiki.centos.org/HowTos/CreateLocalRepos
+
+### not expanding tree var in kickstart:
+https://lists.fedorahosted.org/pipermail/cobbler/2009-March/003316.html
+
+## Ansible role for setting proxy:
+https://github.com/ruzickap/ansible-role-proxy_settings
+
+## Own yum repo:
+http://www.techrepublic.com/blog/linux-and-open-source/create-your-own-yum-repository/
