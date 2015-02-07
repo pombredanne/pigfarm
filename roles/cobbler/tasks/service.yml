@@ -50,3 +50,13 @@
     group: root
     mode: 0640
   notify: restart cobblerd
+
+- name: Copy base kickstart for RHEL systems
+  template:
+    src: red-hat.ks.j2
+    dest: /var/lib/cobbler/kickstarts/red-hat.ks
+    owner: root
+    group: root
+    mode: 0644
+
+
