@@ -15,8 +15,10 @@ table filter {
         # allow SSH, NRPE, munin connections
         # FIXME - needs cleanup, for now it is just copypaste
         # from other physical hosts
+        proto udp mod state state NEW @subchain "SERVICES" {
+        }
         proto tcp mod state state NEW @subchain "SERVICES" {
-            dport ( 22 ) @subchain "ADMIN_HOSTS" {
+            dport 22 @subchain "ADMIN_HOSTS" {
 {% for host in trusted_hosts[hypervisor] %}
                 saddr {{ host }}/32 ACCEPT;
 {% endfor %}

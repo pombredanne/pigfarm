@@ -1,5 +1,3 @@
-#Managed by Ansible!
-
 table filter {
     chain "SERVICES" {
         proto tcp dport ( 443 ) @subchain "COBBLER_WEB_CLIENTS" {
