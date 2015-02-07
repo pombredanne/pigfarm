@@ -29,7 +29,7 @@
     src: settings.j2
     dest: /etc/cobbler/settings
     owner: root
-    group: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0640
   notify: restart cobblerd
 
