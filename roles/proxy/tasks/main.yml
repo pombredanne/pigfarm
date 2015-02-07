@@ -1,0 +1,11 @@
+---
+- name: Include global secrets
+  include_vars: secrets/group_vars/all
+  tags:
+    - service
+
+- include: service.yml
+  tags: [ secret, service ]
+
+- include: fw.yml
+  tags: [ secret, fw ]

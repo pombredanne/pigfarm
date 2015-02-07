@@ -1,0 +1,20 @@
+---
+- name: Install squid
+  yum:
+    name: squid
+    state: present
+
+- name: Upload configuration
+  template:
+    src: squid.conf.j2
+    dest: /etc/squid/squid.conf
+    mode: 0644
+    owner: root
+    group: squid
+  notify: Restart Squid
+
+- name: Enable and start squid
+  service:
+    name: squid
+    state: started
+    enabled: true

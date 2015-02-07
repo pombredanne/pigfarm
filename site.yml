@@ -5,8 +5,14 @@
     - base
     - fw
 
+- hosts: rabbits
+  sudo: True
+  roles:
+    - { role: peru.proxy_settings, tags: "base" }
+
 - hosts: masterpigs
   sudo: True
   roles:
     - apache2_base
+    - proxy
     - cobbler

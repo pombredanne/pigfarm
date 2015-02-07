@@ -1,0 +1,9 @@
+---
+- name: Upload firewall rules for squid
+  template:
+    src: squid.ferm.conf.j2
+    dest: /etc/ferm/rules.d/squid.ferm.conf
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload ferm
