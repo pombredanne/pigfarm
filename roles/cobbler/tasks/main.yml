@@ -8,5 +8,6 @@
   tags: [ secret, service ]
 
 - include: base.yml tags=service
+- include: pxe_images.yml tags=service
 - include: service.yml tags=service,secret
 - include: fw.yml tags=fw,secret

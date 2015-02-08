@@ -1,0 +1,29 @@
+---
+- name: Create pxe images directories for CentOS
+  file:
+    name: "/var/lib/cobbler/pxe/{{ item }}"
+    state: directory
+    setype: cobbler_var_lib_t
+  with_items: yum_repos.keys()
+
+- name: Download initrd and vmlinuz files for CentOS
+  command: "wget {{ yum_repos[item[0]] }}/isolinux/{{ item[1]}} -O /var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+  args:
+    creates: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+  with_nested:
+    - "{{ yum_repos.keys() }}"
+    - [ "vmlinuz", "initrd.img" ]
+
+# FIXME: Broken in Ansible 1.8.2, fix probably in 1.8.3/1.9.0
+#- name: Fix permissions of initrd and vmlinuz files for CentOS
+#  file:
+#    path: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+#    owner: root
+#    group: root
+#    mode: 0644
+#    state: file
+#    setype: cobbler_var_lib_t
+#    follow: yes
+#  with_nested:
+#    - "{{ yum_repos.keys() }}"
+#    - [ "vmlinuz", "initrd.img" ]
