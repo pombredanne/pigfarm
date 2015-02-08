@@ -58,5 +58,13 @@
     owner: root
     group: root
     mode: 0644
+  notify: sync cobbler
 
-
+- name: Fix cobbler template snippets
+  copy:
+    src: kickstart_done
+    dest: /var/lib/cobbler/snippets/kickstart_done
+    owner: root
+    group: root
+    mode: 0644
+  notify: sync cobbler
