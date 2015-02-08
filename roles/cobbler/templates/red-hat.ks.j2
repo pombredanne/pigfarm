@@ -69,15 +69,27 @@ $SNIPPET('log_ks_post_nochroot')
 $SNIPPET('log_ks_post')
 # Start yum configuration
 $yum_config_stanza
-
 # End yum configuration
+
+# Start ssh-key configuration
+mkdir -v /root/.ssh/
+chmod -v 0700 /root/.ssh/
+echo '{{ login_key[hypervisor] }}' > /root/.ssh/authorized_keys
+chmod 0600 /root/.ssh/authorized_keys
+# End ssh-key configuration
+
+# Start sudo tty allocation fix
+sed -i '/Defaults.*requiretty/d' /etc/sudoers
+# End sudo tty allocation fix
+
+# Do postinstall system configuration
 $SNIPPET('post_install_kernel_options')
 $SNIPPET('post_install_network_config')
-$SNIPPET('download_config_files')
-$SNIPPET('koan_environment')
 $SNIPPET('cobbler_register')
+
 # Enable post-install boot notification
 $SNIPPET('post_anamon')
+
 # Start final steps
 $SNIPPET('kickstart_done')
 # End final steps
