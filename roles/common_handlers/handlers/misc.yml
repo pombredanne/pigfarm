@@ -22,5 +22,5 @@
 
 - name: restart journalctl
   service:
-    name: systemd-journaldsystemd-journald
+    name: systemd-journald
     state: restarted
