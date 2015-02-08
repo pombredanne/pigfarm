@@ -2,6 +2,7 @@
  Debian:
  - python-apt
  - python-selinux
+ - wget
 
  RHEL/CentOS
  - libselinux-python
@@ -18,9 +19,17 @@ Pig host:
  - uploading initrd and vmlinuz using cobbler
    - fix proxy setup in dracut (see article below)
  - customrepo for local yum and apt packages, packages uploaded by ansible
+ - remove repo handling from cobbler altogether. Just pass repo to "url" ks
+   param, and do not setup any repos in cobbler itself. Will require adding 
+   repo to basics though
  - cobbler centos provisioning
    - test hostname setup via cobbler webinterface
  - cobbler debian provisioning
+ - recursive dns cache on localhost, plus forward zone to cobbler for cobbler
+   zones
+   - add dns templating (forward and rev) to cobbler
+   - fix resolv.conf issues with network manager on mop
+   - redirect all dns queries to localhost
  - optional:
     - local copies of git repositories on cobbler, accesible through SSH from
       other machines
