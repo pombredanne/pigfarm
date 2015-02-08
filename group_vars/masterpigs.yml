@@ -25,3 +25,7 @@ apache2_base_prefork_max_requests_per_child: 1000
 
 apache2_base_php_enabled: False
 apache2_base_monitoring: False
+
+yum_repos:
+  CentOS-7-x86_64: http://ftp.prz.edu.pl/centos/7/os/x86_64/
+  CentOS-6.6-x86_64: http://ftp.prz.edu.pl/centos/6.6/os/x86_64/
