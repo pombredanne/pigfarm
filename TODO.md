@@ -18,6 +18,7 @@
 Pig host:
  - uploading initrd and vmlinuz using cobbler
    - fix proxy setup in dracut (see article below)
+   - use xdelta for binary diff, do not store the initrd.img file
  - customrepo for local yum and apt packages, packages uploaded by ansible
  - remove repo handling from cobbler altogether. Just pass repo to "url" ks
    param, and do not setup any repos in cobbler itself. Will require adding 
