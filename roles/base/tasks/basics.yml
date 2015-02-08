@@ -2,6 +2,7 @@
 - name: Provide a list of common packages for Debian and RHEL/CentOS
   set_fact:
     common_packages:
+      - acpid
       - binutils
       - dstat
       - git
@@ -154,3 +155,9 @@
     group: root
   notify: restart journalctl
   when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+- name: Make sure acpid demon is running
+  service:
+    name: acpid
+    state: started
+    enabled: true
