@@ -2,13 +2,9 @@
 - hosts: all
   sudo: True
   roles:
+    - { role: proxy_settings, when: 'inventory_hostname in groups["rabbits"]' }
     - base
     - fw
-
-- hosts: rabbits
-  sudo: True
-  roles:
-    - { role: peru.proxy_settings, tags: "base" }
 
 - hosts: masterpigs
   sudo: True
