@@ -21,7 +21,6 @@ Pig host:
  - cobbler centos provisioning
    - test hostname setup via cobbler webinterface
  - cobbler debian provisioning
- - further optimization of caching, checking why i.e. kernel package is not cached
  - optional:
     - local copies of git repositories on cobbler, accesible through SSH from
       other machines
@@ -48,5 +47,8 @@ https://github.com/ruzickap/ansible-role-proxy_settings
 ## Own yum repo:
 http://www.techrepublic.com/blog/linux-and-open-source/create-your-own-yum-repository/
 
-## Problems with proxy for centos initrd:
+## Problems with not using proxy for centos initrd:
 http://hasis053341.blogspot.com/2014/07/install-centos-7-with-kickstart-over.html
+
+## Problem with non-cacheable object (order IS important!)
+http://squid-web-proxy-cache.1019090.n4.nabble.com/RE-Strange-misses-of-cacheable-objects-SOLVED-td4665658.html

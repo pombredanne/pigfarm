@@ -54,19 +54,20 @@
     server_persistent_connections off
 
 # Caching:
-{% set root_size = ( ansible_devices.vda.partitions.vda2.sectors | int * ansible_devices.vda.partitions.vda2.sectorsize ) / ( 1024 * 1024 ) %}
-    cache_dir aufs /var/spool/squid {{ ( root_size * 0.33 ) | round | int }} 16 256
     cache_mem {{ ( ansible_memtotal_mb * 0.25 ) | round | int }} MB
     cache_replacement_policy heap LFUDA
     memory_replacement_policy heap LFUDA
     max_open_disk_fds 8192
     maximum_object_size_in_memory 8 MB
-    maximum_object_size 256 MB
+    maximum_object_size 512 MB
     quick_abort_min 0 KB
     quick_abort_max 0 KB
     cache_swap_low 90 #default
     cache_swap_high 95 #default
     memory_pools on
+    # ORER IS IMPORTANT, has to be last one
+{% set root_size = ( ansible_devices.vda.partitions.vda2.sectors | int * ansible_devices.vda.partitions.vda2.sectorsize ) / ( 1024 * 1024 ) %}
+    cache_dir aufs /var/spool/squid {{ ( root_size * 0.33 ) | round | int }} 16 256
 
 # File locations:
     coredump_dir /var/spool/squid
