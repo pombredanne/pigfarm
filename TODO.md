@@ -15,13 +15,17 @@
  - timezone
 
 Pig host:
+ - uploading initrd and vmlinuz using cobbler
+   - fix proxy setup in dracut (see article below)
+ - customrepo for local yum and apt packages, packages uploaded by ansible
  - cobbler centos provisioning
-    - disabling network boot after instalation
-    - ssh keys
+   - test hostname setup via cobbler webinterface
  - cobbler debian provisioning
+ - further optimization of caching, checking why i.e. kernel package is not cached
  - optional:
-    - local copies of git repositories on cobbler
-    - customrepo for local yum and apt packages, packages uploaded by ansible
+    - local copies of git repositories on cobbler, accesible through SSH from
+      other machines
+    - koan
     - inventory tool
     - further automation of provisioning
 
@@ -43,3 +47,6 @@ https://github.com/ruzickap/ansible-role-proxy_settings
 
 ## Own yum repo:
 http://www.techrepublic.com/blog/linux-and-open-source/create-your-own-yum-repository/
+
+## Problems with proxy for centos initrd:
+http://hasis053341.blogspot.com/2014/07/install-centos-7-with-kickstart-over.html
