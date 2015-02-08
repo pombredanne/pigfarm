@@ -1,14 +1,12 @@
 ---
 - name: Include global secrets
   include_vars: secrets/group_vars/all
-  tags:
-    - service
+  tags: [ secret, service ]
 
 - name: Include group secrets
   include_vars: secrets/group_vars/masterpigs
-  tags:
-    - service
+  tags: [ secret, service ]
 
 - include: base.yml tags=service
-- include: service.yml tags=service
-- include: fw.yml tags=fw
+- include: service.yml tags=service,secret
+- include: fw.yml tags=fw,secret
