@@ -10,9 +10,13 @@
 
 # ACLs:
     cachemgr_passwd none config
+
+    # URL for unrusted network
+    include /etc/squid/rules.conf
+
     # Hosts on the same hypervisor:
-    acl localnet src {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }}
-    #acl localnet src {{ nework_configuration[hypervisor]['untrusted']['net'] }}/{{ nework_configuration[hypervisor]['untrusted']['mask_short'] }}
+    acl localnet_trusted src {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }}
+    acl localnet_untrusted src {{ nework_configuration[hypervisor]['untrusted']['net'] }}/{{ nework_configuration[hypervisor]['untrusted']['mask_short'] }}
 
     # Connection related:
     acl SSL_ports port 443
@@ -37,8 +41,9 @@
     http_access deny CONNECT !SSL_ports
     http_access deny to_localhost
 
-    http_access allow localnet
     http_access allow localhost
+    http_access allow localnet_trusted
+    http_access allow yum_repo
 
     # And finally deny all other access to this proxy
     http_access deny all
