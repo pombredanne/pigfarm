@@ -11,7 +11,7 @@
   args:
     creates: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
   with_nested:
-    - "{{ yum_repos.keys() }}"
+    - yum_repos.keys()
     - [ "vmlinuz", "initrd.img" ]
 
 # FIXME: Broken in Ansible 1.8.2, fix probably in 1.8.3/1.9.0
@@ -25,5 +25,5 @@
 #    setype: cobbler_var_lib_t
 #    follow: yes
 #  with_nested:
-#    - "{{ yum_repos.keys() }}"
+#    - yum_repos.keys()
 #    - [ "vmlinuz", "initrd.img" ]
