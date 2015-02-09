@@ -8,8 +8,8 @@
     SSLEngine on
     SSLProtocol all -SSLv2
     SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
-    SSLCertificateFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.pem
-    SSLCertificateKeyFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.key
+    SSLCertificateFile /etc/httpd/ssl/repository.{{ hypervisor }}.vespian.net.crt
+    SSLCertificateKeyFile /etc/httpd/ssl/repository.{{ hypervisor }}.vespian.net.key
 
     # Autoindex options:
     IndexOptions +FancyIndexing

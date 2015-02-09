@@ -13,8 +13,8 @@
     SSLEngine on
     SSLProtocol all -SSLv2
     SSLCipherSuite HIGH:MEDIUM:!aNULL:!MD5
-    SSLCertificateFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.pem
-    SSLCertificateKeyFile /etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.key
+    SSLCertificateFile /etc/httpd/ssl/cobbler.{{ hypervisor }}.vespian.net.crt
+    SSLCertificateKeyFile /etc/httpd/ssl/cobbler.{{ hypervisor }}.vespian.net.key
 
     AliasMatch ^/cblr(?!/svc/)(.*)?$ "/var/www/cobbler$1"
     AliasMatch ^/cobbler_track(.*)?$ "/var/www/cobbler$1"

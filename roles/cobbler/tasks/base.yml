@@ -27,23 +27,28 @@
     group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0710
 
-- name: Upload certificate
+- name: Upload cobbler certificate
   copy:
-    src: "peppa.{{ hypervisor }}.vespian.net.pem"
-    dest: "/etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.pem"
+    src: "data/ssl/cobbler.{{ hypervisor }}.vespian.net.crt"
+    dest: "/etc/httpd/ssl/cobbler.{{ hypervisor }}.vespian.net.crt"
     owner: root
     group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0640
   notify: Restart apache
 
-- name: Upload certificate key
+- name: Include cobbler certificate key
+  include_vars: "secrets/ssl/cobbler.{{ hypervisor }}.vespian.net.key"
+  tags: secret
+
+- name: Upload cobbler certificate key
   copy:
-    content: "{{ cobbler_cert_keys[hypervisor] | b64decode}}"
-    dest: "/etc/httpd/ssl/peppa.{{ hypervisor }}.vespian.net.key"
+    content: "{{ cobbler_cert_key | b64decode}}"
+    dest: "/etc/httpd/ssl/cobbler.{{ hypervisor }}.vespian.net.key"
     owner: root
     group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0640
   notify: Restart apache
+  tags: secret
 
 - name: Configure cobbler vhosts
   template:
