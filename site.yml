@@ -11,4 +11,5 @@
   roles:
     - apache2_base
     - proxy
+    - repo
     - cobbler

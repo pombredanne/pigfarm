@@ -1,0 +1,22 @@
+---
+- name: Install createrepo package
+  yum:
+      state: present
+      name: createrepo
+
+- name: Create repo directories
+  file:
+    name: "/var/www/repository/rpm/{{ item }}"
+    state: directory
+    setype: httpd_sys_content_t
+  with_items: yum_repos.keys()
+  notify: Regenerate rpm repos
+
+- name: Upload repo vhost
+  template:
+    src: repository.conf.j2
+    dest: '{{ apache2_base_server_root[ansible_os_family] }}/conf.d/repository.conf'
+    mode: 0640
+    owner: root
+    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
+  notify: Reload apache
