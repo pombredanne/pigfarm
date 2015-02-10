@@ -1,4 +1,18 @@
 ---
+- name: remove cobbler provided repositories (RHEL)
+  file:
+    name: cobbler-config.repo
+    state: absent
+
+- name: add local RPM repos (RHEL)
+  template:
+    src: local.repo.j2
+    dest: /etc/yum.repos.d/local.repo
+    mode: 0644
+    owner: root
+    group: root
+  tags: secret
+
 - name: install EPEL repository (RHEL/CentOS 6)
   yum:
     name: http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm

@@ -49,10 +49,6 @@ skipx
 # Reboot after installation
 reboot
 
-# If any cobbler repo definitions were referenced in the kickstart profile, include them here.
-$yum_repo_stanza
-
-
 %pre
 $SNIPPET('log_ks_pre')
 $SNIPPET('kickstart_start')

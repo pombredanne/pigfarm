@@ -10,19 +10,24 @@
   tags:
     - base
     - net
-- include: extra_repos.yml
+
+- include: repos.yml
   tags:
     - base
+
 - include: basics.yml
   tags:
     - base
+
 - include: ssh.yml
   tags:
     - base
     - net
+
 - include: python.yml
   tags:
     - base
+
 - include: sysdig.yml
   tags:
     - base
@@ -32,13 +37,16 @@
   tags:
     - base
     - users
+
 - include: git.yml
   tags:
     - base
+
 - include: zsh.yml
   tags:
     - base
     - users
+
 - include: vim.yml
   tags:
     - base
