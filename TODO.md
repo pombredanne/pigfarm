@@ -4,9 +4,6 @@
  - python-selinux
  - wget
 
- RHEL/CentOS
- - libselinux-python
-
  Common:
  - ttyallocation disable for sudo
  - root password setup, ssh keys upload
@@ -16,24 +13,25 @@
  - timezone
 
 Pig host:
- - uploading initrd and vmlinuz using cobbler
-   - fix proxy setup in dracut (see article below)
-   - use xdelta for binary diff, do not store the initrd.img file
- - customrepo for local yum and apt packages, packages uploaded by ansible
- - remove repo handling from cobbler altogether. Just pass repo to "url" ks
-   param, and do not setup any repos in cobbler itself. Will require adding 
-   repo to basics though
- - cobbler centos provisioning
-   - test hostname setup via cobbler webinterface
- - cobbler debian provisioning
  - recursive dns cache on localhost, plus forward zone to cobbler for cobbler
    zones
    - add dns templating (forward and rev) to cobbler
    - fix resolv.conf issues with network manager on mop
+   - introduce trusted/untrusted groups, generate resolv.conf basing on that
+   - fix resolv.conf template on dst hosts
    - redirect all dns queries to localhost
+ - cobbler centos provisioning
+   - test hostname setup via cobbler webinterface
+   - test Centos6 provisioning
+ - cobbler debian provisioning
  - optional:
-    - local copies of git repositories on cobbler, accesible through SSH from
-      other machines
+    - optimizing transfer usage for host installation during early stage
+        - fix proxy setup in dracut (see article below), use xdelta for binary
+        diff, do not store the initrd.img file
+        - local copies of git repositories on cobbler, accesible through SSH from
+        other machines
+    - trusted/untrusted zone provisioning - requires transfer optimizations though
+    (all data has to go through proxies)
     - koan
     - inventory tool
     - further automation of provisioning
