@@ -26,8 +26,7 @@ Pig host:
  - cobbler debian provisioning
  - optional:
     - optimizing transfer usage for host installation during early stage
-        - fix proxy setup in dracut (see article below), use xdelta for binary
-        diff, do not store the initrd.img file
+        - find out why curl does not use proxy even though binary has been patched 
         - local copies of git repositories on cobbler, accesible through SSH from
         other machines
     - trusted/untrusted zone provisioning - requires transfer optimizations though
