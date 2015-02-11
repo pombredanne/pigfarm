@@ -3,27 +3,24 @@
   file:
     name: "/var/lib/cobbler/pxe/{{ item }}"
     state: directory
+    owner: root
+    group: root
+    mode: 0644
     setype: cobbler_var_lib_t
   with_items: yum_repos.keys()
 
 - name: Download initrd and vmlinuz files for CentOS
-  command: "wget {{ yum_repos[item[0]] }}/isolinux/{{ item[1]}} -O /var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
-  args:
-    creates: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+  get_url:
+    url: "{{ yum_repos[item[0]] }}/isolinux/{{ item[1]}}"
+    dest: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+    owner: root
+    group: root
+    mode: 0644
+    setype: cobbler_var_lib_t
   with_nested:
     - yum_repos.keys()
     - [ "vmlinuz", "initrd.img" ]
+  notify:
+    - regenerate initrd.files | Clean up old temporary directories for initrd patching
+    - regenerate initrd.files | Create temporary directory for initrd patching
 
-# FIXME: Broken in Ansible 1.8.2, fix probably in 1.8.3/1.9.0
-#- name: Fix permissions of initrd and vmlinuz files for CentOS
-#  file:
-#    path: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
-#    owner: root
-#    group: root
-#    mode: 0644
-#    state: file
-#    setype: cobbler_var_lib_t
-#    follow: yes
-#  with_nested:
-#    - yum_repos.keys()
-#    - [ "vmlinuz", "initrd.img" ]

@@ -1,0 +1,14 @@
+--- ./initrd/lib/dracut/modules.d/80anaconda/parse-kickstart.old	2015-02-11 23:02:05.246000000 +0100
++++ ./initrd/lib/dracut/modules.d/80anaconda/parse-kickstart	2015-02-10 13:12:56.897000000 +0100
+@@ -75,7 +75,10 @@ class NFS(commands.nfs.FC6_NFS):
+ class URL(commands.url.F18_Url):
+     def dracut_args(self, args, lineno, obj):
+         # FIXME: self.proxy, self.noverifyssl
+-        return "inst.repo=%s" % self.url
++        result = "inst.repo=%s" % self.url
++        if self.proxy:
++             result += "\nproxy=%s" % self.proxy
++        return result
+ 
+ class Updates(commands.updates.F7_Updates):
+     def dracut_args(self, args, lineno, obj):

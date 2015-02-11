@@ -6,3 +6,85 @@
 
 - name: sync cobbler
   command: cobbler sync
+
+- name: regenerate initrd.files | Clean up old temporary directories for initrd patching
+  file:
+    name: /tmp/initrd_patching/
+    state: absent
+    mode: 0770
+    owner: root
+    group: root
+  notify: regenerate initrd.files | Create temporary directory for initrd patching
+
+- name: regenerate initrd.files | Create temporary directory for initrd patching
+  file:
+    name: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+    state: directory
+    mode: 0770
+    owner: root
+    group: root
+  notify: regenerate initrd.files | Copy initrd files to temp directories
+
+- name: regenerate initrd.files | Copy initrd files to temp directories
+  command: cp -v /var/lib/cobbler/pxe/CentOS-7-x86_64/initrd.img /tmp/initrd_patching/CentOS-7-x86_64/initrd/initrd.img.xz
+  notify: regenerate initrd.files | Uncompress initrd images
+
+- name: regenerate initrd.files | Uncompress initrd images
+  command: unxz initrd.img.xz
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+  notify: regenerate initrd.files | Unpack initrd images
+
+- name: regenerate initrd.files | Unpack initrd images
+  shell: cpio -id < initrd.img
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+  notify: regenerate initrd.files | Remove old initrd.img file
+
+- name: regenerate initrd.files | Remove old initrd.img file
+  file:
+    name: /tmp/initrd_patching/CentOS-7-x86_64/initrd/initrd.img
+    state: absent
+  notify: regenerate initrd.files | Copy patch
+
+- name: regenerate initrd.files | Copy patch
+  copy:
+    src: initrd.patch
+    dest: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+  notify: regenerate initrd.files | Patch Dracut scripts
+
+- name: regenerate initrd.files | Patch Dracut scripts
+  shell: patch -p2 < initrd.patch
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+  notify: regenerate initrd.files | Re-pack initrd file
+
+- name: regenerate initrd.files | Re-pack initrd file
+  shell: find . | cpio -o -H newc > ../initrd.img
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/initrd/
+  notify: regenerate initrd.files | Re-compress initrd file
+
+- name: regenerate initrd.files | Re-compress initrd file
+  command: xz -C crc32 initrd.img
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/
+  notify: regenerate initrd.files | Upload patched file
+
+- name: regenerate initrd.files | Upload patched file
+  command: cp -v initrd.img.xz /var/lib/cobbler/pxe/CentOS-7-x86_64/initrd.img
+  args:
+    chdir: /tmp/initrd_patching/CentOS-7-x86_64/
+  notify:
+    - regenerate initrd.files | Clean up temporary dirs
+    - sync cobbler
+
+- name: regenerate initrd.files | Clean up temporary dirs
+  file:
+    name: /tmp/initrd_patching/
+    state: absent
+    mode: 0770
+    owner: root
+    group: root
+
+
