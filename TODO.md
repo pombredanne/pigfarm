@@ -25,18 +25,22 @@ Pig host:
    - test Centos6 provisioning
  - cobbler debian provisioning
  - optional:
-    - optimizing transfer usage for host installation during early stage
-        - find out why curl does not use proxy even though binary has been patched 
-        - local copies of git repositories on cobbler, accesible through SSH from
-        other machines
-    - trusted/untrusted zone provisioning - requires transfer optimizations though
-    (all data has to go through proxies)
-    - koan
-    - inventory tool
-    - further automation of provisioning
+   - optimizing transfer usage for host installation during early stage
+       - local copies of git repositories on cobbler, accesible through SSH from
+       other machines
+   - trusted/untrusted zone provisioning - requires transfer optimizations though
+   (all data has to go through proxies)
+   - koan
+   - inventory tool
+   - further automation of provisioning
 
 ### Playbook:
 - <None>
+
+# System specific data:
+- add proxy=http://172.17.0.2:3128/ to the kernel line options
+- no repo attachement needed
+- 
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
