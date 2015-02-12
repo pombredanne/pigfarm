@@ -20,7 +20,3 @@
   with_nested:
     - yum_repos.keys()
     - [ "vmlinuz", "initrd.img" ]
-  notify:
-    - regenerate initrd.files | Clean up old temporary directories for initrd patching
-    - regenerate initrd.files | Create temporary directory for initrd patching
-
