@@ -1,0 +1,25 @@
+---
+- name: Create repository dirs
+  file:
+    state: directory
+    name: "/home/git/{{ item.location }}.git/"
+    owner: git
+    group: git
+    mode: 0750
+  with_items: git_mirror_repos
+
+- name: Clone repositories
+  git:
+    bare: yes
+    dest: "/home/git/{{ item.location }}.git/"
+    force: yes
+    repo: "{{ item.url }}"
+  with_items: git_mirror_repos
+
+- name: Fix permissions of repositories
+  file:
+    name: /home/git/
+    owner: git
+    group: git
+    recurse: true
+

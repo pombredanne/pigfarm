@@ -158,7 +158,11 @@ Subsystem sftp /usr/lib/openssh/sftp-server
     {%- do allowed_users.append(user) %}
 {%- endfor %}
 
+{% if inventory_hostname in groups['masterpigs'] %}
+AllowUsers git root {{ allowed_users | join(' ') }}
+{% else %}
 AllowUsers root {{ allowed_users | join(' ') }}
+{% endif %}
 
 # Uncomment this if you want to use .local domain
 #Host *.local

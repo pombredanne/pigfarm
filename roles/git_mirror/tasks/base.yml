@@ -1,0 +1,20 @@
+---
+- name: Install git
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: git
+    state: present
+
+- name: Create git user
+  user:
+    name: git
+    state: present
+    shell: /usr/bin/git-shell
+    uid: 700
+
+- name: Authorize hosts to access repo via pubkey
+  authorized_key:
+    key: "{{ lookup('file', 'git-mirror_rsa.pub') }}"
+    manage_dir: yes
+    state: present
+    user: git
