@@ -63,10 +63,12 @@
 
 - name: checkout plugins from git repos
   git:
-    repo: "{{ item[0].url }}"
-    dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0].location }}"
+    repo: "ssh://git@{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2/home/git/{{ item[0] }}.git/"
+    key_file: /root/.ssh/git-mirror_rsa
+    dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
+    accept_hostkey: yes
   with_nested:
-    - [{ url: "https://github.com/kien/ctrlp.vim.git", location: "ctrlp.vim"}, {url: "https://github.com/davidhalter/jedi-vim.git", location: "jedi-vim"}, { url: "https://github.com/scrooloose/nerdtree", location: "nerdtree"}, { url: "https://github.com/bling/vim-airline.git", location: "vim-airline"}, { url: "https://github.com/Chiel92/vim-autoformat.git", location: "vim-autoformat"}, { url: "https://github.com/nvie/vim-flake8.git", location: "vim-flake8"},]
+    - [ 'ctrlp.vim', 'jedi-vim', 'nerdtree', 'vim-airline', 'vim-autoformat', 'vim-flake8' ]
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
 

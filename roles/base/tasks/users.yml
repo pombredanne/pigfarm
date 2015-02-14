@@ -39,3 +39,12 @@
     state: absent
   with_dict: users
   when: item.key != 'root' and item.value['ssh_login_permitted'] == False
+
+- name: upload private key for git_mirror repos
+  copy:
+    content: "{{ git_mirror_ssh_key | b64decode }}"
+    owner: root
+    mode: 0600
+    group: root
+    dest: /root/.ssh/git-mirror_rsa
+  tags: secret

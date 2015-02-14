@@ -7,10 +7,13 @@
 
 - name: Clone oh-my-zsh repo
   git:
-   repo: https://github.com/robbyrussell/oh-my-zsh.git
+   repo: "ssh://git@{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2/home/git/oh-my-zsh.git/"
+   key_file: /root/.ssh/git-mirror_rsa
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
+   accept_hostkey: yes
   with_items: users.keys()
   when: users[item]['shell'] == '/bin/zsh'
+  tags: secret
 
 - name: Upload zshrc file
   copy:
