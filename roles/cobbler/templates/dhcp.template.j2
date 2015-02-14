@@ -18,14 +18,17 @@ set vendorclass = option vendor-class-identifier;
 
 option pxe-system-type code 93 = unsigned integer 16;
 
-subnet {{ nework_configuration[hypervisor]['trusted']['net'] }} netmask {{ nework_configuration[hypervisor]['trusted']['mask_long'] }} {
-     option routers             {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.1;
-     option domain-name-servers {{ nework_configuration[hypervisor]['trusted']['ns'] }};
-     option subnet-mask         {{ nework_configuration[hypervisor]['trusted']['mask_long'] }};
-     range dynamic-bootp        {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.128 {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.254;
+{% for type in ['trusted', 'untrusted'] %}
+    {%- set obj = nework_configuration[hypervisor][type] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+subnet {{ obj['net'] }} netmask {{ obj['mask_long'] }} {
+     option routers             {{ net_prefix }}.1;
+     option domain-name-servers {{ net_prefix }}.2;
+     option subnet-mask         {{ obj['mask_long'] }};
+     range dynamic-bootp        {{ net_prefix }}.128 {{ net_prefix }}.254;
      default-lease-time         21600; # 6h
      max-lease-time             43200; # 12h
-     next-server                $next_server;
+     next-server                {{ net_prefix }}.2;
      class "pxeclients" {
           match if substring (option vendor-class-identifier, 0, 9) = "PXEClient";
           if option pxe-system-type = 00:02 {
@@ -38,8 +41,8 @@ subnet {{ nework_configuration[hypervisor]['trusted']['net'] }} netmask {{ newor
                   filename "pxelinux.0";
           }
      }
-
 }
+{% endfor %}
 
 #for dhcp_tag in $dhcp_tags.keys():
     ## group could be subnet if your dhcp tags line up with your subnets
@@ -83,4 +86,3 @@ group {
         #end for
 }
 #end for
-

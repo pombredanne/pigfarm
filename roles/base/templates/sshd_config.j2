@@ -16,6 +16,9 @@
 Port 22
 #AddressFamily any
 ListenAddress {{ ansible_eth0.ipv4.address }}
+{%- if inventory_hostname in groups['masterpigs'] %}
+ListenAddress {{ ansible_eth1.ipv4.address }}
+{%- endif %}
 ListenAddress ::1
 
 Protocol 2

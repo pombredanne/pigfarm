@@ -8,7 +8,9 @@ apache2_base_extra_packages:
     - mod_wsgi
 
 apache2_base_http_sockets:
-  - host: "{{ ansible_default_ipv4.address }}"
+  - host: "{{ ansible_eth0.ipv4.address }}"
+    port: 80
+  - host: "{{ ansible_eth1.ipv4.address }}"
     port: 80
   - host: 127.0.0.1
     port: 80
