@@ -1,0 +1,131 @@
+options {
+        directory       "/var/run/named";
+        dump-file       "/var/named/data/cache_dump.db";
+        statistics-file "/var/named/data/named_stats.txt";
+
+        // Who, what, where:
+        recursion yes;
+        listen-on port 53 {
+            127.0.0.1;
+            {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
+            {{ '.'.join(nework_configuration[hypervisor]['untrusted']['net'].split('.')[:3]) }}.2;
+        };
+        allow-query {
+            localhost;
+            trusted_net;
+            untrusted_net;
+{% for host in trusted_hosts[hypervisor] %}
+            {{ host  }};
+{% endfor %}
+        };
+        allow-recursion {
+            localhost;
+            trusted_net;
+        };
+
+        // Do not respond authoritatively to inexistant entries
+        auth-nxdomain no;
+
+        //Enable dnssec related features explicitly
+        dnssec-enable yes;
+        dnssec-validation yes;
+
+        preferred-glue "A";
+
+        // Do not reveal bind version to public
+        hostname "unknown";
+        server-id "unknown";
+
+        // no DDNS by default
+        allow-update {
+            none;
+        };
+
+        // Zone transfers are permitted on per-zone basis
+        allow-transfer {
+            none;
+        };
+
+        // Do not cache to much:
+        max-cache-size 10485760; // 10M
+
+};
+
+logging {
+
+    channel default_log {
+        file "/var/log/named.default.log" versions 5 size 10M;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    // Be agressive about query logs rotation:
+    channel query_log {
+        file "/var/log/named.query.log" versions 5 size 10M;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    channel audit_log {
+        file "/var/log/named.audit.log" versions 5 size 10M;
+        severity debug;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    category client             { default_log; };
+    category config             { default_log; };
+    category database           { default_log; };
+    category default            { default_log; };
+    category notify             { audit_log; };
+    category security           { audit_log; };
+    category xfer-in            { audit_log; };
+    category xfer-out           { audit_log; };
+    category queries            { query_log; };
+    category general            { default_log; };
+    category network            { audit_log; };
+    category update             { audit_log; };
+    category update-security    { audit_log; };
+    category lame-servers       { audit_log; };
+    category dnssec             { audit_log; };
+
+
+};
+
+controls {
+    inet 127.0.0.1 port 953 allow { 127.0.0.1; };
+};
+
+acl "trusted_net" {
+    {{ nework_configuration[hypervisor]['trusted']['net'] }}/nework_configuration[hypervisor]['trusted']['mask_short'];
+};
+
+acl "untrusted_net" {
+    {{ nework_configuration[hypervisor]['trusted']['net'] }}/nework_configuration[hypervisor]['trusted']['mask_short'];
+};
+
+acl "hypervisor" {
+{% for host in trusted_hosts %}
+    {{ host }}/32;
+{% endfor %}
+};
+
+#for $zone in $forward_zones
+zone "${zone}." {
+    type master;
+    file "$zone";
+};
+
+#end for
+#for $zone, $arpa in $reverse_zones
+zone "${arpa}." {
+    type master;
+    file "$zone";
+};
+
+#end for

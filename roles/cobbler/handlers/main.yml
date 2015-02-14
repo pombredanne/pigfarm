@@ -6,3 +6,8 @@
 
 - name: sync cobbler
   command: cobbler sync
+
+- name: restart named
+  service:
+    name: named
+    state: restarted

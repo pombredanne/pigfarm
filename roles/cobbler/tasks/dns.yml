@@ -1,0 +1,9 @@
+---
+- name: Upload named configuration template
+  template:
+    src: named.template.j2
+    dest: /etc/cobbler/named.template
+    owner: root
+    group: root
+    mode: 0640
+  notify: sync cobbler

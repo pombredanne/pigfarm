@@ -14,6 +14,7 @@
     - cobbler-web
     - dhcp
     - syslinux
+    - bind
   notify: Restart apache
 
 - name: Include apache2 vars file
