@@ -1,11 +1,6 @@
 ---
-- hosts: all
-  sudo: True
-  roles:
-    - { role: proxy_settings, when: 'inventory_hostname in groups["rabbits"]' }
-    - base
-    - fw
-
+# Ordering is not coincidental, masterpigs must go first because base role uses
+# git_mirror and proxy roles effects
 - hosts: masterpigs
   sudo: True
   roles:
@@ -13,3 +8,11 @@
     - proxy
     - repo
     - cobbler
+    - git_mirror
+
+- hosts: all
+  sudo: True
+  roles:
+    - proxy_settings
+    - base
+    - fw
