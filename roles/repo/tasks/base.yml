@@ -12,29 +12,6 @@
   with_items: yum_repos.keys()
   notify: Regenerate rpm repos
 
-- name: Upload repository certificate
-  copy:
-    src: "data/ssl/repository.{{ hypervisor }}.vespian.net.crt"
-    dest: "/etc/httpd/ssl/repository.{{ hypervisor }}.vespian.net.crt"
-    owner: root
-    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
-    mode: 0640
-  notify: Restart apache
-
-- name: Include repository certificate key
-  include_vars: "secrets/ssl/repository.{{ hypervisor }}.vespian.net.key"
-  tags: secret
-
-- name: Upload repository certificate key
-  copy:
-    content: "{{ repository_cert_key | b64decode }}"
-    dest: "/etc/httpd/ssl/repository.{{ hypervisor }}.vespian.net.key"
-    owner: root
-    group: "{{ apache2_base_runas_user[ansible_os_family] }}"
-    mode: 0640
-  notify: Restart apache
-  tags: secret
-
 - name: Upload repo vhost
   template:
     src: repository.conf.j2
