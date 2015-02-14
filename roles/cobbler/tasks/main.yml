@@ -6,4 +6,5 @@
 - include: base.yml tags=service
 - include: pxe_images.yml tags=service
 - include: service.yml tags=service,secret
+- include: monkey_patching.yml tags=service
 - include: fw.yml tags=fw,secret

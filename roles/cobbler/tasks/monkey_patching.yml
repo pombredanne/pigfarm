@@ -1,0 +1,21 @@
+---
+# I do not use secondary DNS feature and it conflicts with SELinux :/ These
+# tasks comment it out from cobbler
+- name: Comment out call to self.__write_secondary_conf
+  lineinfile:
+    dest: /usr/lib/python2.7/site-packages/cobbler/modules/manage_bind.py
+    line: '#self.__write_secondary_conf()'
+    regexp: '^\s+self.__write_secondary_conf().*$'
+    state: present
+  register: source_patched
+  notify: restart cobblerd
+
+- name: Remove python *.pyc/*.pyo objects
+  file:
+    state: absent
+    path: "/usr/lib/python2.7/site-packages/cobbler/modules/manage_bind.{{ item }}"
+  with_items:
+    - pyc
+    - pyo
+  when: source_patched | changed
+  notify: restart cobblerd
