@@ -7,3 +7,27 @@
     group: root
     mode: 0640
   notify: sync cobbler
+
+- name: Create log directory
+  file:
+    name: /var/log/named/
+    state: directory
+    owner: root
+    group: named
+    mode: 0770
+    setype: named_log_t
+
+- name: check if fcontext rule are present
+  shell: semanage fcontext -C -l -n | grep named_log_t
+  register: named_fcontext_rules
+  always_run: true
+  changed_when: false
+
+- name: add fcontext rule
+  command: semanage fcontext -a -f a -t named_log_t '/var/log/named(/.*)?'
+  when: named_fcontext_rules.rc != 0
+
+- name: Enable starting named on boot
+  service:
+    name: named
+    enabled: true

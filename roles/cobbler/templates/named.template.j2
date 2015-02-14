@@ -1,5 +1,5 @@
 options {
-        directory       "/var/run/named";
+        directory       "/var/named";
         dump-file       "/var/named/data/cache_dump.db";
         statistics-file "/var/named/data/named_stats.txt";
 
@@ -54,7 +54,7 @@ options {
 logging {
 
     channel default_log {
-        file "/var/log/named.default.log" versions 5 size 10M;
+        file "/var/log/named/named.default.log" versions 5 size 10M;
         severity info;
         print-time yes;
         print-severity yes;
@@ -63,7 +63,7 @@ logging {
 
     // Be agressive about query logs rotation:
     channel query_log {
-        file "/var/log/named.query.log" versions 5 size 10M;
+        file "/var/log/named/named.query.log" versions 5 size 10M;
         severity info;
         print-time yes;
         print-severity yes;
@@ -71,7 +71,7 @@ logging {
     };
 
     channel audit_log {
-        file "/var/log/named.audit.log" versions 5 size 10M;
+        file "/var/log/named/named.audit.log" versions 5 size 10M;
         severity debug;
         print-time yes;
         print-severity yes;
@@ -102,15 +102,15 @@ controls {
 };
 
 acl "trusted_net" {
-    {{ nework_configuration[hypervisor]['trusted']['net'] }}/nework_configuration[hypervisor]['trusted']['mask_short'];
+    {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
 };
 
 acl "untrusted_net" {
-    {{ nework_configuration[hypervisor]['trusted']['net'] }}/nework_configuration[hypervisor]['trusted']['mask_short'];
+    {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
 };
 
 acl "hypervisor" {
-{% for host in trusted_hosts %}
+{% for host in trusted_hosts[hypervisor] %}
     {{ host }}/32;
 {% endfor %}
 };
