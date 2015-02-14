@@ -25,9 +25,6 @@ Pig host:
    - test Centos6 provisioning
  - cobbler debian provisioning
  - optional:
-   - optimizing transfer usage for host installation during early stage
-       - local copies of git repositories on cobbler, accesible through SSH from
-       other machines
    - trusted/untrusted zone provisioning - requires transfer optimizations though
    (all data has to go through proxies)
    - koan
