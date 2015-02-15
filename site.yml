@@ -10,9 +10,15 @@
     - cobbler
     - git_mirror
 
-- hosts: all
+- hosts: all:!hypervisors
   sudo: True
   roles:
     - proxy_settings
     - base
     - fw
+
+- hosts: hypervisors
+  sudo: True
+  connection: local
+  roles:
+    - dns
