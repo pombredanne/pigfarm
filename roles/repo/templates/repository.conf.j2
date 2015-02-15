@@ -1,8 +1,11 @@
 {% for socket in apache2_base_http_sockets %}
 <VirtualHost {{ socket.host }}:{{ socket.port }}>
 
-    ServerName repository.{{ hypervisor }}.vespian.net
-    ServerAlias repo.{{ hypervisor }}.vespian.net
+{% if inventory_hostname in groups['trusted'] %}
+    ServerName repository.tr.{{ hypervisor }}.vespian.net
+{% else %}
+    ServerName repository.us.{{ hypervisor }}.vespian.net
+{% endif %}
 
     # Autoindex options:
     IndexOptions +FancyIndexing

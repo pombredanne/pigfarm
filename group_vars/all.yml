@@ -5,11 +5,6 @@ distribution_specific:
     CentOS:
         sshd_service_name: sshd
 
-proxy_settings_http_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128"
-proxy_settings_ftp_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128"
-proxy_settings_https_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128"
-proxy_settings_yum_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128"
-
 git_mirror_repos:
   - { url: "https://github.com/kien/ctrlp.vim.git", location: "ctrlp.vim"}
   - { url: "https://github.com/davidhalter/jedi-vim.git", location: "jedi-vim"}
