@@ -15,18 +15,12 @@
 Pig host:
  - recursive dns cache on localhost, plus forward zone to cobbler for cobbler
    zones
-   - add dns templating (forward and rev) to cobbler
    - fix resolv.conf issues with network manager on mop
-   - introduce trusted/untrusted groups, generate resolv.conf basing on that
-   - fix resolv.conf template on dst hosts
-   - redirect all dns queries to localhost
- - cobbler centos provisioning
-   - test hostname setup via cobbler webinterface
+ - cobbler provisioning
    - test Centos6 provisioning
- - cobbler debian provisioning
+   - test debian provisioning
  - optional:
-   - trusted/untrusted zone provisioning - requires transfer optimizations though
-   (all data has to go through proxies)
+   - untrusted zone provisioning
    - koan
    - inventory tool
    - further automation of provisioning
@@ -37,7 +31,8 @@ Pig host:
 # System specific data:
 - add proxy=http://172.17.0.2:3128/ to the kernel line options
 - no repo attachement needed
-- 
+- hostname of the host
+- dns-name
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
