@@ -32,6 +32,7 @@ Pig host:
 - no repo attachement needed
 - hostname of the host
 - dns-name
+- inventory_name must end either in 'tr' or 'us'
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
