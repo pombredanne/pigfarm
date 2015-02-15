@@ -20,12 +20,13 @@
 - name: check if fcontext rule are present
   shell: semanage fcontext -C -l -n | grep named_log_t
   register: named_fcontext_rules
+  ignore_errors: true
   always_run: true
   changed_when: false
 
 - name: add fcontext rule
   command: semanage fcontext -a -f a -t named_log_t '/var/log/named(/.*)?'
-  when: named_fcontext_rules.rc != 0
+  when: named_fcontext_rules | failed
 
 - name: Upload zone templates
   template:

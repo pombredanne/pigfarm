@@ -1,11 +1,9 @@
 {% for socket in apache2_base_https_sockets %}
 <VirtualHost {{ socket.host }}:{{ socket.port }}>
 
-{% if inventory_hostname in groups['trusted'] %}
     ServerName cobbler.tr.{{ hypervisor }}.vespian.net
-{% else %}
-    ServerName cobbler.us.{{ hypervisor }}.vespian.net
-{% endif %}
+    ServerAlias cobbler.us.{{ hypervisor }}.vespian.net
+    ServerAlias cobbler.tr
 
     # Logging
     LogLevel debug
