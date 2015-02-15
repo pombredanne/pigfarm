@@ -15,13 +15,13 @@
     name: NetworkManager
     state: stopped
     enabled: false
-  when: ansible_os_family == 'RedHat' and _rpm_nm_out.rc == 0
+  when: ansible_os_family == 'RedHat' and _rpm_nm_out is defined and _rpm_nm_out.rc == 0
 
 - name: Remove Network Manager
   yum:
     name: NetworkManager
     state: absent
-  when: ansible_os_family == 'RedHat' and _rpm_nm_out.rc == 0
+  when: ansible_os_family == 'RedHat' and _rpm_nm_out is defined and _rpm_nm_out.rc == 0
 
 - name: Make ip configuration static instead of DHCP (RHEL/CentOS)
   template:
