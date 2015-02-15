@@ -1,2 +1,16 @@
-{# By default nameserver == default gateway #}
-nameserver {{ ansible_default_ipv4.gateway | mandatory}}
+{%- if inventory_hostname in groups['masterpigs'] %}
+    {%- set nameserver = '127.0.0.1' %}
+    {%- set prefix = 'tr' %}
+{%- elif inventory_hostname in groups['trusted']%}
+    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+    {%- set nameserver = net_prefix + '.2' %}
+    {%- set prefix = 'tr' %}
+{%- else %}
+    {%- set obj = nework_configuration[hypervisor]['untrusted'] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+    {%- set nameserver = net_prefix + '.2' %}
+    {%- set prefix = 'us' %}
+{%- endif -%}
+nameserver {{ nameserver }}
+search {{ prefix }}.{{ hypervisor }}.vespian.net
