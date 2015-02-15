@@ -17,7 +17,6 @@ Pig host:
    zones
    - fix resolv.conf issues with network manager on mop
  - cobbler provisioning
-   - test Centos6 provisioning
    - test debian provisioning
  - optional:
    - untrusted zone provisioning

@@ -1,5 +1,7 @@
 #platform=x86, AMD64, or Intel EM64T
 
+#set distro = $getVar('distro','')
+
 # Use text mode install
 text
 
@@ -8,8 +10,16 @@ auth --enableshadow --passalgo=sha512
 
 # Disk:
 clearpart --drives=vda --all --initlabel
+#if $distro[:8] == 'CentOS-6'
+bootloader --location=mbr
+#else
 bootloader --location=mbr --boot-drive=vda
+#end if
+#if $distro[:8] == 'CentOS-6'
+part / --fstype="ext4" --size=1 --ondisk=vda --grow
+#else
 part / --fstype="xfs" --ondisk=vda --grow
+#end if
 part swap --fstype="swap" --ondisk=vda --size=512
 
 # Other:
@@ -17,10 +27,13 @@ firewall --enabled --ssh
 firstboot --disable
 
 # i18n
+#if $distro[:8] == 'CentOS-6'
+keyboard pl2
+#else
 keyboard --vckeymap=pl2 --xlayouts='pl (legacy)'
+#end if
 lang en_GB.UTF-8
 
-#set distro = $getVar('distro','')
 {% for yum_repo_flavour in yum_repos %}
 #if $distro == '{{ yum_repo_flavour }}'
     #set target_repo = '{{ yum_repos[yum_repo_flavour] }}'
@@ -77,6 +90,7 @@ mkdir -v /root/.ssh/
 chmod -v 0700 /root/.ssh/
 echo '{{ login_key[hypervisor] }}' > /root/.ssh/authorized_keys
 chmod 0600 /root/.ssh/authorized_keys
+restorecon -Rv /root/.ssh/
 # End ssh-key configuration
 
 # Start sudo tty allocation fix
