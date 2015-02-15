@@ -1,8 +1,11 @@
+[hypervisors]
+localhost
+
 [trusted]
-c7vw
-c6vw
-d7vw
-peppa
+c7vw.tr
+c6vw.tr
+d7vw.tr
+peppa.tr
 
 [masterpigs]
-peppa
+peppa.tr
