@@ -24,3 +24,13 @@
   service:
     name: systemd-journald
     state: restarted
+
+- name: reload named
+  service:
+    name: named
+    state: reloaded
+
+- name: restart named
+  service:
+    name: named
+    state: restarted
