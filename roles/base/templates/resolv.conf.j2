@@ -1,4 +1,4 @@
-{%- if inventory_hostname in groups['masterpigs'] %}
+{%- if inventory_hostname in groups['pxeservers'] %}
     {%- set nameserver = '127.0.0.1' %}
     {%- set prefix = 'tr' %}
 {%- elif inventory_hostname[-3] == '.tr' %}

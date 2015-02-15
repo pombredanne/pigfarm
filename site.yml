@@ -1,7 +1,7 @@
 ---
-# Ordering is not coincidental, masterpigs must go first because base role uses
+# Ordering is not coincidental, pxeservers must go first because base role uses
 # git_mirror and proxy roles effects
-- hosts: masterpigs
+- hosts: pxeservers
   sudo: True
   roles:
     - apache2_base

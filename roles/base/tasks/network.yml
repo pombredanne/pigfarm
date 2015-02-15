@@ -41,7 +41,7 @@
     owner: root
     group: root
   notify: "restart RHEL/CentOS networking"
-  when: ansible_os_family == 'RedHat' and inventory_hostname in groups['masterpigs']
+  when: ansible_os_family == 'RedHat' and inventory_hostname in groups['pxeservers']
 
 - name: Create networking configuration snippets dir (Debian)
   file:

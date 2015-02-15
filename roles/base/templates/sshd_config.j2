@@ -16,7 +16,7 @@
 Port 22
 #AddressFamily any
 ListenAddress {{ ansible_eth0.ipv4.address }}
-{%- if inventory_hostname in groups['masterpigs'] %}
+{%- if inventory_hostname in groups['pxeservers'] %}
 ListenAddress {{ ansible_eth1.ipv4.address }}
 {%- endif %}
 ListenAddress ::1
@@ -161,7 +161,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
     {%- do allowed_users.append(user) %}
 {%- endfor %}
 
-{% if inventory_hostname in groups['masterpigs'] %}
+{% if inventory_hostname in groups['pxeservers'] %}
 AllowUsers git root {{ allowed_users | join(' ') }}
 {% else %}
 AllowUsers root {{ allowed_users | join(' ') }}
