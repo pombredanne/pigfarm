@@ -27,6 +27,18 @@
   command: semanage fcontext -a -f a -t named_log_t '/var/log/named(/.*)?'
   when: named_fcontext_rules.rc != 0
 
+- name: Upload zone templates
+  template:
+    src: zone.template.j2
+    dest: "/etc/cobbler/zone_templates/{{ item }}.{{ hypervisor }}.vespian.net"
+    owner: root
+    group: root
+    mode: 0640
+  notify: sync cobbler
+  with_items:
+    - us
+    - tr
+
 - name: Enable starting named on boot
   service:
     name: named

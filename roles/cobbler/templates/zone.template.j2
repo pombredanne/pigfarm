@@ -1,0 +1,19 @@
+\$TTL 300
+@                       IN      SOA     $cobbler_server. nobody.example.com. (
+                                        $serial   ; Serial
+                                        600         ; Refresh
+                                        1800         ; Retry
+                                        604800       ; Expire
+                                        300          ; TTL
+                                        )
+
+                        IN      NS      $cobbler_server.
+{% if item == 'tr' %}
+repository  IN  A   {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
+{% else %}
+repository  IN  A   {{ '.'.join(nework_configuration[hypervisor]['untrusted']['net'].split('.')[:3]) }}.2;
+{% endif %}
+
+$cname_record
+
+$host_record
