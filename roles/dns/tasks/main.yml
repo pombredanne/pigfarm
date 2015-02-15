@@ -1,0 +1,61 @@
+---
+- name: Include global secrets
+  include_vars: secrets/group_vars/all
+
+- name: Install bind
+  yum:
+    name: bind
+    state: present
+
+- name: Create log directory
+  file:
+    name: /var/log/named/
+    state: directory
+    owner: root
+    group: named
+    mode: 0770
+    setype: named_log_t
+
+- name: Upload configuration
+  template:
+    src: named.conf.j2
+    dest: /etc/named.conf
+    owner: root
+    group: named
+    mode: 0640
+    setype: named_conf_t
+  notify: restart named
+
+- name: Upload vespian.net catch-all zone
+  template:
+    src: vespian.net.zone.j2
+    dest: /var/named/vespian.net
+    setype: named_zone_t
+    owner: root
+    group: named
+  notify: reload named
+
+- name: check if fcontext rule are present
+  shell: semanage fcontext -C -l -n | grep named_log_t
+  register: named_fcontext_rules
+  always_run: true
+  ignore_errors: true
+  changed_when: false
+
+- name: add fcontext rule
+  command: semanage fcontext -a -f a -t named_log_t '/var/log/named(/.*)?'
+  when: named_fcontext_rules.rc != 0
+
+- name: Enable starting named on boot
+  service:
+    name: named
+    state: started
+    enabled: true
+
+- name: Fix resolv.conf
+  template:
+    src: resolv.conf.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root
+    mode: 0644

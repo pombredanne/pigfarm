@@ -1,0 +1,16 @@
+$ORIGIN vespian.net.
+$TTL 300
+@                       IN      SOA     127.0.0.1. root.vespian.net. (
+                                        2015021515   ; Serial
+                                        600         ; Refresh
+                                        1800         ; Retry
+                                        604800       ; Expire
+                                        300          ; TTL
+                                        )
+
+                        IN      NS      127.0.0.1.
+repository  IN  CNAME repository.tr.{{ hypervisor }}
+cobbler  IN  CNAME cobbler.tr.{{ hypervisor }}
+tr.{{ hypervisor }} IN NS cobbler.tr.{{ hypervisor }}
+us.{{ hypervisor }} IN NS cobbler.tr.{{ hypervisor }}
+cobbler.tr.{{ hypervisor }} IN A {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2

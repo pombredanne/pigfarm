@@ -1,0 +1,145 @@
+options {
+        directory               "/var/named";
+        dump-file               "/var/named/data/cache_dump.db";
+        statistics-file         "/var/named/data/named_stats.txt";
+	    bindkeys-file           "/etc/named.iscdlv.key";
+    	managed-keys-directory  "/var/named/dynamic";
+	    pid-file                "/run/named/named.pid";
+	    session-keyfile         "/run/named/session.key";
+
+        // Who, what, where:
+        recursion yes;
+        listen-on port 53 {
+            127.0.0.1;
+        };
+	    listen-on-v6 port 53 {
+            ::1;
+        };
+        allow-query {
+            localhost;
+        };
+        allow-recursion {
+            localhost;
+        };
+
+        // Do not respond authoritatively to inexistant entries
+        auth-nxdomain no;
+
+        //Enable dnssec related features explicitly
+        dnssec-enable yes;
+        dnssec-validation yes;
+	    dnssec-lookaside auto;
+
+        preferred-glue "A";
+
+        // Do not reveal bind version to public
+        hostname "unknown";
+        server-id "unknown";
+
+        // no DDNS by default
+        allow-update {
+            none;
+        };
+
+        // No zone transfers
+        allow-transfer {
+            none;
+        };
+
+        // Do not cache to much:
+        max-cache-size 10485760; // 10M
+
+};
+
+logging {
+
+    channel default_log {
+        file "/var/log/named/named.default.log" versions 5 size 10M;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    // Be agressive about query logs rotation:
+    channel query_log {
+        file "/var/log/named/named.query.log" versions 5 size 10M;
+        severity info;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    channel audit_log {
+        file "/var/log/named/named.audit.log" versions 5 size 10M;
+        severity debug;
+        print-time yes;
+        print-severity yes;
+        print-category yes;
+    };
+
+    category client             { default_log; };
+    category config             { default_log; };
+    category database           { default_log; };
+    category default            { default_log; };
+    category notify             { audit_log; };
+    category security           { audit_log; };
+    category xfer-in            { audit_log; };
+    category xfer-out           { audit_log; };
+    category queries            { query_log; };
+    category general            { default_log; };
+    category network            { audit_log; };
+    category update             { audit_log; };
+    category update-security    { audit_log; };
+    category lame-servers       { audit_log; };
+    category dnssec             { audit_log; };
+
+
+};
+
+controls {
+    inet 127.0.0.1 port 953 allow { 127.0.0.1; };
+};
+
+include "/etc/named.rfc1912.zones";
+include "/etc/named.root.key";
+
+{% set trusted_net_octets = nework_configuration[hypervisor]['trusted']['net'].split('.') %}
+{% set untrusted_net_octets = nework_configuration[hypervisor]['untrusted']['net'].split('.') %}
+
+{% for type in ['tr', 'us'] %}
+zone "{{ type }}.{{ hypervisor }}.vespian.net." {
+    type forward;
+    forward only;
+    forwarders {
+       {{ '.'.join(trusted_net_octets[:3]) }}.2;
+    };
+};
+{% endfor %}
+
+zone "{{ trusted_net_octets[2] }}.{{ trusted_net_octets[1] }}.{{ trusted_net_octets[0] }}.in-addr.arpa." {
+    type forward;
+    forward only;
+    forwarders {
+       {{ '.'.join(trusted_net_octets[:3]) }}.2;
+    };
+};
+
+zone "{{ untrusted_net_octets[2] }}.{{ untrusted_net_octets[1] }}.{{ untrusted_net_octets[0] }}.in-addr.arpa." {
+    type forward;
+    forward only;
+    forwarders {
+       {{ '.'.join(untrusted_net_octets[:3]) }}.2;
+    };
+};
+
+zone "vespian.net" IN {
+	type master;
+	file "vespian.net";
+};
+
+zone "." IN {
+	type hint;
+	file "named.ca";
+};
+
