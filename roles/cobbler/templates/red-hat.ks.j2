@@ -47,6 +47,9 @@ $SNIPPET('network_config')
 # Root password
 rootpw --iscrypted $default_password_crypted
 
+# yum repos:
+$yum_repo_stanza
+
 # System timezone
 timezone Europe/Warsaw --isUtc
 
