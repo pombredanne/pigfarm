@@ -2,7 +2,6 @@
 # Ordering is not coincidental, pxeservers must go first because base role uses
 # git_mirror and proxy roles effects
 - hosts: pxeservers
-  sudo: True
   roles:
     - apache2_base
     - proxy
@@ -11,7 +10,6 @@
     - git_mirror
 
 - hosts: all:!hypervisors
-  sudo: True
   roles:
     - proxy_settings
     - base

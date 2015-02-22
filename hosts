@@ -2,10 +2,9 @@
 localhost
 
 [trusted]
-c7vw.tr
-c6vw.tr
 d7vw.tr
 peppa.tr
+c7t.tr
 
 [pxeservers]
 peppa.tr
