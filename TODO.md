@@ -19,20 +19,24 @@ Pig host:
  - cobbler provisioning
    - test debian provisioning
  - optional:
-   - untrusted zone provisioning
-   - koan
-   - inventory tool
-   - further automation of provisioning
 
 ### Playbook:
 - <None>
 
 # System specific data:
 - add proxy=http://172.17.0.2:3128/ to the kernel line options
-- no repo attachement needed
+- repo attachement is needed because otherwise mirrorselect uses different repo
+    than the proxy allows
 - hostname of the host
 - dns-name
+- name set to inventory hostname
 - inventory_name must end either in 'tr' or 'us'
+- ansible_ssh_host added to distro profile after dynamic inventory update,
+  remove Host definition from ssh_config
+- mimimum 1G of memory for Centos7, Centos6 is OK with 768 (512?) MB.
+- koan command:
+  sudo koan --virt --virt-path=vg-ssd --server=cobbler.tr    --system=c7t.tr
+- pxe boot must be enabled for koan
 
 ### Misc:
 http://wiki.centos.org/EdHeron/EditorDefaultNano
