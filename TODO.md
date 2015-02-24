@@ -58,3 +58,11 @@ http://hasis053341.blogspot.com/2014/07/install-centos-7-with-kickstart-over.htm
 
 ## Problem with non-cacheable object (order IS important!)
 http://squid-web-proxy-cache.1019090.n4.nabble.com/RE-Strange-misses-of-cacheable-objects-SOLVED-td4665658.html
+
+## Debian pre-seeding:
+http://hempeldesigngroup.com/embedded/stories/preseeding-a-debian-squeeze-netboot-install/
+https://dmytro.github.io/2012/06/21/debian_cobbler.html
+https://fedorahosted.org/cobbler/wiki/DebianDeployment
+http://www.colinmcnamara.com/setting-up-cobbler-pxe-auto-deployment-for-ubuntu-server-12-04-precise/
+http://kaivanov.blogspot.com/2014/02/injecting-kernel-modules-in-initrdgz.html
+
