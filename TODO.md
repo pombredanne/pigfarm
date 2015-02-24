@@ -18,7 +18,6 @@ Pig host:
    - fix resolv.conf issues with network manager on mop
  - cobbler provisioning
    - test debian provisioning
- - optional:
 
 ### Playbook:
 - <None>

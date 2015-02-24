@@ -7,7 +7,9 @@
     group: root
     mode: 0644
     setype: cobbler_var_lib_t
-  with_items: yum_repos.keys()
+  with_flattened:
+    - yum_repos.keys()
+    - apt_repos.keys()
 
 - name: Download initrd and vmlinuz files for CentOS
   get_url:
@@ -20,3 +22,15 @@
   with_nested:
     - yum_repos.keys()
     - [ "vmlinuz", "initrd.img" ]
+
+- name: Download initrd and vmlinuz files for Debian
+  get_url:
+    url: "{{ apt_repos[item[0]] }}/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/"
+    dest: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
+    owner: root
+    group: root
+    mode: 0644
+    setype: cobbler_var_lib_t
+  with_nested:
+    - apt_repos.keys()
+    - [ "linux", "initrd.gz" ]
