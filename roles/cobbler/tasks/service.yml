@@ -53,12 +53,15 @@
 
 - name: Copy base kickstart for RHEL systems
   template:
-    src: red-hat.ks.j2
-    dest: /var/lib/cobbler/kickstarts/red-hat.ks
+    src: "{{ item }}.j2"
+    dest: "/var/lib/cobbler/kickstarts/{{ item }}"
     owner: root
     group: root
     mode: 0644
   notify: sync cobbler
+  with_items:
+    - red-hat.ks
+    - debian.preseed.cfg
 
 - name: Fix cobbler template snippets
   copy:
