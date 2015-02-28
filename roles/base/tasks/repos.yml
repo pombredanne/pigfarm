@@ -3,6 +3,7 @@
   file:
     name: cobbler-config.repo
     state: absent
+  when: ansible_os_family == 'RedHat'
 
 - name: add local RPM repos (RHEL)
   template:
@@ -12,6 +13,7 @@
     owner: root
     group: root
   tags: secret
+  when: ansible_os_family == 'RedHat'
 
 - name: install EPEL repository (RHEL/CentOS 6)
   yum:
