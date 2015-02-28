@@ -65,4 +65,17 @@ https://dmytro.github.io/2012/06/21/debian_cobbler.html
 https://fedorahosted.org/cobbler/wiki/DebianDeployment
 http://www.colinmcnamara.com/setting-up-cobbler-pxe-auto-deployment-for-ubuntu-server-12-04-precise/
 http://kaivanov.blogspot.com/2014/02/injecting-kernel-modules-in-initrdgz.html
+https://www.soljerome.com/blog/2011/10/23/preseeding-debian-wheezy/
 
+wget http://cdimage.debian.org/debian-cd/7.8.0/amd64/iso-cd/debian-7.8.0-amd64-netinst.iso
+mnt na loop
+cobbler signatures update
+cobbler import --breed debian --os-version wheezy --name debian-7-x86_64 --arch x86_64 --path 
+edit .treeinfo
+in case of custom build: tree=http://@@http_server@@/cblr/links/debian-7-x86_64
+http://arian-it.blogspot.com/2014/04/cobbler-i-automatyczna-instalacja.html
+https://cptyesterday.wordpress.com/2012/06/17/notes-on-using-expert_recipe-in-debianubuntu-preseed-files/
+
+debian network repos are no good for netinstall, netboot is necessary
+
+Additional options that may be of interest while attempting to automate an install while using DHCP are: interface=auto netcfg/dhcp_timeout=60 which makes the machine choose the first viable NIC and be more patient about getting a reply to its DHCP query. 
