@@ -13,3 +13,10 @@ git_mirror_repos:
   - { url: "https://github.com/Chiel92/vim-autoformat.git", location: "vim-autoformat"}
   - { url: "https://github.com/nvie/vim-flake8.git", location: "vim-flake8"}
   - { url: "https://github.com/robbyrussell/oh-my-zsh.git", location: "oh-my-zsh"}
+
+yum_repos:
+  CentOS-7-x86_64: http://ftp.prz.edu.pl/centos/7/os/x86_64/
+  CentOS-6-x86_64: http://ftp.prz.edu.pl/centos/6.6/os/x86_64/
+
+apt_repos:
+  Debian-7-x86_64: http://ftp.agh.edu.pl/debian
