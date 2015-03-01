@@ -50,23 +50,27 @@
   set_fact:
     debian_codename="{{'-'.join([ansible_distribution, ansible_distribution_major_version, ansible_architecture])}}"
 
+- name: Set up debian repos lists
+  set_fact:
+    debian_repos:
+      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
+      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
+      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
+      - "deb {{ apt_repos[debian_codename] }} jessie main contrib non-free"
+      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
+      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
+      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
+      - "deb-src {{ apt_repos[debian_codename] }} jessie main contrib non-free"
+      - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main contrib non-free"
+      - "deb http://security.debian.org/ jessie/updates main contrib non-free"
+
 # netselect-apt: http://ftp.agh.edu.pl/debian/
 - name: add debian stable/testing/backport repositories
   apt_repository:
     repo: "{{ item }}"
     state: present
     update_cache: no # will be updated in one row
-  with_items:
-    - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
-    - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
-    - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
-    - "deb {{ apt_repos[debian_codename] }} jessie main contrib non-free"
-    - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
-    - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
-    - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
-    - "deb-src {{ apt_repos[debian_codename] }} jessie main contrib non-free"
-    - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main contrib non-free"
-    - "deb http://security.debian.org/ jessie/updates main contrib non-free"
+  with_items: debian_repos
   when: ansible_os_family == 'Debian'
   notify: Debian update repos
 
@@ -87,3 +91,6 @@
     owner: root
     group: root
   when: ansible_os_family == 'Debian'
+
+# Update repository data _NOW_
+- meta: flush_handlers
