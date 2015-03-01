@@ -71,8 +71,8 @@ d-i hw-detect/load_firmware boolean true
 #end if
 {% endfor %}
 d-i mirror/country string manual
-#echo 'd-i mirror/http/hostname string ' + $repo_hostname
-#echo 'd-i mirror/http/directory string ' + $repo_directory
+#echo 'd-i mirror/http/hostname string ' + $repo_hostname + '\n'
+#echo 'd-i mirror/http/directory string ' + $repo_directory + '\n'
 d-i mirror/http/proxy string {{ proxy_settings_http_proxy }}
 
 # Suite to install.
@@ -108,7 +108,7 @@ d-i passwd/make-user boolean false
 # Controls whether or not the hardware clock is set to UTC.
 d-i clock-setup/utc boolean true
 
-# You may set this to any valid setting for $TZ; see the contents of
+# You may set this to any valid setting for \$TZ; see the contents of
 # /usr/share/zoneinfo/ for valid values.
 d-i time/zone string Europe/Warsaw
 
@@ -158,7 +158,7 @@ d-i partman-auto/choose_recipe select swap-root
 d-i partman-auto/expert_recipe string                         \
       swap-root ::                                            \
               5120 10 8192 ext3                               \
-                      $primary{ } $bootable{ }                \
+                      \$primary{ } \$bootable{ }                \
                       method{ format } format{ }              \
                       use_filesystem{ } filesystem{ xfs }     \
                       mountpoint{ / }                         \
@@ -191,7 +191,7 @@ d-i partman/confirm_nooverwrite boolean true
 #d-i partman-auto/expert_recipe string \
 #      multiraid ::                                         \
 #              1000 5000 4000 raid                          \
-#                      $primary{ } method{ raid }           \
+#                      \$primary{ } method{ raid }           \
 #              .                                            \
 #              64 512 300% raid                             \
 #                      method{ raid }                       \
@@ -337,7 +337,7 @@ d-i finish-install/reboot_in_progress note
 # useful to apply dynamic partitioner preseeding that depends on the state
 # of the disks (which may not be visible when preseed/early_command runs).
 #d-i partman/early_command \
-#       string debconf-set partman-auto/disk "$(list-devices disk | head -n1)"
+#       string debconf-set partman-auto/disk "\$(list-devices disk | head -n1)"
 # This command is run just before the install finishes, but when there is
 # still a usable /target directory. You can chroot to /target and use it
 # directly, or use the apt-install and in-target commands to easily install
