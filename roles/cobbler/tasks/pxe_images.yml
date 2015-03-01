@@ -25,7 +25,7 @@
 
 - name: Download initrd and vmlinuz files for Debian
   get_url:
-    url: "{{ apt_repos[item[0]] }}/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/"
+    url: "{{ apt_repos[item[0]] }}/dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/{{ item[1] }}"
     dest: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
     owner: root
     group: root
