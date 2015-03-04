@@ -13,11 +13,15 @@
  - timezone
 
 Pig host:
- - recursive dns cache on localhost, plus forward zone to cobbler for cobbler
-   zones
-   - fix resolv.conf issues with network manager on mop
  - cobbler provisioning
    - test debian provisioning
+     - problem with creating ssh keys
+     - problem with not disabling netboot
+     - problem with creating too big partitions
+ - scripts that:
+   - bootstrap cobbler
+   - define a host
+   - provision a host
 
 ### Playbook:
 - <None>
@@ -75,7 +79,9 @@ edit .treeinfo
 in case of custom build: tree=http://@@http_server@@/cblr/links/debian-7-x86_64
 http://arian-it.blogspot.com/2014/04/cobbler-i-automatyczna-instalacja.html
 https://cptyesterday.wordpress.com/2012/06/17/notes-on-using-expert_recipe-in-debianubuntu-preseed-files/
+https://lists.fedorahosted.org/pipermail/cobbler-devel/2012-August/002707.html
 
-debian network repos are no good for netinstall, netboot is necessary
+
+debian network repos are no good for netinstall, netboot is necessary ?
 
 Additional options that may be of interest while attempting to automate an install while using DHCP are: interface=auto netcfg/dhcp_timeout=60 which makes the machine choose the first viable NIC and be more patient about getting a reply to its DHCP query. 
