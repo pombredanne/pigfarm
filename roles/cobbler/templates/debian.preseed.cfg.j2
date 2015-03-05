@@ -1,4 +1,11 @@
 #### Contents of the preconfiguration file (for wheezy)
+## Figure out if we're kickstarting a system or a profile
+#if $getVar('system_name','') != ''
+#set $what = "system"
+#else
+#set $what = "profile"
+#end if
+
 ### Localization
 d-i debian-installer/language string en_GB:en
 d-i debian-installer/country string PL
@@ -13,7 +20,13 @@ d-i keyboard-configuration/toggle select No toggling
 
 # netcfg will choose an interface that has link if possible. This makes it
 # skip displaying a list if there is more than one interface.
+#set $myhostname = $getVar('hostname',$getVar('name','cobbler')).replace("_","-")
 d-i netcfg/choose_interface select eth0
+
+# Any hostname and domain names assigned from dhcp take precedence over
+# values set here. However, setting the values still prevents the questions
+# from being shown, even if values come from dhcp.
+d-i netcfg/get_hostname string $myhostname
 
 # To set a different link detection timeout (default is 3 seconds).
 # Values are interpreted as seconds.
@@ -41,16 +54,15 @@ d-i netcfg/link_detection_timeout string 10
 #d-i netcfg/get_nameservers string fc00::1
 #d-i netcfg/confirm_static boolean true
 
-# Any hostname and domain names assigned from dhcp take precedence over
-# values set here. However, setting the values still prevents the questions
-# from being shown, even if values come from dhcp.
-d-i netcfg/get_hostname string unassigned-hostname
-d-i netcfg/get_domain string unassigned-domain
-
 # If you want to force a hostname, regardless of what either the DHCP
 # server returns or what the reverse DNS entry for the IP is, uncomment
 # and adjust the following line.
 #d-i netcfg/hostname string somehost
+
+# NTP/Time Setup
+d-i clock-setup/utc boolean true
+d-i clock-setup/ntp boolean true
+d-i clock-setup/ntp-server  string ntp.ubuntu.com
 
 # Disable that annoying WEP key dialog.
 d-i netcfg/wireless_wep string
@@ -156,15 +168,20 @@ d-i partman-auto/choose_recipe select swap-root
 # If not, you can put an entire recipe into the preconfiguration file in one
 # (logical) line. This example creates a small /boot partition, suitable
 # swap, and uses the rest of the space for the root partition:
+
+# Space priorities are broken, please see:
+# http://secopsmonkey.com/custom-partioning-using-preseed.html
+# generally they should be much higher than the free space we are going to
+# allocate
 d-i partman-auto/expert_recipe string                         \
       swap-root ::                                            \
-              5120 10 8192 xfs                               \
+              5120 10000 8192 xfs                               \
                       \$primary{ } \$bootable{ }                \
                       method{ format } format{ }              \
                       use_filesystem{ } filesystem{ xfs }     \
                       mountpoint{ / }                         \
               .                                               \
-              512 100 512 linux-swap                          \
+              512 20000 512 linux-swap                          \
                       method{ swap } format{ } \$primary{ }   \
               .
 
@@ -242,6 +259,10 @@ d-i partman/mount_style select uuid
 # option can result in an incomplete system and should only be used by very
 # experienced users.
 #d-i base-installer/install-recommends boolean false
+
+# If you just want to change the default filesystem from ext3 to something
+# else, you can do that without providing a full recipe.
+d-i partman/default_filesystem string xfs
 
 # The kernel image (meta) package to be installed; "none" can be used if no
 # kernel is to be installed.
@@ -332,23 +353,23 @@ d-i finish-install/reboot_in_progress note
 # here's a way to run any shell command you'd like inside the installer,
 # automatically.
 
-# This first command is run as early as possible, just after
-# preseeding is read.
+# This first command is run as early as possible, just after preseeding is read.
+# d-i preseed/early_command string [command]
+d-i preseed/early_command string wget -O- \
+   http://$http_server/cblr/svc/op/script/$what/$name/?script=preseed_early_default | \
+   /bin/sh -s
 
-
-#d-i preseed/early_command string anna-install some-udeb
 # This command is run immediately before the partitioner starts. It may be
 # useful to apply dynamic partitioner preseeding that depends on the state
 # of the disks (which may not be visible when preseed/early_command runs).
-#d-i partman/early_command \
+# d-i partman/early_command \
 #       string debconf-set partman-auto/disk "\$(list-devices disk | head -n1)"
+
 # This command is run just before the install finishes, but when there is
 # still a usable /target directory. You can chroot to /target and use it
 # directly, or use the apt-install and in-target commands to easily install
 # packages and run commands in the target system.
-#d-i preseed/late_command string apt-install zsh; in-target chsh -s /bin/zsh
-d-i preseed/late_command string \
-  mkdir -v /target/root/.ssh/; \
-  chmod -v 0700 /target/root/.ssh/; \
-  echo '{{ login_key[hypervisor] }}' > /root/.ssh/authorized_keys ; \
-  chmod 0600 /target/root/.ssh/authorized_keys
+# d-i preseed/late_command string [command]
+d-i preseed/late_command string wget -O- \
+   http://$http_server/cblr/svc/op/script/$what/$name/?script=preseed_late_default | \
+   chroot /target /bin/sh -s

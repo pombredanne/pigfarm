@@ -71,3 +71,12 @@
     group: root
     mode: 0644
   notify: sync cobbler
+
+- name: Put debian post_run_deb script
+  template:
+    src: post_run_deb.j2
+    dest: /var/lib/cobbler/snippets/post_run_deb
+    owner: root
+    group: root
+    mode: 0644
+  notify: sync cobbler

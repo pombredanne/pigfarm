@@ -1,0 +1,4 @@
+mkdir -v /root/.ssh/
+chmod -v 0700 /root/.ssh/
+echo '{{ login_key[hypervisor] }}' > /root/.ssh/authorized_keys
+chmod 0600 /root/.ssh/authorized_keys
