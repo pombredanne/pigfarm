@@ -13,7 +13,6 @@
     group: root
   notify: restart Debian networking - restart networking
 
+# debian's "restart" option is deprecated
 - name: restart Debian networking - restart networking
-  service:
-    name: networking
-    state: restarted
+  shell: /etc/init.d/networking stop; /etc/init.d/networking start
