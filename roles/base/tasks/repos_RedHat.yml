@@ -12,6 +12,7 @@
     owner: root
     group: root
   tags: secret
+  when: inventory_hostname not in groups['pxeservers']
 
 - name: install EPEL repository (RHEL/CentOS 6)
   yum:
