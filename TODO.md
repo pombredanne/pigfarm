@@ -13,11 +13,6 @@
  - timezone
 
 Pig host:
- - cobbler provisioning
-   - test debian provisioning
-     - problem with creating ssh keys
-     - problem with not disabling netboot
-     - problem with creating too big partitions
  - scripts that:
    - bootstrap cobbler
    - define a host
@@ -85,3 +80,10 @@ https://lists.fedorahosted.org/pipermail/cobbler-devel/2012-August/002707.html
 debian network repos are no good for netinstall, netboot is necessary ?
 
 Additional options that may be of interest while attempting to automate an install while using DHCP are: interface=auto netcfg/dhcp_timeout=60 which makes the machine choose the first viable NIC and be more patient about getting a reply to its DHCP query. 
+
+Partman:
+http://code.metager.de/source/xref/debian/installer/doc/devel/partman-auto-recipe.txt
+http://secopsmonkey.com/custom-partioning-using-preseed.html (formula for priority)
+
+Debugging preseed:
+add "preseed/interactive=true" to the commandline
