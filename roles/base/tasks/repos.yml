@@ -63,6 +63,7 @@
       - "deb-src {{ apt_repos[debian_codename] }} jessie main contrib non-free"
       - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main contrib non-free"
       - "deb http://security.debian.org/ jessie/updates main contrib non-free"
+  when: ansible_os_family == 'Debian'
 
 # netselect-apt: http://ftp.agh.edu.pl/debian/
 - name: add debian stable/testing/backport repositories
