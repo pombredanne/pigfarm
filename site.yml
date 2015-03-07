@@ -20,3 +20,4 @@
   connection: local
   roles:
     - dns
+    - koan_patching
