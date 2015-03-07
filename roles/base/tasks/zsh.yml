@@ -5,14 +5,23 @@
     name: zsh
     state: present
 
-- name: Clone oh-my-zsh repo
+- name: Clone oh-my-zsh repo from local mirror
   git:
    repo: "ssh://git@{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2/home/git/oh-my-zsh.git/"
    key_file: /root/.ssh/git-mirror_rsa
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
   with_items: users.keys()
-  when: users[item]['shell'] == '/bin/zsh'
+  when: proxing_enabled is defined and proxing_enabled is True and users[item]['shell'] == '/bin/zsh'
+  tags: secret
+
+- name: Clone oh-my-zsh repo from upstream
+  git:
+   repo: "{{ git_mirror_repos['oh-my-zsh']['url'] }}"
+   dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
+   accept_hostkey: yes
+  with_items: users.keys()
+  when: (proxing_enabled is not defined or proxing_enabled is False) and users[item]['shell'] == '/bin/zsh'
   tags: secret
 
 - name: Upload zshrc file

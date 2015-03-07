@@ -27,3 +27,5 @@ yum_repos:
 
 apt_repos:
   Debian-7-x86_64: http://ftp.agh.edu.pl/debian
+
+proxing_enabled: True
