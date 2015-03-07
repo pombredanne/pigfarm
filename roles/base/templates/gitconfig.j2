@@ -2,7 +2,7 @@
 	name = Vespian
 	email = vespian@wp.pl
 [core]
-	excludesfile = /root/.gitignore
+	excludesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitignore
 [color]
     diff = auto
     grep = auto

@@ -14,7 +14,7 @@
     - {"package": "ipython3", "release":"wheezy-backports"}
   when: ansible_os_family == 'Debian'
 
-# No ipdb for python3.2, niether backport, niether pip
+# No ipdb for python3.2, niether in backports, niether in pip
 - name: Install missing ipdb packages for Debian - python3
   pip:
     executable: "{{ item[1] }}"

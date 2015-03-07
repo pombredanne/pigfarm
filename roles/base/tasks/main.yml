@@ -13,12 +13,16 @@
     - base
     - secret
 
-- include: network.yml
+- include: "network_{{ ansible_os_family }}.yml"
   tags:
     - base
     - net
 
-- include: repos.yml
+- include: "repos_{{ ansible_os_family }}.yml"
+  tags:
+    - base
+
+- include: packages.yml
   tags:
     - base
 
@@ -35,7 +39,7 @@
   tags:
     - base
 
-- include: sysdig.yml
+- include: "sysdig_{{ ansible_os_family }}.yml"
   tags:
     - base
 

@@ -61,7 +61,7 @@
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
 
-- name: checkout plugins from git repos
+- name: checkout plugins from local git mirrors
   git:
     repo: "ssh://git@{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2/home/git/{{ item[0] }}.git/"
     key_file: /root/.ssh/git-mirror_rsa
