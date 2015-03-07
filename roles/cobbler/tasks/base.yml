@@ -98,4 +98,12 @@
   with_items:
     - cobblerd
     - httpd
-    - dhcpd
+
+# Hack, Hack, Hack!
+# During initial provisioning, there are no systems defined, and DHCPd configuration
+# will not be created by cobbler sync <sic!>. We need to only enable dhcpd for now
+# , cobbler sync will start it later on.
+- name: Start dhcpd service
+  service:
+    name: dhcpd
+    enabled: yes
