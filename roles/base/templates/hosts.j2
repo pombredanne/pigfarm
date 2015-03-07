@@ -1,0 +1,20 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+{% set hostname = inventory_hostname.split('.')[0] %}
+{%- if inventory_hostname in groups['pxeservers'] %}
+    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+    {%- set prefix = 'tr' %}
+{% elif inventory_hostname[-3:] == '.tr' %}
+    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+    {%- set prefix = 'tr' %}
+{% else %}
+    {%- set obj = nework_configuration[hypervisor]['untrusted'] %}
+    {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
+    {%- set prefix = 'us' %}
+{% endif %}
+{{ ansible_default_ipv4.address }} {{ '.'.join([hostname, prefix, hypervisor, 'vespian.net']) }} {{ hostname }}
+
+{{ net_prefix }}.2 repository.{{ '.'.join([prefix, hypervisor, 'vespian.net']) }}

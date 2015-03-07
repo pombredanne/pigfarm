@@ -33,3 +33,11 @@
     mode: 0644
     owner: root
     group: root
+
+- name: Upload /etc/hosts configuration
+  template:
+    src: hosts.j2
+    dest: /etc/hosts
+    mode: 0644
+    owner: root
+    group: root
