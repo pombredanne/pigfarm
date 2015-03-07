@@ -12,7 +12,7 @@
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
   with_items: users.keys()
-  when: proxing_enabled is defined and proxing_enabled is True and users[item]['shell'] == '/bin/zsh'
+  when: proxing_enabled is defined and proxing_enabled == True and users[item]['shell'] == '/bin/zsh'
   tags: secret
 
 - name: Clone oh-my-zsh repo from upstream
@@ -21,7 +21,7 @@
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
   with_items: users.keys()
-  when: (proxing_enabled is not defined or proxing_enabled is False) and users[item]['shell'] == '/bin/zsh'
+  when: (proxing_enabled is not defined or proxing_enabled == False) and users[item]['shell'] == '/bin/zsh'
   tags: secret
 
 - name: Upload zshrc file

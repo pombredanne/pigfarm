@@ -70,17 +70,17 @@
   with_nested:
     - [ 'ctrlp.vim', 'jedi-vim', 'nerdtree', 'vim-airline', 'vim-autoformat', 'vim-flake8' ]
     - users.keys()
-  when: proxing_enabled is defined and proxing_enabled is True and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
+  when: proxing_enabled is defined and proxing_enabled == True and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
 
 - name: checkout plugins from upstream repos
   git:
-    repo: "{{ git_mirror_repos[item[1]]['url'] }}"
+    repo: "{{ git_mirror_repos[item[0]]['url'] }}"
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
   with_nested:
     - [ 'ctrlp.vim', 'jedi-vim', 'nerdtree', 'vim-airline', 'vim-autoformat', 'vim-flake8' ]
     - users.keys()
-  when: (proxing_enabled is not defined or proxing_enabled is False) and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
+  when: (proxing_enabled is not defined or proxing_enabled == False) and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
 
 - name: Set vim as default editor for Debian
   alternatives:
