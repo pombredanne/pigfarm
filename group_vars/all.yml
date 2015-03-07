@@ -6,13 +6,20 @@ distribution_specific:
         sshd_service_name: sshd
 
 git_mirror_repos:
-  - { url: "https://github.com/kien/ctrlp.vim.git", location: "ctrlp.vim"}
-  - { url: "https://github.com/davidhalter/jedi-vim.git", location: "jedi-vim"}
-  - { url: "https://github.com/scrooloose/nerdtree", location: "nerdtree"}
-  - { url: "https://github.com/bling/vim-airline.git", location: "vim-airline"}
-  - { url: "https://github.com/Chiel92/vim-autoformat.git", location: "vim-autoformat"}
-  - { url: "https://github.com/nvie/vim-flake8.git", location: "vim-flake8"}
-  - { url: "https://github.com/robbyrussell/oh-my-zsh.git", location: "oh-my-zsh"}
+  ctrlp.vim:
+    url: https://github.com/kien/ctrlp.vim.git
+  jedi-vim:
+    url: https://github.com/davidhalter/jedi-vim.git
+  nerdtree:
+    url: https://github.com/scrooloose/nerdtree
+  vim-airline:
+    url: https://github.com/bling/vim-airline.git
+  vim-autoformat:
+    url: https://github.com/Chiel92/vim-autoformat.git
+  vim-flake8:
+    url: https://github.com/nvie/vim-flake8.git
+  oh-my-zsh:
+    url: https://github.com/robbyrussell/oh-my-zsh.git
 
 yum_repos:
   CentOS-7-x86_64: http://ftp.prz.edu.pl/centos/7/os/x86_64/

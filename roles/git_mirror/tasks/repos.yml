@@ -2,19 +2,19 @@
 - name: Create repository dirs
   file:
     state: directory
-    name: "/home/git/{{ item.location }}.git/"
+    name: "/home/git/{{ item }}.git/"
     owner: git
     group: git
     mode: 0750
-  with_items: git_mirror_repos
+  with_items: git_mirror_repos.keys()
 
 - name: Clone repositories
   git:
     bare: yes
-    dest: "/home/git/{{ item.location }}.git/"
+    dest: "/home/git/{{ item }}.git/"
     force: yes
-    repo: "{{ item.url }}"
-  with_items: git_mirror_repos
+    repo: "{{ git_mirror_repos[item]['url'] }}"
+  with_items: git_mirror_repos.keys()
 
 - name: Fix permissions of repositories
   file:
@@ -22,4 +22,3 @@
     owner: git
     group: git
     recurse: true
-
