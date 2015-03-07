@@ -13,14 +13,27 @@
     - base
     - secret
 
-- include: "network_{{ ansible_os_family }}.yml"
+- include: "network_Debian.yml"
   tags:
     - base
     - net
+  when: ansible_os_family == 'Debian'
 
-- include: "repos_{{ ansible_os_family }}.yml"
+- include: "network_RedHat.yml"
   tags:
     - base
+    - net
+  when: ansible_os_family == 'RedHat'
+
+- include: "repos_Debian.yml"
+  tags:
+    - base
+  when: ansible_os_family == 'Debian'
+
+- include: "repos_RedHat.yml"
+  tags:
+    - base
+  when: ansible_os_family == 'RedHat'
 
 - include: packages.yml
   tags:
@@ -39,9 +52,15 @@
   tags:
     - base
 
-- include: "sysdig_{{ ansible_os_family }}.yml"
+- include: "sysdig_Debian.yml"
   tags:
     - base
+  when: ansible_os_family == 'Debian'
+
+- include: "sysdig_RedHat.yml"
+  tags:
+    - base
+  when: ansible_os_family == 'RedHat'
 
 # User specific:
 - include: users.yml
