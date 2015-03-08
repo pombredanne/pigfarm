@@ -12,12 +12,6 @@
  - locales
  - timezone
 
-Pig host:
- - scripts that:
-   - bootstrap cobbler
-   - define a host
-   - provision a host
-
 ### Playbook:
 - <None>
 
