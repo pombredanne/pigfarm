@@ -82,8 +82,8 @@
   notify: sync cobbler
 
 - name: Copy helper scripts to PXE server
-  copy:
-    src: "{{ item }}"
+  template:
+    src: "{{ item }}.j2"
     dest: "/root/{{ item }}"
     owner: root
     group: root
