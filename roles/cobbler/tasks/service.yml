@@ -80,3 +80,16 @@
     group: root
     mode: 0644
   notify: sync cobbler
+
+- name: Copy helper scripts to PXE server
+  copy:
+    src: "{{ item }}"
+    dest: "/root/{{ item }}"
+    owner: root
+    group: root
+    mode: 0755
+  with_items:
+    - cobbler_bootstrap.sh
+    - create_CentOS6_vm.sh
+    - create_CentOS7_vm.sh
+    - create_Debian7_vm.sh

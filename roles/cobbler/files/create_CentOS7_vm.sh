@@ -1,0 +1,13 @@
+cobbler system add  --name ${1} \
+                    --owners admin \
+                    --profile CentOS7 \
+                    --status production \
+                    --netboot-enabled 1 \
+                    --kopts proxy=http://172.17.0.2:3128 \
+                    --hostname ${1}.mop.vespian.net \
+                    --interface eth0 \
+                    --mac-address random \
+                    --ip-address ${2} \
+                    --dns-name ${1}.mop.vespian.net \
+                    --virt-type qemu \
+                    --virt-pxe-boot 1
