@@ -98,6 +98,7 @@
   with_items:
     - cobblerd
     - httpd
+    - xinetd
 
 # Hack, Hack, Hack!
 # During initial provisioning, there are no systems defined, and DHCPd configuration
