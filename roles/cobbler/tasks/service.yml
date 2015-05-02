@@ -93,3 +93,5 @@
     - create_CentOS6_vm.sh
     - create_CentOS7_vm.sh
     - create_Debian7_vm.sh
+    - create_Debian8_vm.sh
+    - create_Ubuntu14_vm.sh

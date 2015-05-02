@@ -1,72 +1,70 @@
+#jinja2:trim_blocks: False
 #!/bin/sh
-cobbler distro add  --name CentOS-6-x86_64 \
+{%- for d_type in ["Centos-6", "Centos-7", "Debian-7", "Debian-8", "Ubuntu-14"] %}
+    {%- set proxy = '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) %}
+    {%- if d_type[:6] == "Centos" %}
+        {%- set initrd = "initrd.img" %}
+        {%- set kernel = "vmlinuz" %}
+        {%- set breed = "redhat" %}
+        {%- set ks_file = "/var/lib/cobbler/kickstarts/red-hat.ks" %}
+    {%- elif d_type[:6] in ["Debian", "Ubuntu"] %}
+        {%- set initrd = "initrd.gz" %}
+        {%- set kernel = "linux" %}
+        {%- if d_type[:6] == "Debian" %}
+            {%- set breed = "debian" %}
+        {%- elif d_type[:6] == "Ubuntu" %}
+            {%- set breed = "ubuntu" %}
+        {%- endif %}
+        {%- set ks_file = "/var/lib/cobbler/kickstarts/debian.preseed.cfg" %}
+    {%- endif %}
+    {%- set mem = 768 %}
+    {%- if d_type == "Centos-6" %}
+        {%- set os_version = 'rhel6' %}
+    {%- elif d_type == "Centos-7" %}
+        {%- set mem = 1024 %}
+        {%- set os_version = 'rhel7' %}
+    {%- elif d_type == "Debian-7" %}
+        {%- set os_version = 'wheezy' %}
+    {%- elif d_type == "Debian-8" %}
+        {%- set os_version = 'jessie' %}
+    {%- elif d_type == "Ubuntu-14" %}
+        {%- set os_version = 'trusty' %}
+    {% endif %}
+cobbler distro add  --name {{ d_type }}-x86_64 \
                     --owners admin \
-                    --kernel /var/lib/cobbler/pxe/CentOS-6-x86_64/vmlinuz \
-                    --initrd /var/lib/cobbler/pxe/CentOS-6-x86_64/initrd.img \
-                    --kopts 'proxy=http://172.17.0.2:3128' \
+                    --kernel /var/lib/cobbler/pxe/{{ d_type }}-x86_64/{{ kernel }} \
+                    --initrd /var/lib/cobbler/pxe/{{ d_type }}-x86_64/{{ initrd }} \
+                    --kopts 'proxy=http://{{ proxy }}' \
                     --arch x86_64 \
-                    --breed redhat \
-                    --os-version rhel6
-cobbler distro add  --name CentOS-7-x86_64 \
-                    --owners admin \
-                    --kernel /var/lib/cobbler/pxe/CentOS-7-x86_64/vmlinuz \
-                    --initrd /var/lib/cobbler/pxe/CentOS-7-x86_64/initrd.img \
-                    --kopts 'proxy=http://172.17.0.2:3128' \
-                    --arch x86_64 \
-                    --breed redhat \
-                    --os-version rhel7
-cobbler distro add  --name Debian-7-x86_64 \
-                    --owners admin \
-                    --kernel /var/lib/cobbler/pxe/Debian-7-x86_64/linux \
-                    --initrd /var/lib/cobbler/pxe/Debian-7-x86_64/initrd.gz \
-                    --kopts 'proxy=http://172.17.0.2:3128' \
-                    --arch x86_64 \
-                    --breed debian \
-                    --os-version wheezy
+                    --breed {{ breed }} \
+                    --os-version {{ os_version }}
 
-cobbler repo add    --name Debian-7-x86_64 \
+    {% if d_type[:6] in ["Debian", "Ubuntu"] %}
+cobbler repo add    --name {{ d_type }}-x86_64 \
                     --owners admin \
                     --arch x86_64 \
                     --breed apt \
-                    --mirror http://ftp.agh.edu.pl/debian \
+                    --mirror {{ apt_repos[ d_type + '-x86_64' ]}} \
                     --keep-updated 0 \
                     --mirror-locally 0 \
                     --apt-components 'main universe' \
-                    --apt-dists wheezy wheezy-updates wheezy-security
+                    --apt-dists {{ os_version }} {{ os_version }}-updates {{ os_version }}-security
 
-cobbler profile add --name Centos6 \
+    {% endif %}
+cobbler profile add --name {{ d_type }} \
                     --owners admin \
-                    --distro CentOS-6-x86_64 \
-                    --kickstart /var/lib/cobbler/kickstarts/red-hat.ks \
-                    --proxy http://172.17.0.2:3128 \
-                    --virt-cpus 2 \
-                    --virt-file-size 6 \
-                    --virt-disk-driver raw \
-                    --virt-ram 768 \
-                    --virt-type qemu \
-                    --virt-bridge br_tr
-cobbler profile add --name Centos7 \
-                    --owners admin \
-                    --distro CentOS-7-x86_64 \
-                    --kickstart /var/lib/cobbler/kickstarts/red-hat.ks \
-                    --proxy http://172.17.0.2:3128 \
-                    --virt-cpus 2 \
-                    --virt-file-size 7 \
-                    --virt-disk-driver raw \
-                    --virt-ram 1024 \
-                    --virt-type qemu \
-                    --virt-bridge br_tr
-cobbler profile add --name Debian7 \
-                    --owners admin \
-                    --distro Debian-7-x86_64 \
-                    --kickstart /var/lib/cobbler/kickstarts/debian.preseed.cfg \
-                    --proxy http://172.17.0.2:3128 \
+                    --distro {{ d_type }}-x86_64 \
+                    --kickstart {{ ks_file }} \
+                    --proxy http://{{ proxy }} \
+    {%- if d_type[:6] in ["Debian", "Ubuntu"] %}
                     --kopts keymap=pl \
-                    --ksmeta "tree=http://@@http_server@@/cblr/links/Debian-7-x86_64" \
+                    --ksmeta "tree=http://@@http_server@@/cblr/links/{{ d_type }}-x86_64" \
+                    --repos {{ d_type }}-x86_64 \
+    {%- endif %}
                     --virt-cpus 2 \
                     --virt-file-size 6 \
                     --virt-disk-driver raw \
-                    --virt-ram 768 \
+                    --virt-ram {{ mem }} \
                     --virt-type qemu \
-                    --virt-bridge br_tr \
-                    --repos Debian-7-x86_64
+                    --virt-bridge br_tr
+{%- endfor %}
