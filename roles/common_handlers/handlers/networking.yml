@@ -15,4 +15,4 @@
 
 # debian's "restart" option is deprecated
 - name: restart Debian networking - restart networking
-  shell: /etc/init.d/networking stop; /etc/init.d/networking start
+  shell: /etc/init.d/networking stop && /etc/init.d/networking start

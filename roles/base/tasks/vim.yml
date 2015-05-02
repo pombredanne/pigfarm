@@ -7,16 +7,32 @@
     - vim-enhanced-7.4.160
   when: ansible_os_family == 'RedHat'
 
-- name: Install vim packages for Debian
+- name: Install vim packages for Debian/Ubuntu
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - vim-nox
+    - python-jedi
+    - python-flake8
+    - python3-jedi
+    - python3-flake8
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release != 'wheezy'
+
+- name: Install vim packages for Debian7
   apt:
     name: "{{ item }}"
     state: present
     default_release: wheezy-backports
   with_flattened:
     - vim-nox
-  when: ansible_os_family == 'Debian'
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release == 'wheezy'
 
-- name: Install vim-related python packages for Debian
+- name: Install vim-related python packages for Debian7/RHEL
   pip:
     executable: "{{ item[1] }}"
     name: "{{ item[0] }}"
@@ -24,7 +40,7 @@
   with_nested:
     - [ 'jedi', 'flake8' ]
     - [ 'pip-3.2', 'pip' ]
-  when: "(ansible_os_family == 'Debian' and item[1] != 'pip-3.4') or \
+  when: "(ansible_os_family == 'Debian' and ansible_distribution_release == 'wheezy') or \
          (ansible_os_family == 'RedHat' and item[1] != 'pip-3.2')"
 
 - name: Upload vimrc file

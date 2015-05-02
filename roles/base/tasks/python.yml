@@ -1,21 +1,36 @@
 ---
-- name: Install Python packages for Debian
+- name: Install Python packages for Debian-like systems
   apt:
-    name: "{{ item.package }}"
+    name: "{{ item }}"
     state: present
-    default_release: "{{ item.release | default('stable') }}"
   with_items:
-    - {"package": "python-pip"}
-    - {"package": "python-ipdb"}
-    - {"package": "python-virtualenv"}
-    - {"package": "python3"}
-    - {"package": "python3-pip"}
-    - {"package": "ipython", "release":"wheezy-backports"}
-    - {"package": "ipython3", "release":"wheezy-backports"}
-  when: ansible_os_family == 'Debian'
+    - python-pip
+    - python-ipdb
+    - python-virtualenv
+    - python3
+    - python3-pip
+    - python3-ipdb
+    - ipython
+    - ipython3
+  when: >
+    ansible_os_family == 'Debian' and
+    (ansible_distribution_release != 'wheezy' or
+    item.package not in ["ipython", "ipython3", "python3-ipdb", "python3-virtualenv"])
+
+- name: Install missing Python packages for Debian 7 systems
+  apt:
+    name: "{{ item }}"
+    state: present
+    default_release: wheezy-backports
+  with_items:
+    - ipython
+    - ipython3
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release == 'wheezy'
 
 # No ipdb for python3.2, niether in backports, niether in pip
-- name: Install missing ipdb packages for Debian - python3
+- name: Install missing pip packages for Debian 7
   pip:
     executable: "{{ item[1] }}"
     name: "{{ item[0] }}"
@@ -23,7 +38,9 @@
   with_nested:
     - [ 'ipdb', 'virtualenv' ]
     - [ 'pip-3.2' ]
-  when: ansible_os_family == 'Debian'
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release == 'wheezy'
 
 - name: Install Python packages for RHEL/CentOS
   yum:

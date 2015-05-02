@@ -1,28 +1,41 @@
 ---
-- name: Install development packages for Debian
+- name: Install development packages for Debian systems
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - devscripts
+    - dh-python
+    - libyaml-dev
+    - python-all
+    - python-coverage
+    - python-dnspython
+    - python-mock
+    - python-nose
+    - python-pymisc
+    - python-yaml
+    - python3-all
+    - python3-coverage
+    - python3-dnspython
+    - python3-mock
+    - python3-nose
+    - python3-pymisc
+    - python3-yaml
+  when: ansible_distribution_release != 'wheezy' or
+    item.package not in ["python-mock", "python3-mock", "dh-python", "python-coverage", "python3-coverage"]
+
+- name: Install development packages for Debian7
   apt:
     name: "{{ item.name }}"
     state: present
     default_release: "{{ item.release | default('stable') }}"
   with_items:
-    - {"name": "devscripts"}
     - {"name": "python-mock", "release": "jessie"}
     - {"name": "python3-mock", "release": "jessie"}
-    - {"name": "python-yaml"}
-    - {"name": "python3-yaml"}
-    - {"name": "libyaml-dev"}
-    - {"name": "python-all"}
-    - {"name": "python3-all"}
-    - {"name": "python-coverage"}
-    - {"name": "python-dnspython"}
-    - {"name": "python3-dnspython"}
-    - {"name": "python-nose"}
-    - {"name": "python3-nose"}
     - {"name": "dh-python", "release": "wheezy-backports"}
-    - {"name": "python-pymisc"}
-    - {"name": "python3-pymisc"}
+  when: ansible_distribution_release == 'wheezy'
 
-- name: Install remaining development stuff using PIP (Debian)
+- name: Install remaining development stuff using PIP (Debian7)
   pip:
     executable: "{{ item[1] }}"
     name: "{{ item[0] }}"
@@ -30,3 +43,4 @@
   with_nested:
     - [ 'coverage' ]
     - [ 'pip-3.2' ]
+  when: ansible_distribution_release == 'wheezy'

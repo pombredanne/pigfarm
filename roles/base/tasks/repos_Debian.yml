@@ -1,36 +1,17 @@
 ---
-- name: purge default repos configuration (Debian)
-  file:
-    name: /etc/apt/sources.list
-    state: absent
-  notify: Debian update repos
-
 - name: Set a shortcut for Debian repo name
   set_fact:
     debian_codename="{{'-'.join([ansible_distribution, ansible_distribution_major_version, ansible_architecture])}}"
 
-- name: Set up debian repos lists
-  set_fact:
-    debian_repos:
-      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
-      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
-      - "deb {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
-      - "deb {{ apt_repos[debian_codename] }} jessie main contrib non-free"
-      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} main contrib non-free"
-      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates main contrib non-free"
-      - "deb-src {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main contrib non-free"
-      - "deb-src {{ apt_repos[debian_codename] }} jessie main contrib non-free"
-      - "deb http://security.debian.org/ {{ ansible_distribution_release }}/updates main contrib non-free"
-      - "deb http://security.debian.org/ jessie/updates main contrib non-free"
-
 # netselect-apt: http://ftp.agh.edu.pl/debian/
 - name: add debian stable/testing/backport repositories
-  apt_repository:
-    repo: "{{ item }}"
-    state: present
-    update_cache: no # will be updated in one row
+  template:
+    src: sources.list.{{ ansible_distribution }}.j2
+    dest: /etc/apt/sources.list
+    mode: 0644
+    owner: root
+    group: root
   notify: Debian update repos
-  with_items: debian_repos
 
 - name: select default Debian release to use
   copy:
