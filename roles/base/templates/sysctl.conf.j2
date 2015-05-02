@@ -11,7 +11,7 @@ net.ipv4.tcp_timestamps=0
 net.ipv4.tcp_rfc1337 = 1
 {% if ansible_os_family == 'Debian' %}
 net.ipv4.conf.all.send_redirects=0
-net.ipv6.conf.all.send_redirects=0
+#net.ipv6.conf.all.send_redirects=0
 {% endif %}
 
 # Controls the System Request debugging functionality of the kernel
