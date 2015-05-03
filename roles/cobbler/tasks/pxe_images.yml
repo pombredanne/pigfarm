@@ -13,7 +13,7 @@
 
 - name: Download initrd and vmlinuz files for CentOS
   get_url:
-    url: "{{ yum_repos[item[0]] }}/isolinux/{{ item[1]}}"
+    url: "{{ yum_repos[item[0]] + netinst_uris[item[0]] + item[1]}}"
     dest: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
     owner: root
     group: root
@@ -25,8 +25,7 @@
 
 - name: Download initrd and vmlinuz files for Debian
   get_url:
-    url: >
-      {{ apt_repos[item[0]] + netinst_uris[item[0]] + item[1] }}
+    url: "{{ apt_repos[item[0]] + netinst_uris[item[0]] + item[1] }}"
     dest: "/var/lib/cobbler/pxe/{{ item[0] }}/{{ item[1] }}"
     owner: root
     group: root

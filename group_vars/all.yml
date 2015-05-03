@@ -31,6 +31,8 @@ apt_repos:
   Ubuntu-14-x86_64: ftp://ftp.agh.edu.pl/ubuntu
 
 netinst_uris:
+  CentOS-6-x86_64: /isolinux/
+  CentOS-7-x86_64: /isolinux/
   Debian-7-x86_64: /dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/
   Debian-8-x86_64: /dists/jessie/main/installer-amd64/current/images/netboot/debian-installer/amd64/
   Ubuntu-14-x86_64: /dists/trusty/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
