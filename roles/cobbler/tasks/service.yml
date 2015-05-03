@@ -81,17 +81,21 @@
     mode: 0644
   notify: sync cobbler
 
-- name: Copy helper scripts to PXE server
+- name: Copy cobbler bootstrap script
   template:
-    src: "{{ item }}.j2"
-    dest: "/root/{{ item }}"
+    src: cobbler_bootstrap.sh.j2
+    dest: "/root/cobbler_bootstrap.sh"
     owner: root
     group: root
     mode: 0755
-  with_items:
-    - cobbler_bootstrap.sh
-    - create_CentOS6_vm.sh
-    - create_CentOS7_vm.sh
-    - create_Debian7_vm.sh
-    - create_Debian8_vm.sh
-    - create_Ubuntu14_vm.sh
+
+- name: Copy host adding helper scripts
+  template:
+    src: create_vm.sh.j2
+    dest: '/root/create_{{ "-".join(item.split("-")[:2]) }}_vm.sh'
+    owner: root
+    group: root
+    mode: 0755
+  with_flattened:
+    - apt_repos.keys()
+    - yum_repos.keys()

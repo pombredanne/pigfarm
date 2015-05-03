@@ -1,13 +1,20 @@
-cobbler system add  --name ${1} \
+#!/bin/sh
+
+set -e
+
+HOSTNAME=$1
+IPADDR=$2
+
+cobbler system add  --name $HOSTNAME \
                     --owners admin \
-                    --profile CentOS7 \
+                    --profile {{ "-".join(item.split("-")[:2]) }} \
                     --status production \
                     --netboot-enabled 1 \
                     --kopts proxy=http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128 \
-                    --hostname ${1}.{{ hypervisor }}.vespian.net \
+                    --hostname ${HOSTNAME}.{{ hypervisor }}.vespian.net \
                     --interface eth0 \
                     --mac-address random \
-                    --ip-address ${2} \
-                    --dns-name ${1}.{{ hypervisor }}.vespian.net \
+                    --ip-address $IPADDR \
+                    --dns-name $HOSTNAME.{{ hypervisor }}.vespian.net \
                     --virt-type qemu \
                     --virt-pxe-boot 1

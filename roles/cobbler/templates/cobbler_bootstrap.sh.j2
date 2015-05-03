@@ -30,6 +30,7 @@
     {%- elif d_type == "Ubuntu-14" %}
         {%- set os_version = 'trusty' %}
     {% endif %}
+#Distro type: {{ d_type }}
 cobbler distro add  --name {{ d_type }}-x86_64 \
                     --owners admin \
                     --kernel /var/lib/cobbler/pxe/{{ d_type }}-x86_64/{{ kernel }} \
@@ -39,7 +40,7 @@ cobbler distro add  --name {{ d_type }}-x86_64 \
                     --breed {{ breed }} \
                     --os-version {{ os_version }}
 
-    {% if d_type[:6] in ["Debian", "Ubuntu"] %}
+    {%- if d_type[:6] in ["Debian", "Ubuntu"] %}
 cobbler repo add    --name {{ d_type }}-x86_64 \
                     --owners admin \
                     --arch x86_64 \
@@ -50,7 +51,7 @@ cobbler repo add    --name {{ d_type }}-x86_64 \
                     --apt-components 'main universe' \
                     --apt-dists {{ os_version }} {{ os_version }}-updates {{ os_version }}-security
 
-    {% endif %}
+    {%- endif %}
 cobbler profile add --name {{ d_type }} \
                     --owners admin \
                     --distro {{ d_type }}-x86_64 \
@@ -67,4 +68,4 @@ cobbler profile add --name {{ d_type }} \
                     --virt-ram {{ mem }} \
                     --virt-type qemu \
                     --virt-bridge br_tr
-{%- endfor %}
+{% endfor %}
