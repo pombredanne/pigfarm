@@ -1,4 +1,4 @@
-#### Contents of the preconfiguration file (for wheezy)
+#### Contents of the preconfiguration file
 ## Figure out if we're kickstarting a system or a profile
 #if $getVar('system_name','') != ''
 #set $what = "system"
@@ -89,13 +89,14 @@ d-i mirror/country string manual
 d-i mirror/http/proxy string {{ proxy_settings_http_proxy }}
 
 # Suite to install.
-d-i mirror/suite string wheezy
+#echo "d-i mirror/suite string " + $os_version
 
 ### Account setup
 d-i user-setup/allow-password-weak boolean true
 d-i user-setup/password-weak boolean true
 
 # Root password, either in clear text
+d-i passwd/root-login boolean true
 d-i passwd/root-password password {{ users['root']['pass_plain'] }}
 d-i passwd/root-password-again password {{ users['root']['pass_plain'] }}
 # or encrypted using an MD5 hash.
