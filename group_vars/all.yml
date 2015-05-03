@@ -1,5 +1,7 @@
 ---
 distribution_specific:
+    Ubuntu:
+        sshd_service_name: ssh
     Debian:
         sshd_service_name: ssh
     CentOS:
