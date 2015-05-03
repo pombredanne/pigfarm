@@ -11,8 +11,27 @@
     mode: 0644
     owner: root
     group: root
-  notify: restart Debian networking - restart networking
+  notify: restart Debian networking - split-handler
 
 # debian's "restart" option is deprecated
-- name: restart Debian networking - restart networking
+- name: restart Debian networking - split-handler
+  assert:
+    that: True
+  notify:
+    - restart Debian networking - Debian 7
+    - restart Debian networking - Debian 8
+    - restart Debian networking - Ubuntu 14
+
+- name: restart Debian networking - Debian 7
   shell: /etc/init.d/networking stop && /etc/init.d/networking start
+  when: ansible_distribution_release == 'wheezy'
+
+- name: restart Debian networking - Debian 8
+  service:
+    name: network
+    state: restarted
+  when: ansible_distribution_release == 'jessie'
+
+- name: restart Debian networking - Ubuntu 14
+  shell: ifdown eth0 && ifup eth0
+  when: ansible_distribution_release == 'trusty'
