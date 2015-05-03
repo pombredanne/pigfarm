@@ -322,6 +322,9 @@ popularity-contest popularity-contest/participate boolean false
 # line to prevent this.
 #d-i finish-install/keep-consoles boolean true
 
+# Install grub to MBR of the main disk:
+d-i grub-installer/bootdev string /dev/vda
+
 # Avoid that last message about the install being complete.
 d-i finish-install/reboot_in_progress note
 
