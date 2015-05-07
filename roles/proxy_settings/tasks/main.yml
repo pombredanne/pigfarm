@@ -1,6 +1,9 @@
 ---
 - name: Include global secrets
   include_vars: secrets/group_vars/all
+  tags:
+    - base
+    - secret
 
 - name: Enable proxing through central proxy
   include: enable_proxy.yml
@@ -11,4 +14,7 @@
 
 - name: Disable proxing through central proxy
   include: disable_proxy.yml
+  tags:
+    - base
+    - secret
   when: proxing_enabled is not defined or proxing_enabled == False
