@@ -1,0 +1,12 @@
+---
+- name: install lvm tooling
+  apt:
+    name: lvm2
+    state: present
+
+- name: Create lvm volume group
+  lvg:
+    pvs: /dev/vdb
+    state: present
+    vg: lxc
+
