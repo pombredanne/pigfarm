@@ -3,6 +3,9 @@
 table filter {
 
     chain INPUT {
+        {% if fw_passthrough %}
+        policy ACCEPT;
+        {% else %}
         policy DROP;
 
         # connection tracking
@@ -27,7 +30,7 @@ table filter {
 
         # allow ping
         proto icmp icmp-type echo-request mod connlimit connlimit-above !1 ACCEPT;
-
+        {% endif %}
     }
 
     chain OUTPUT {
@@ -35,7 +38,12 @@ table filter {
     }
 
     chain FORWARD {
+        {%- if fw_passthrough %}
+        policy ACCEPT;
+        {%- else %}
         policy DROP;
+        {%- endif %}
+
     }
 }
 
