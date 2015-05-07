@@ -1,4 +1,11 @@
 ---
+- name: Stop the resolvconf service
+  service:
+    name: resolvconf
+    state: stopped
+    enabled: false
+  when: ansible_distribution == "Ubuntu"
+
 - name: Create networking configuration snippets dir (Debian)
   file:
     path: /etc/network/interfaces.d/
