@@ -15,7 +15,7 @@
 #
 Port 22
 #AddressFamily any
-ListenAddress {{ ansible_eth0.ipv4.address }}
+ListenAddress {{ ansible_default_ipv4.address }}
 {%- if inventory_hostname in groups['pxeservers'] %}
 ListenAddress {{ ansible_eth1.ipv4.address }}
 {%- endif %}

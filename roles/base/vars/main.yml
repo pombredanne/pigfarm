@@ -2,6 +2,7 @@
 base_common_packages:
     - acpid
     - binutils
+    - bridge-utils
     - dstat
     - git
     - hping3

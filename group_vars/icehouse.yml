@@ -1,0 +1,3 @@
+---
+base_bridge_eth0: true
+base_bridge_eth0_bridge_name: br-mgmt
