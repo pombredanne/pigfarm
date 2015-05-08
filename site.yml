@@ -17,6 +17,10 @@
   roles:
     - openstack_base
 
+- hosts: i-haproxy
+  roles:
+    - haproxy_vips
+
 - hosts: hypervisors
   sudo: True
   connection: local

@@ -17,15 +17,13 @@ cinder2.tr
 logger1.tr
 network1.tr
 
-[icehouse]
-infra1.tr
-infra2.tr
-infra3.tr
-compute1.tr
-cinder1.tr
-cinder2.tr
-logger1.tr
-network1.tr
+[icehouse:children]
+i-infra
+i-compute
+i-cinder
+i-logger
+i-haproxy
+i-network
 
 [i-infra]
 infra1.tr
@@ -41,6 +39,9 @@ cinder2.tr
 
 [i-logger]
 logger1.tr
+
+[i-haproxy]
+haproxy1.tr
 
 [i-network]
 network1.tr

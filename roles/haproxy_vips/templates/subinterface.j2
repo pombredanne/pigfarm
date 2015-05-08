@@ -1,0 +1,4 @@
+auto {{ item.ifname }}
+iface {{ item.ifname }} inet static
+address {{ item.ipaddr }}
+netmask {{ item.netmask }}
