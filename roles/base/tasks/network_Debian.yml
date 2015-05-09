@@ -15,10 +15,19 @@
     group: root
   notify: "restart Debian networking"
 
+- name: Upload main netconf inclusion snippet
+  copy:
+    dest: /etc/network/interfaces
+    content: "source /etc/network/interfaces.d/*"
+    mode: 0750
+    owner: root
+    group: root
+  notify: "restart Debian networking"
+
 - name: Upload lo network configuration snippet (Debian)
   copy:
     src: interfaces.lo.debian
-    dest: /etc/network/interfaces.d/interfaces.lo
+    dest: /etc/network/interfaces.d/interfaces.lo.cfg
     mode: 0644
     owner: root
     group: root
@@ -27,7 +36,7 @@
 - name: Upload eth0 network configuration snippet (Debian)
   template:
     src: interfaces.eth0.debian.j2
-    dest: /etc/network/interfaces.d/interfaces.eth0
+    dest: /etc/network/interfaces.d/interfaces.eth0.cfg
     mode: 0644
     owner: root
     group: root

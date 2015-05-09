@@ -5,16 +5,6 @@
     state: restarted
 
 - name: restart Debian networking
-  assemble:
-    src: /etc/network/interfaces.d/
-    dest: /etc/network/interfaces
-    mode: 0644
-    owner: root
-    group: root
-  notify: restart Debian networking - split-handler
-
-# debian's "restart" option is deprecated
-- name: restart Debian networking - split-handler
   assert:
     that: True
   notify:
