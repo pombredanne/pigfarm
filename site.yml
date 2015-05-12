@@ -21,6 +21,11 @@
   roles:
     - haproxy_vips
 
+- hosts: cass
+  roles:
+    - ANXS.oracle-jdk
+    - AiiR42.cassandra
+
 - hosts: hypervisors
   sudo: True
   connection: local
