@@ -3,27 +3,15 @@ localhost
 
 [trusted]
 peppa.tr
-c7t.tr
 c6t.tr
+c7t.tr
 d7t.tr
-u14t.tr
 d8t.tr
-infra1.tr
-infra2.tr
-infra3.tr
-compute1.tr
-cinder1.tr
-cinder2.tr
-logger1.tr
-network1.tr
+u14t.tr
 
-[icehouse:children]
+[juno:children]
 i-infra
 i-compute
-i-cinder
-i-logger
-i-haproxy
-i-network
 
 [i-infra]
 infra1.tr
@@ -32,19 +20,7 @@ infra3.tr
 
 [i-compute]
 compute1.tr
-
-[i-cinder]
-cinder1.tr
-cinder2.tr
-
-[i-logger]
-logger1.tr
-
-[i-haproxy]
-haproxy1.tr
-
-[i-network]
-network1.tr
+compute2.tr
 
 [pxeservers]
 peppa.tr

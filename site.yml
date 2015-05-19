@@ -1,5 +1,5 @@
 ---
-- hosts: all:!hypervisors
+- hosts: all:!hypervisors:!juno
   roles:
     - proxy_settings
     - base
@@ -13,22 +13,18 @@
     - cobbler
     - git_mirror
 
-- hosts: icehouse
-  roles:
-    - openstack_base
-
-- hosts: i-haproxy
-  roles:
-    - haproxy_vips
-
-- hosts: cass
-  roles:
-    - ANXS.oracle-jdk
-    - AiiR42.cassandra
-
 - hosts: hypervisors
   sudo: True
   connection: local
   roles:
     - dns
     - koan_patching
+
+- hosts: juno
+  roles:
+    - base
+
+- hosts: cass
+  roles:
+    - ANXS.oracle-jdk
+    - AiiR42.cassandra
