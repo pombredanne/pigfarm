@@ -11,7 +11,7 @@
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set prefix = 'tr' %}
 {% else %}
-    {%- set obj = nework_configuration[hypervisor]['untrusted'] %}
+    {%- set obj = nework_configuration[hypervisor]['unsafe'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set prefix = 'us' %}
 {% endif %}

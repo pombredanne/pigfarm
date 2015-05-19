@@ -270,7 +270,7 @@ manage_forward_zones:
 
 manage_reverse_zones:
   - "{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}"
-  - "{{ '.'.join(nework_configuration[hypervisor]['untrusted']['net'].split('.')[:3]) }}"
+  - "{{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}"
 
 # if using cobbler with manage_dhcp, put the IP address
 # of the cobbler server here so that PXE booting guests can find it

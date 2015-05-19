@@ -2,7 +2,7 @@ table filter {
     chain "SERVICES" {
         proto tcp dport ( 22 ) @subchain "GIT_MIRROR_CLIENTS" {
             saddr {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }} ACCEPT;
-            saddr {{ nework_configuration[hypervisor]['untrusted']['net'] }}/{{ nework_configuration[hypervisor]['untrusted']['mask_short'] }} ACCEPT;
+            saddr {{ nework_configuration[hypervisor]['unsafe']['net'] }}/{{ nework_configuration[hypervisor]['unsafe']['mask_short'] }} ACCEPT;
         }
     }
 }

@@ -16,7 +16,7 @@
 
     # Hosts on the same hypervisor:
     acl localnet_trusted src {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }}
-    acl localnet_untrusted src {{ nework_configuration[hypervisor]['untrusted']['net'] }}/{{ nework_configuration[hypervisor]['untrusted']['mask_short'] }}
+    acl localnet_unsafe src {{ nework_configuration[hypervisor]['unsafe']['net'] }}/{{ nework_configuration[hypervisor]['unsafe']['mask_short'] }}
 
     # Connection related:
     acl SSL_ports port 443

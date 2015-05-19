@@ -1,0 +1,5 @@
+proxy_settings_http_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2:3128"
+proxy_settings_ftp_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2:3128"
+proxy_settings_https_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2:3128"
+proxy_settings_yum_proxy: "http://{{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2:3128"
+

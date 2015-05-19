@@ -8,12 +8,12 @@ options {
         listen-on port 53 {
             127.0.0.1;
             {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
-            {{ '.'.join(nework_configuration[hypervisor]['untrusted']['net'].split('.')[:3]) }}.2;
+            {{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2;
         };
         allow-query {
             localhost;
             trusted_net;
-            untrusted_net;
+            unsafe_net;
 {% for host in trusted_hosts[hypervisor] %}
             {{ host  }};
 {% endfor %}
@@ -105,7 +105,7 @@ acl "trusted_net" {
     {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
 };
 
-acl "untrusted_net" {
+acl "unsafe_net" {
     {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
 };
 

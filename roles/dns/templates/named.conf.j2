@@ -105,7 +105,7 @@ include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
 
 {% set trusted_net_octets = nework_configuration[hypervisor]['trusted']['net'].split('.') %}
-{% set untrusted_net_octets = nework_configuration[hypervisor]['untrusted']['net'].split('.') %}
+{% set unsafe_net_octets = nework_configuration[hypervisor]['unsafe']['net'].split('.') %}
 
 {% for type in ['tr', 'us'] %}
 zone "{{ type }}.{{ hypervisor }}.vespian.net." {
@@ -125,11 +125,11 @@ zone "{{ trusted_net_octets[2] }}.{{ trusted_net_octets[1] }}.{{ trusted_net_oct
     };
 };
 
-zone "{{ untrusted_net_octets[2] }}.{{ untrusted_net_octets[1] }}.{{ untrusted_net_octets[0] }}.in-addr.arpa." {
+zone "{{ unsafe_net_octets[2] }}.{{ unsafe_net_octets[1] }}.{{ unsafe_net_octets[0] }}.in-addr.arpa." {
     type forward;
     forward only;
     forwarders {
-       {{ '.'.join(untrusted_net_octets[:3]) }}.2;
+       {{ '.'.join(unsafe_net_octets[:3]) }}.2;
     };
 };
 
