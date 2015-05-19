@@ -9,16 +9,16 @@ d7t.tr
 d8t.tr
 u14t.tr
 
-[juno:children]
-i-infra
-i-compute
+[openstack:children]
+infra
+compute
 
-[i-infra]
+[infra]
 infra1.tr
 infra2.tr
 infra3.tr
 
-[i-compute]
+[compute]
 compute1.tr
 compute2.tr
 

@@ -1,5 +1,5 @@
 ---
-- hosts: all:!hypervisors:!juno
+- hosts: all:!hypervisors:!openstack
   roles:
     - proxy_settings
     - base
@@ -20,7 +20,7 @@
     - dns
     - koan_patching
 
-- hosts: juno
+- hosts: openstack
   roles:
     - base
 
