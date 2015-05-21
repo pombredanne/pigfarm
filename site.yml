@@ -1,9 +1,9 @@
 ---
-- hosts: all:!hypervisors:!openstack
+- hosts: all:!hypervisors
   roles:
-    - proxy_settings
+    - { role: proxy_settings, when: "minimal_base is not defined or minimal_base == False" }
     - base
-    - fw
+    - { role: fw, when: "minimal_base is not defined or minimal_base == False" }
 
 - hosts: pxeservers
   roles:
