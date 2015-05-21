@@ -7,6 +7,7 @@
     owner: root
     group: root
   notify: sysctl reload
+  when: minimal_base == False
 
 - name: noop scheduler by default for all virtual drives
   copy:

@@ -1,3 +1,5 @@
 ---
 base_bridge_eth0: false
 base_bridge_eth0_bridge_name: br0
+
+minimal_base: False

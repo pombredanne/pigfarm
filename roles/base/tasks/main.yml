@@ -17,13 +17,13 @@
   tags:
     - base
     - net
-  when: ansible_os_family == 'Debian'
+  when: ansible_os_family == 'Debian' and minimal_base == False
 
 - include: "network_RedHat.yml"
   tags:
     - base
     - net
-  when: ansible_os_family == 'RedHat'
+  when: ansible_os_family == 'RedHat' and minimal_base == False
 
 - include: "repos_Debian.yml"
   tags:
