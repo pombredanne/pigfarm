@@ -2,10 +2,13 @@
 distribution_specific:
     Ubuntu:
         sshd_service_name: ssh
+        sudo_group_name: sudo
     Debian:
         sshd_service_name: ssh
+        sudo_group_name: sudo
     CentOS:
         sshd_service_name: sshd
+        sudo_group_name: wheel
 
 git_mirror_repos:
   ctrlp.vim:

@@ -12,6 +12,7 @@
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
     group: "{{ item.key }}"
+    groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] }}'
     createhome: yes
     state: present
   with_dict: users

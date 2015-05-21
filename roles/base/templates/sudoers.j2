@@ -105,12 +105,7 @@ root	ALL=(ALL) 	ALL
 # %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS
 
 ## Allows people in group wheel to run all commands
-{% if ansible_os_family == 'RedHat' %}
-%wheel	ALL=(ALL)	ALL
-{% elif ansible_os_family == 'Debian' %}
-# Allow members of group sudo to execute any command
-%sudo   ALL=(ALL:ALL) ALL
-{% endif %}
+%{{ distribution_specific[ansible_distribution]["sudo_group_name"] }} ALL=(ALL) ALL
 
 ## Same thing without a password
 # %wheel	ALL=(ALL)	NOPASSWD: ALL
