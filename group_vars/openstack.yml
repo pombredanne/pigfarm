@@ -1,2 +1,3 @@
 ---
 minimal_base: True
+proxing_enabled: False
