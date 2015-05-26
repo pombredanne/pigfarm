@@ -55,6 +55,7 @@ base_debian_common_packages:
     - pbzip2
     - python-apt
     - python-selinux
+    - vlan
 
 base_rhel6_packages:
     - nc
