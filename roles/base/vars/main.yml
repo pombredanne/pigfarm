@@ -29,7 +29,6 @@ base_common_packages:
     - sysstat
     - tcpdump
     - telnet
-    - tmux
     - tree
     - wget
     - xfsprogs

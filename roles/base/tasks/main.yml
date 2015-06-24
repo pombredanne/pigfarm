@@ -72,6 +72,10 @@
   tags:
     - base
 
+- include: tmux.yml
+  tags:
+    - base
+
 - include: zsh.yml
   tags:
     - base
