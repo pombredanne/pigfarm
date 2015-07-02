@@ -26,20 +26,24 @@
 
 - name: set ssh-keys for users permitted to login
   authorized_key:
-    user: "{{ item.key }}"
+    user: '{{ item[0] }}'
     manage_dir: yes
     state: present
-    key: "{{ login_key[hypervisor] }}"
-  with_dict: users
-  when: item.key == 'root' or item.value['ssh_login_permitted'] == True
+    key: "{{ login_key[item[1]] }}"
+  with_nested:
+    - users.keys()
+    - login_key.keys()
+  when: item[0] == 'root' or users[item[0]]['ssh_login_permitted'] == True
 
 - name: remove ssh-keys from users denied ssh login
   authorized_key:
-    user: "{{ item.key }}"
+    user: '{{ item[0] }}'
     manage_dir: yes
     state: absent
-  with_dict: users
-  when: item.key != 'root' and item.value['ssh_login_permitted'] == False
+  with_nested:
+    - users.keys()
+    - login_key.keys()
+  when: "item[0] != 'root' and users[item[0]]['ssh_login_permitted'] == False"
 
 - name: upload private key for git_mirror repos
   copy:

@@ -12,6 +12,7 @@
   tags:
     - base
     - secret
+    - users
 
 - include: "network_Debian.yml"
   tags:
