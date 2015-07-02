@@ -24,7 +24,6 @@
   roles:
     - base
 
-- hosts: cass
+- hosts: d8t.tr
   roles:
-    - ANXS.oracle-jdk
-    - AiiR42.cassandra
+    - alexeymedvedchikov.rabbitmq
