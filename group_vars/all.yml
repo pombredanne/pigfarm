@@ -34,12 +34,3 @@ apt_repos:
   Debian-7-x86_64: http://ftp.agh.edu.pl/debian
   Debian-8-x86_64: http://ftp.agh.edu.pl/debian
   Ubuntu-14-x86_64: ftp://ftp.agh.edu.pl/ubuntu
-
-netinst_uris:
-  CentOS-6-x86_64: /isolinux/
-  CentOS-7-x86_64: /isolinux/
-  Debian-7-x86_64: /dists/wheezy/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-  Debian-8-x86_64: /dists/jessie/main/installer-amd64/current/images/netboot/debian-installer/amd64/
-  Ubuntu-14-x86_64: /dists/trusty/main/installer-amd64/current/images/netboot/ubuntu-installer/amd64/
-
-proxing_enabled: True

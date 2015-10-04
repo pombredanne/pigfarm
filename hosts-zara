@@ -1,8 +1,16 @@
 [hypervisors]
 localhost
 
+[vms:children]
+trusted
+isolated
+jumphosts
+pxeservers
+
 [trusted]
 
 [pxeservers]
 
 [jumphosts]
+
+[isolated]

@@ -1,6 +1,12 @@
 [hypervisors]
 localhost
 
+[vms:children]
+trusted
+isolated
+jumphosts
+pxeservers
+
 [trusted]
 peppa.tr
 c7t.tr
@@ -9,3 +15,7 @@ d7t.tr
 
 [pxeservers]
 peppa.tr
+
+[jumphosts]
+
+[isolated]

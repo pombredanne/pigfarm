@@ -1,9 +1,20 @@
 ---
-- hosts: all:!hypervisors
+- hosts: all
   roles:
-    - { role: proxy_settings, when: "minimal_base is not defined or minimal_base == False" }
-    - base
-    - { role: fw, when: "minimal_base is not defined or minimal_base == False" }
+    - base_all
+
+- hosts: hypervisors
+  sudo: True
+  connection: local
+  roles:
+    - base_hypervisor
+    - dns
+    - koan_patching
+
+- hosts: vms
+  roles:
+    - proxy_settings
+    - base_vm
 
 - hosts: pxeservers
   roles:
@@ -12,14 +23,3 @@
     - repo
     - cobbler
     - git_mirror
-
-- hosts: hypervisors
-  sudo: True
-  connection: local
-  roles:
-    - dns
-    - koan_patching
-
-- hosts: d8t.tr
-  roles:
-    - alexeymedvedchikov.rabbitmq
