@@ -1,8 +1,8 @@
 [hypervisors]
+localhost
 
 [trusted]
 
 [pxeservers]
 
 [jumphosts]
-jump

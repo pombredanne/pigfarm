@@ -9,18 +9,5 @@ d7t.tr
 d8t.tr
 u14t.tr
 
-[openstack:children]
-infra
-compute
-
-[infra]
-infra1.tr
-infra2.tr
-infra3.tr
-
-[compute]
-compute1.tr
-compute2.tr
-
 [pxeservers]
 peppa.tr
