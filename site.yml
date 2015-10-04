@@ -20,10 +20,6 @@
     - dns
     - koan_patching
 
-- hosts: openstack
-  roles:
-    - base
-
 - hosts: d8t.tr
   roles:
     - alexeymedvedchikov.rabbitmq
