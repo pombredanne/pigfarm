@@ -1,0 +1,16 @@
+---
+- name: Install tmux package
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: tmux
+    state: present
+
+- name: Upload tmux config file
+  template:
+    src: tmux.conf.j2
+    dest: "/{{ item if item == 'root' else 'home/' + item }}/.tmux.conf"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0640
+  with_items: users.keys()
+  when: item == 'root' or users[item]['ssh_login_permitted'] == True

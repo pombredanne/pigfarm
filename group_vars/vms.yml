@@ -1,0 +1,19 @@
+---
+base_all_extra_removed_packages:
+  common:
+    - cups
+  RedHat:
+    common:
+      - lm_sensors
+    Centos:
+      common: []
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common:
+      - lm-sensors

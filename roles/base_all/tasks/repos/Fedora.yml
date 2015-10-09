@@ -1,0 +1,10 @@
+---
+- name: install RPM Fusion(free) repository
+  yum:
+    name: "http://download1.rpmfusion.org/free/fedora/rpmfusion-free-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present
+
+- name: install RPM Fusion(non-free) repository
+  yum:
+    name: "http://download1.rpmfusion.org/free/fedora/rpmfusion-nonfree-release-{{ ansible_distribution_major_version }}.noarch.rpm"
+    state: present

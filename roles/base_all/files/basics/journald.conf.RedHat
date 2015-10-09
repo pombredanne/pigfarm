@@ -1,0 +1,4 @@
+[Journal]
+Compress=yes
+SystemMaxUse=200m
+MaxRetentionSec=28day

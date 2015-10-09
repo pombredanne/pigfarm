@@ -3,23 +3,23 @@
   roles:
     - base_all
 
-- hosts: hypervisors
-  sudo: True
-  connection: local
-  roles:
-    - base_hypervisor
-    - dns
-    - koan_patching
-
-- hosts: vms
-  roles:
-    - proxy_settings
-    - base_vm
-
-- hosts: pxeservers
-  roles:
-    - apache2_base
-    - proxy
-    - repo
-    - cobbler
-    - git_mirror
+#- hosts: hypervisors
+#  sudo: True
+#  connection: local
+#  roles:
+#    - base_hypervisor
+#    - dns
+#    - koan_patching
+#
+#- hosts: vms
+#  roles:
+#    - proxy_settings
+#    - base_vm
+#
+#- hosts: pxeservers
+#  roles:
+#    - apache2_base
+#    - proxy
+#    - repo
+#    - cobbler
+#    - git_mirror

@@ -1,0 +1,8 @@
+{% for type in ['deb', 'deb-src'] %}
+{{ type }} {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-backports main restricted universe multiverse
+{% for repo_type in ["main restricted", "multiverse", "universe"] %}
+{{ type }} {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }} {{ repo_type }}
+{{ type }} {{ apt_repos[debian_codename] }} {{ ansible_distribution_release }}-updates {{ repo_type }}
+{{ type }} http://security.ubuntu.com/ubuntu {{ ansible_distribution_release }}-security {{ repo_type }}
+{% endfor %}
+{% endfor %}

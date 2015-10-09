@@ -1,0 +1,45 @@
+---
+- name: noop scheduler for SSDs, deadline for HDD
+  template:
+    src: basics/disk_schedulers.rules.j2
+    dest: /etc/udev/rules.d/60-schedulers.rules
+    mode: 0644
+    owner: root
+    group: root
+  notify: udev reload
+
+- name: remove motd
+  copy:
+    content: ""
+    dest: /etc/motd
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Normalize sudo configuration and enable pipelining for ansible
+  template:
+    src: basics/sudoers.j2
+    dest: /etc/sudoers
+    mode: 0440
+    owner: root
+    group: root
+
+- name: Configure journalctl (RHEL/CentOS)
+  copy:
+    src: basics/journald.conf.RedHat
+    dest: /etc/systemd/journald.conf
+    mode: 0640
+    owner: root
+    group: root
+  notify: restart journalctl
+  when: |
+    ansible_os_family == 'RedHat' and
+    (ansible_distribution == 'Fedora' or
+        (ansible_ditstribution == 'CentOS' and
+            ansible_distribution_major_version == '7'))
+
+- name: Make sure acpid demon is running
+  service:
+    name: acpid
+    state: started
+    enabled: true

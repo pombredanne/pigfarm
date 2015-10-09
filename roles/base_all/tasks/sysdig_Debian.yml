@@ -1,0 +1,24 @@
+---
+- name: import Draios repository key (Debian)
+  apt_key:
+    url: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
+    state: present
+
+- name: install Draios repository (Debian)
+  copy:
+    src: draios.list.debian
+    dest: /etc/apt/sources.list.d/draios.list
+    mode: 0644
+    owner: root
+    group: root
+
+- name: Install kernel headers for Debian
+  apt:
+    name: "linux-headers-{{ ansible_kernel }}"
+    state: present
+
+- name: Install sysdig (Debian)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: sysdig
+    state: present

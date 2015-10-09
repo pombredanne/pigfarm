@@ -1,0 +1,33 @@
+---
+- name: Set a shortcut for Debian repo name
+  set_fact:
+    debian_codename="{{'-'.join([ansible_distribution, ansible_distribution_major_version, ansible_architecture])}}"
+
+# netselect-apt: http://ftp.agh.edu.pl/debian/
+- name: add debian stable/testing/backport repositories
+  template:
+    src: repos/sources.list.{{ ansible_distribution }}.j2
+    dest: /etc/apt/sources.list
+    mode: 0644
+    owner: root
+    group: root
+  notify: Debian update repos
+
+- name: select default Debian release to use
+  copy:
+    content: 'APT::Default-Release "{{ ansible_distribution_release }}";'
+    dest: /etc/apt/apt.conf.d/99defaultrelease
+    mode: 0644
+    owner: root
+    group: root
+
+- name: bump backports priority to 750 (Debian)
+  template:
+    src: repos/backports.pref.debian.j2
+    dest: /etc/apt/preferences.d/backports.pref
+    mode: 0644
+    owner: root
+    group: root
+
+# Update repository data _NOW_
+- meta: flush_handlers

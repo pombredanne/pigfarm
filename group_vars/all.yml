@@ -9,6 +9,9 @@ distribution_specific:
     CentOS:
         sshd_service_name: sshd
         sudo_group_name: wheel
+    Fedora:
+        sshd_service_name: sshd
+        sudo_group_name: wheel
 
 git_mirror_repos:
   ctrlp.vim:

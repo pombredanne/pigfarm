@@ -1,0 +1,93 @@
+---
+base_all_added_packages:
+  common:
+    - acpid
+    - binutils
+    - bridge-utils
+    - dstat
+    - git
+    - hping3
+    - htop
+    - iotop
+    - iproute
+    - iptables
+    - less
+    - links
+    - lsof
+    - man
+    - ncdu
+    - net-tools
+    - patch
+    - pigz
+    - psmisc
+    - pv
+    - python
+    - python-pycurl
+    - rsync
+    - strace
+    - sudo
+    - sysstat
+    - tcpdump
+    - telnet
+    - tree
+    - wget
+    - xfsprogs
+  RedHat:
+    common:
+      - bind-utils
+      - libselinux-python
+      - mtr
+      - yum-utils
+      - setools-console
+      - pykickstart
+      - policycoreutils-python
+      - iputils
+    Centos:
+      common: []
+      6:
+        - nc
+        - pbzip2
+      7:
+        - nmap-ncat
+        # - pbzip2 # not in EPEL yet
+    Fedora:
+      common:
+        - bind-utils
+        - mtr
+        - policycoreutils-python
+        - iputils
+      21: []
+      22: []
+      23: []
+  Debian:
+    common:
+      - aptitude
+      - apt-file
+      - bind9-host
+      - bmon
+      - dnsutils
+      - mtr-tiny
+      - netcat
+      - pbzip2
+      - python-apt
+      - python-selinux
+      - vlan
+
+base_all_removed_packages:
+  common: []
+  RedHat:
+    common: []
+    Centos:
+      common:
+        - iprutils
+        - autofs
+        - tuned
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common: []
