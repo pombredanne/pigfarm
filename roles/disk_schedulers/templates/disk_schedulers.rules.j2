@@ -1,0 +1,12 @@
+{% if inventory_hostname in groups['hypervisors'] %}
+# set noop scheduler for non-rotating disks
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="0", ATTR{queue/scheduler}="noop"
+
+# set deadline scheduler for rotating disks
+ACTION=="add|change", KERNEL=="sd[a-z]", ATTR{queue/rotational}=="1", ATTR{queue/scheduler}="deadline"
+{% elif inventory_hostname in groups['vms'] %}
+# set noop for virtual disks:
+ACTION=="add|change", KERNEL=="[sv]d[a-z]", ATTR{queue/scheduler}="noop"
+{% else %}
+# Host did not match any group, leaving blank
+{% endif %}

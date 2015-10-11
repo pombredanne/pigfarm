@@ -1,23 +1,33 @@
 ---
 - hosts: all
+  sudo: True
   roles:
     - base_all
 
-#- hosts: hypervisors
-#  sudo: True
-#  connection: local
-#  roles:
-#    - base_hypervisor
+- hosts: hypervisors
+  sudo: True
+  roles:
+    - base_hypervisor
+    - sshd_config
+    - disk_schedulers
 #    - dns
 #    - koan_patching
 #
-#- hosts: vms
-#  roles:
-#    - proxy_settings
-#    - base_vm
-#
+- hosts: vms
+  sudo: True
+  roles:
+    - base_vms
+    - sshd_config
+    - disk_schedulers
+
+- hosts: trusted:isolated
+  sudo: True
+  roles:
+    - proxy_settings
+
 #- hosts: pxeservers
-#  roles:
+  #sudo: True
+  #roles:
 #    - apache2_base
 #    - proxy
 #    - repo

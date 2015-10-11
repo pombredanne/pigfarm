@@ -7,3 +7,6 @@
     owner: root
     group: root
   notify: restart sshd
+  tags:
+    - base
+    - net

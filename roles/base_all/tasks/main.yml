@@ -17,14 +17,9 @@
   tags:
     - base
 
-- include: basics.yml
+- include: misc.yml
   tags:
     - base
-
-- include: ssh.yml
-  tags:
-    - base
-    - net
 
 #- include: python.yml
 #  tags:

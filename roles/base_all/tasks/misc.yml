@@ -1,13 +1,4 @@
 ---
-- name: noop scheduler for SSDs, deadline for HDD
-  template:
-    src: basics/disk_schedulers.rules.j2
-    dest: /etc/udev/rules.d/60-schedulers.rules
-    mode: 0644
-    owner: root
-    group: root
-  notify: udev reload
-
 - name: remove motd
   copy:
     content: ""

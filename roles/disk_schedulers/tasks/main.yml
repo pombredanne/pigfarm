@@ -1,0 +1,9 @@
+---
+- name: Upload scheduler rules for disks
+  template:
+    src: disk_schedulers.rules.j2
+    dest: /etc/udev/rules.d/60-disk_schedulers.rules
+    mode: 0640
+    owner: root
+    group: root
+  notify: udev reload

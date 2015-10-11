@@ -1,0 +1,18 @@
+---
+- name: add local RPM repos (RHEL)
+  template:
+      src: local.repo.j2
+      dest: /etc/yum.repos.d/local.repo
+      mode: 0644
+      owner: root
+      group: root
+  tags: secret
+  when: |
+    inventory_hostnaname not in groups['pxeservers'] and
+    ansible_os_family == 'RedHat'
+
+- name: remove cobbler provided repositories (RHEL)
+  file:
+    name: cobbler-config.repo
+    state: absent
+  when: ansible_os_family == 'RedHat'
