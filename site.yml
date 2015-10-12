@@ -3,6 +3,7 @@
   sudo: True
   roles:
     - base_all
+    - sysdig
 
 - hosts: hypervisors
   sudo: True

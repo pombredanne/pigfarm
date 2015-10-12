@@ -21,26 +21,15 @@
   tags:
     - base
 
-#- include: python.yml
-#  tags:
-#    - base
-#
-#- include: "sysdig_Debian.yml"
-#  tags:
-#    - base
-#  when: ansible_os_family == 'Debian'
-#
-#- include: "sysdig_RedHat.yml"
-#  tags:
-#    - base
-#  when: ansible_os_family == 'RedHat'
-#
-## User specific:
-#- include: users.yml
-#  tags:
-#    - base
-#    - users
-#
+- include: python/python.yml
+  tags:
+    - base
+
+- include: users.yml
+  tags:
+    - base
+    - users
+
 #- include: git.yml
 #  tags:
 #    - base

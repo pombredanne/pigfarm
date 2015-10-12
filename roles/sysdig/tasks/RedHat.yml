@@ -1,12 +1,12 @@
 ---
-- name: import Draios repository key (RHEL/CentOS)
+- name: import Draios repository key (RHEL/CentOS/Fedora)
   rpm_key:
     key: https://s3.amazonaws.com/download.draios.com/DRAIOS-GPG-KEY.public
     state: present
 
-- name: install Draios repository (RHEL/CentOS)
+- name: install Draios repository (RHEL/CentOS/Fedora)
   copy:
-    src: draios.repo.centos
+    src: draios.repo.RedHat
     dest: /etc/yum.repos.d/draios.repo
     mode: 0644
     owner: root
