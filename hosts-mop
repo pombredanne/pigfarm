@@ -1,20 +1,20 @@
 [hypervisors]
 localhost ansible_connection=local
 
+[jumphosts]
+
 [vms:children]
-trusted
 isolated
 pxeservers
+trusted
+
+[isolated]
+
+[pxeservers]
+peppa.tr
 
 [trusted]
 peppa.tr
 c7t.tr
 c6t.tr
 d7t.tr
-
-[pxeservers]
-peppa.tr
-
-[jumphosts]
-
-[isolated]

@@ -20,6 +20,7 @@
     - base_vms
     - sshd_config
     - disk_schedulers
+    - user_setup
 
 - hosts: trusted:isolated
   sudo: True

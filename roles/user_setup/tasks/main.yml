@@ -1,0 +1,10 @@
+---
+- name: Include secrets
+  include_vars: secrets/group_vars/all
+  tags:
+    - secret
+
+- include: users.yml
+  tags:
+    - users
+    - secret

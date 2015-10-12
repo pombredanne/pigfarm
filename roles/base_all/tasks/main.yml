@@ -25,15 +25,10 @@
   tags:
     - base
 
-- include: users.yml
+- include: git.yml
   tags:
     - base
-    - users
 
-#- include: git.yml
-#  tags:
-#    - base
-#
 #- include: tmux.yml
 #  tags:
 #    - base
