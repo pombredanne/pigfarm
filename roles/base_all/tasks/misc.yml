@@ -1,4 +1,12 @@
 ---
+- name: create folder for shared stuff
+  file:
+    state: directory
+    owner: root
+    group: root
+    name: /home/shared/
+    mode: 0755
+
 - name: remove motd
   copy:
     content: ""

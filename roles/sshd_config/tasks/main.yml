@@ -10,3 +10,13 @@
   tags:
     - base
     - net
+
+- name: create sftp user and shared folder
+  user:
+    name: sftp
+    home: /home/shared/sftp/
+    createhome: yes
+    password: "{{ sftp_server_pass }}"
+    shell: /usr/sbin/nologin
+    state: present
+  when: "{{ feature_sets[ansible_hostname]['sftp_server'] | default(false)}}"

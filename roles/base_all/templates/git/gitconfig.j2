@@ -1,6 +1,6 @@
 [user]
-	name = Vespian
-	email = vespian@wp.pl
+	name = {{ git_identification[ansible_hostname]['name'] }}
+	email = {{ git_identification[ansible_hostname]['email'] }}
 [core]
 	excludesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitignore
 [color]

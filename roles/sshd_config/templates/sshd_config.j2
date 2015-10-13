@@ -172,7 +172,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
     {%- do allowed_users.append('git') %}
 {%- endif %}
 
-{%- if sftp_server[ansible_hostname] | default(false) %}
+{%- if feature_sets[ansible_hostname]["sftp_server"] | default(false) %}
     {%- do allowed_users.append('sftp') %}
 {%- endif %}
 
@@ -185,7 +185,7 @@ AllowUsers {{ allowed_users | join(' ') }}
 #	PermitTTY no
 #	ForceCommand cvs server
 
-{% if sftp_server[ansible_hostname] | default(false) -%}
+{% if feature_sets[ansible_hostname]["sftp_server"] -%}
 Match user sftp
 	PasswordAuthentication yes
 	PubkeyAuthentication no

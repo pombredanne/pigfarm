@@ -1,5 +1,5 @@
 ---
-- name: Install git (Debian)
+- name: Install git
   action:
     module: "{{ ansible_pkg_mgr }}"
     name: git
