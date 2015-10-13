@@ -17,7 +17,7 @@
 
 - name: Normalize sudo configuration and enable pipelining for ansible
   template:
-    src: basics/sudoers.j2
+    src: misc/sudoers.j2
     dest: /etc/sudoers
     mode: 0440
     owner: root
@@ -25,7 +25,7 @@
 
 - name: Configure journalctl (RHEL/CentOS)
   copy:
-    src: basics/journald.conf.RedHat
+    src: misc/journald.conf.RedHat
     dest: /etc/systemd/journald.conf
     mode: 0640
     owner: root

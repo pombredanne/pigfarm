@@ -25,8 +25,8 @@
   tags: secret
 
 - name: Upload zshrc file
-  copy:
-    src: zshrc
+  template:
+    src: zshrc.j2
     dest: "/{{ item if item == 'root' else 'home/' + item }}/.zshrc"
     mode: 0640
     owner: "{{ item }}"
@@ -34,15 +34,15 @@
   with_items: users.keys()
   when: users[item]['shell'] == '/bin/zsh'
 
-- name: Upload custom oh-my-zsh theme
-  copy:
-    src: vesclean.zsh-theme
-    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/themes/vesclean.zsh-theme"
-    mode: 0640
-    owner: "{{ item }}"
-    group: "{{ item }}"
-  with_items: users.keys()
-  when: users[item]['shell'] == '/bin/zsh'
+#- name: Upload custom oh-my-zsh theme
+  #copy:
+    #src: vesclean.zsh-theme
+    #dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/themes/vesclean.zsh-theme"
+    #mode: 0640
+    #owner: "{{ item }}"
+    #group: "{{ item }}"
+  #with_items: users.keys()
+  #when: users[item]['shell'] == '/bin/zsh'
 
 - name: Set users shell
   user:

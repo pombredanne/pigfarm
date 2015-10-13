@@ -19,4 +19,6 @@
     password: "{{ sftp_server_pass }}"
     shell: /usr/sbin/nologin
     state: present
+    uid: 1005
+    gid: 1005
   when: "{{ feature_sets[ansible_hostname]['sftp_server'] | default(false)}}"

@@ -1,10 +1,12 @@
 [user]
-	name = {{ git_identification[ansible_hostname]['name'] }}
-	email = {{ git_identification[ansible_hostname]['email'] }}
+    name = {{ git_identification[ansible_hostname]['name'] }}
+    email = {{ git_identification[ansible_hostname]['email'] }}
 [core]
-	excludesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitignore
+    autocrlf = input
+    safecrlf = true
+    excludesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitignore
 [color]
     diff = auto
     grep = auto
 [push]
-	default = tracking
+    default = tracking

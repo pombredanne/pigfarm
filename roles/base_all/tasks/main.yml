@@ -28,16 +28,18 @@
 - include: git.yml
   tags:
     - base
+    - users
 
-#- include: tmux.yml
-#  tags:
-#    - base
-#
-#- include: zsh.yml
-#  tags:
-#    - base
-#    - users
-#
+- include: tmux.yml
+  tags:
+    - base
+    - users
+
+- include: zsh.yml
+  tags:
+    - base
+    - users
+
 #- include: vim.yml
 #  tags:
 #    - base
