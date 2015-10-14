@@ -1,6 +1,7 @@
 ---
 - name: Install createrepo package
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
       state: present
       name: createrepo
 

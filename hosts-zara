@@ -1,5 +1,5 @@
 [hypervisors]
-localhost
+localhost ansible_connection=local
 
 [vms:children]
 trusted

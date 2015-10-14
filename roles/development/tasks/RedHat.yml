@@ -1,6 +1,7 @@
 ---
 - name: Install development packages for RHEL/CentOS
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
     state: present
   with_items:
