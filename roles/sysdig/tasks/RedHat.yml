@@ -13,7 +13,8 @@
     group: root
 
 - name: Install kernel headers for RHEL/CentOS (all versions)
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr }}"
     name: "kernel-devel-{{ ansible_kernel }}"
     state: present
 
