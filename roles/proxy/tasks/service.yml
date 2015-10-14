@@ -1,6 +1,7 @@
 ---
 - name: Install squid
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: squid
     state: present
 

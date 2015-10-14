@@ -1,5 +1,6 @@
 ---
 - name: install patched koan package
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ role_path }}/files/koan-2.6.6-4.fc21.noarch.rpm"
     state: present

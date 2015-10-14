@@ -3,7 +3,8 @@
   include_vars: secrets/group_vars/all
 
 - name: Install bind
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: bind
     state: present
 

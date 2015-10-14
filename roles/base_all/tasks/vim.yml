@@ -1,6 +1,7 @@
 ---
 - name: Install vim packages for RHEL/CentOS (all versions)
-  yum:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
     state: present
   with_flattened:
@@ -8,7 +9,8 @@
   when: ansible_os_family == 'RedHat'
 
 - name: Install vim packages for Debian/Ubuntu
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
     state: present
   with_flattened:
@@ -22,7 +24,8 @@
     ansible_distribution_release != 'wheezy'
 
 - name: Install vim packages for Debian7
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
     state: present
     default_release: wheezy-backports
