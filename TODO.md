@@ -2,6 +2,9 @@
 - include contents of "grzebanie" file
 - standarize sftp uid
 - removal of ssh keys ?
+- removal of unused vim plugins/repos
+- inexistant hosts should get default values for variuos hostname-related
+  params
 
 ### Kickstart/preseed:
  Debian:

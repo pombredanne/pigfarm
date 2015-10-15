@@ -1,5 +1,5 @@
 ---
-- name: Install zsh shell (Debian)
+- name: Install zsh shell
   action:
     module: "{{ ansible_pkg_mgr }}"
     name: zsh

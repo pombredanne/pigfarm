@@ -7,7 +7,7 @@
       owner: root
       group: root
   tags: secret
-  when: |
+  when: >
     inventory_hostnaname not in groups['pxeservers'] and
     ansible_os_family == 'RedHat'
 

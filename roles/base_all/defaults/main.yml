@@ -3,7 +3,7 @@ base_all_extra_added_packages:
   common: []
   RedHat:
     common: []
-    Centos:
+    CentOS:
       common: []
       6: []
       7: []
@@ -19,7 +19,7 @@ base_all_extra_removed_packages:
   common: []
   RedHat:
     common: []
-    Centos:
+    CentOS:
       common: []
       6: []
       7: []

@@ -5,7 +5,7 @@ base_all_extra_removed_packages:
   RedHat:
     common:
       - lm_sensors
-    Centos:
+    CentOS:
       common: []
       6: []
       7: []

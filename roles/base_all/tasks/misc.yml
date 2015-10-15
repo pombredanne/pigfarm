@@ -31,11 +31,11 @@
     owner: root
     group: root
   notify: restart journalctl
-  when: |
-    ansible_os_family == 'RedHat' and
+  when: >
+    {{ ansible_os_family == 'RedHat' and
     (ansible_distribution == 'Fedora' or
-        (ansible_ditstribution == 'CentOS' and
-            ansible_distribution_major_version == '7'))
+    (ansible_distribution == 'CentOS' and
+    ansible_distribution_major_version == '7')) }}
 
 - name: Make sure acpid demon is running
   service:

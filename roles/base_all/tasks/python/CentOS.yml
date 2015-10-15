@@ -13,10 +13,10 @@
     - python27-virtualenv
     - python34u
     - python34u-pip
-  when: |
-    ansible_distribution_major_version == '6' or \
-    ansible_distribution_major_version == '7' and item not in \
-        ['python-ipython', 'python27', 'python27-pip', 'python27-virtualenv']
+  when: >
+    ansible_distribution_major_version == '6' or
+    ansible_distribution_major_version == '7' and item not in
+    ['python-ipython', 'python27', 'python27-pip', 'python27-virtualenv']
 
 - name: Install missing ipdb/ipython packages for RHEL/CentOS
   pip:
@@ -26,6 +26,6 @@
   with_nested:
     - [ 'ipython', 'ipdb' ]
     - [ 'pip3.4', 'pip2.7', 'pip' ]
-  when:
-    ansible_distribution_major_version == '6' and item[1] != 'pip' or \
+  when: >
+    ansible_distribution_major_version == '6' and item[1] != 'pip' or
     ansible_distribution_major_version == '7' and item[1] != 'pip2.7'

@@ -2,8 +2,8 @@
 - hosts: all
   sudo: True
   roles:
-    - base_all
     - users_base
+    - base_all
     - sysdig
 
 - hosts: hypervisors
