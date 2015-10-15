@@ -5,7 +5,7 @@
     - secret
 
 - name: Include host secrets
-  include_vars: "secrets/host_vars/{{ ansible_hostname }}"
+  include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
   tags:
     - secret
 
