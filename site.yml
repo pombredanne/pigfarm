@@ -35,3 +35,9 @@
 #    - repo
 #    - cobbler
 #    - git_mirror
+
+- hosts: jumphosts
+  sudo: True
+  roles:
+    - fw_base
+    - fw_jumphost

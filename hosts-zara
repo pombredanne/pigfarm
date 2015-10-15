@@ -12,5 +12,6 @@ pxeservers
 [pxeservers]
 
 [jumphosts]
+mplay
 
 [isolated]
