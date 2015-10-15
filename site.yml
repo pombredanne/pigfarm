@@ -3,6 +3,7 @@
   sudo: True
   roles:
     - base_all
+    - users_base
     - sysdig
 
 - hosts: hypervisors
@@ -18,14 +19,20 @@
   sudo: True
   roles:
     - base_vms
+    - users_vms
     - sshd_config
     - disk_schedulers
-    - user_setup
 
 - hosts: trusted:isolated
   sudo: True
   roles:
     - proxy_settings
+
+- hosts: jumphosts
+  sudo: True
+  roles:
+    - fw_base
+    - fw_jumphost
 
 #- hosts: pxeservers
   #sudo: True
@@ -35,9 +42,3 @@
 #    - repo
 #    - cobbler
 #    - git_mirror
-
-- hosts: jumphosts
-  sudo: True
-  roles:
-    - fw_base
-    - fw_jumphost

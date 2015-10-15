@@ -1,7 +1,7 @@
 # While rewritting:
-- check if sysdig's CentOS install procedure/files is OK for Fedora
 - include contents of "grzebanie" file
 - standarize sftp uid
+- removal of ssh keys ?
 
 ### Kickstart/preseed:
  Debian:

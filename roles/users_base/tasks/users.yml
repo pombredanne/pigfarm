@@ -12,44 +12,27 @@
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
     group: "{{ item.key }}"
-    groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] }}'
+    groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] if item.value.is_sudoer == true else "" }}'
     createhome: yes
     state: present
   with_dict: users
   when: item.key != 'root'
 
-- name: set passwords for all the users
-  user:
-    name: "{{ item.key }}"
-    password: "{{ item.value.pass_crypted }}"
-  with_dict: users
-
 - name: set ssh-keys for users permitted to login
   authorized_key:
-    user: '{{ item[0] }}'
+    user: '{{ item.user }}'
     manage_dir: yes
     state: present
-    key: "{{ login_key[item[1]] }}"
-  with_nested:
-    - users.keys()
-    - login_key.keys()
-  when: item[0] == 'root' or users[item[0]]['ssh_login_permitted'] == True
+    key: "{{ login_key[item.host] }}"
+  with_items: authorized_login_keys
+  when: users[item.user]['ssh_login_permitted'] == True
 
-- name: remove ssh-keys from users denied ssh login
-  authorized_key:
-    user: '{{ item[0] }}'
-    manage_dir: yes
-    state: absent
-  with_nested:
-    - users.keys()
-    - login_key.keys()
-  when: "item[0] != 'root' and users[item[0]]['ssh_login_permitted'] == False"
-
-- name: upload private key for git_mirror repos
-  copy:
-    content: "{{ git_mirror_ssh_key | b64decode }}"
-    owner: root
-    mode: 0600
-    group: root
-    dest: /root/.ssh/git-mirror_rsa
-  tags: secret
+#- name: remove ssh-keys from users denied ssh login
+  #authorized_key:
+    #user: '{{ item[0] }}'
+    #manage_dir: yes
+    #state: absent
+  #with_nested:
+    #- users.keys()
+    #- login_key.keys()
+  #when: "item[0] != 'root' and users[item[0]]['ssh_login_permitted'] == False"

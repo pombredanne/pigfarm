@@ -4,11 +4,6 @@
   tags:
     - secret
 
-- name: Include host secrets
-  include_vars: "secrets/host_vars/{{ ansible_hostname }}"
-  tags:
-    - secret
-
 - include: users.yml
   tags:
     - users
