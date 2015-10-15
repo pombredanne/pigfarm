@@ -30,3 +30,5 @@ base_all_extra_removed_packages:
       23: []
   Debian:
     common: []
+
+ip_forwarding: false

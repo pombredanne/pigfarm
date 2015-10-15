@@ -22,3 +22,4 @@
     - syncookies
     - sysrq
     - tcp_opts
+    - ip_forwarding

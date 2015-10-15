@@ -1,0 +1,6 @@
+# Controls IP packet forwarding
+{% if ip_forwarding == true %}
+net.ipv4.ip_forward=1
+{% else %}
+net.ipv4.ip_forward=0
+{% endif %}
