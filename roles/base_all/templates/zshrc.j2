@@ -50,9 +50,9 @@ source $ZSH/oh-my-zsh.sh
 {% set home = item if item == '/root' else '/home/' + item %}
 {% if users[item]["is_ansible_user"] %}
 #Ansible aliases
-alias a="nice -n 15 ansible --vault-password-file={{ home }}/.ansible/passwd"
+alias a="nice -n 15 ansible --vault-password-file={{ home }}/.ansible/passwd -i {{ home }}/nauka/git_repos/pigfarm/hosts-{{ ansible-hostname }}"
 alias av="ansible-vault --vault-password-file={{ home }}/.ansible/passwd"
-alias ap="nice -n 15 ansible-playbook -e hypervisor={{ ansible_hostname }} --vault-password-file={{ home }}/.ansible/passwd"
+alias ap="nice -n 15 ansible-playbook -e hypervisor={{ ansible_hostname }} --vault-password-file={{ home }}/.ansible/passwd -i {{ home }}/nauka/git_repos/pigfarm/hosts-{{ ansible-hostname }}"
 alias ad="ansible-doc"
 {% endif %}
 
