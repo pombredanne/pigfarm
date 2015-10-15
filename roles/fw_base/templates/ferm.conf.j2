@@ -1,0 +1,36 @@
+@include 'conf.d/';
+
+table filter {
+
+    chain INPUT {
+        policy DROP;
+
+        # connection tracking
+        mod state state (ESTABLISHED RELATED) ACCEPT;
+        mod state state INVALID REJECT;
+
+        # allow local packets
+        interface lo ACCEPT;
+
+        # Main chain:
+        proto udp mod state state NEW @subchain "SERVICES" {
+        }
+        proto tcp mod state state NEW @subchain "SERVICES" {
+        }
+
+        # allow ping
+        proto icmp icmp-type echo-request mod connlimit connlimit-above !5 ACCEPT;
+        {% endif %}
+    }
+
+    chain OUTPUT {
+        policy ACCEPT;
+    }
+
+    chain FORWARD {
+        policy DROP;
+
+    }
+}
+
+@include 'rules.d/';

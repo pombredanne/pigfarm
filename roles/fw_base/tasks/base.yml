@@ -1,0 +1,85 @@
+---
+- name: make sure firewalld is not installed on RHEL/CentOS7
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: firewalld
+    state: absent
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+- name: disable old iptables scripts on RHEL/CentOS6
+  service:
+    name: "{{ item }}"
+    state: stopped
+    enabled: no
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
+  with_items:
+    - iptables
+    - ip6tables
+
+- name: Install Ferm
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: ferm
+    state: present
+
+- name: Create ferm directories
+  file:
+    state: directory
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+    name: "{{ item.name }}"
+  with_items:
+    - { name: "/etc/ferm", mode: "0770"}
+    - { name: "/etc/ferm/conf.d/", mode: "0770"}
+    - { name: "/etc/ferm/rules.d/", mode: "0770"}
+    - { name: "/var/cache/ferm/", mode: "0755"}
+
+- name: Upload ferm init script (RHEL/CentOS 6)
+  copy:
+    src: ferm.init.centos6
+    dest: /etc/init.d/ferm
+    owner: root
+    group: root
+    mode: 0755
+  notify:
+    - restart ferm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
+
+- name: Upload systemd service file (RHEL/CentOS 7)
+  copy:
+    src: ferm.service
+    dest: /usr/lib/systemd/system/
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - restart ferm
+  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
+
+- name: Upload ferm startup configuration (Debian 7)
+  copy:
+    src: ferm.default.debian
+    dest: /etc/default/ferm
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - restart ferm
+  when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
+
+- name: Upload ferm configuration/base chains
+  template:
+    src: ferm.conf.j2
+    dest: /etc/ferm/ferm.conf
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - reload ferm
+
+- name: Enable ferm service on boot (RHEL/CentOS 7)
+  service:
+    name: ferm
+    state: started
+    enabled: true

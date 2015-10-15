@@ -1,0 +1,28 @@
+---
+- name: Include group secrets
+  include_vars: secrets/group_vars/all
+  tags: fw
+
+- name: Include host secrets
+  include_vars: "secrets/host_vars/{{ ansible_hostname }}"
+  tags: fw
+
+- name: Upload ssh configuration/chains
+  template:
+    src: ssh.ferm.conf.j2
+    dest: /etc/ferm/rules.d/ssh.ferm.conf
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - reload ferm
+
+- name: Upload forwarding configuration/chains
+  template:
+    src: forwarding.ferm.conf.j2
+    dest: /etc/ferm/rules.d/forwarding.ferm.conf
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - reload ferm
