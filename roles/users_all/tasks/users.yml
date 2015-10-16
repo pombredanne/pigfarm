@@ -22,17 +22,16 @@
   authorized_key:
     user: '{{ item.user }}'
     manage_dir: yes
-    state: present
+    state: "{{ item.state }}"
     key: "{{ login_key[item.host] }}"
   with_items: authorized_login_keys
   when: users[item.user]['ssh_login_permitted'] == True
 
-#- name: remove ssh-keys from users denied ssh login
-  #authorized_key:
-    #user: '{{ item[0] }}'
-    #manage_dir: yes
-    #state: absent
-  #with_nested:
-    #- users.keys()
-    #- login_key.keys()
-  #when: "item[0] != 'root' and users[item[0]]['ssh_login_permitted'] == False"
+- name: remove ssh-keys from users denied login
+  authorized_key:
+    user: '{{ item.user }}'
+    manage_dir: yes
+    state: absent
+    key: "{{ login_key[item.host] }}"
+  with_items: authorized_login_keys
+  when: users[item.user]['ssh_login_permitted'] == False or item.state != 'present'

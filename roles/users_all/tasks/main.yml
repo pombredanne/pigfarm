@@ -3,11 +3,13 @@
   include_vars: secrets/group_vars/all
   tags:
     - secret
+    - users
 
 - name: Include host secrets
   include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
   tags:
     - secret
+    - users
 
 - include: users.yml
   tags:
