@@ -4,3 +4,4 @@
 - include: misc.yml
 - include: fw.yml
 - include: apache2.yml
+- include: profile.yml

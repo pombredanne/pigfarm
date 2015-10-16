@@ -1,0 +1,15 @@
+[Unit]
+Description=SSH agent for {{ item }}
+
+[Service]
+User={{ item }}
+ExecStartPre=-/bin/rm /{{ 'root' if item == 'root' else 'home/' + item  }}/.ssh/ssh-agent.socket
+Environment=SSH_AUTH_SOCK=/{{ 'root' if item == 'root' else 'home/' + item  }}/.ssh/ssh-agent.socket
+Environment=SSH_AGENT_PID=systemd-controlled
+ExecStart=/usr/bin/ssh-agent -d -t 16h -a $SSH_AUTH_SOCK
+Restart=always
+RestartSec=1
+
+
+[Install]
+WantedBy=multi-user.target

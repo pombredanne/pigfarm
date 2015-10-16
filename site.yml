@@ -13,6 +13,7 @@
   roles:
     - base_hypervisor
     - disk_schedulers
+    - ssh-agent
 #    - dns
 #    - koan_patching
 #

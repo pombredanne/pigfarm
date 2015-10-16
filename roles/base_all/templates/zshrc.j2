@@ -47,7 +47,7 @@ plugins=(git perl pip python golang)
 source $ZSH/oh-my-zsh.sh
 
 # Customize to your needs...
-{% set home = item if item == '/root' else '/home/' + item %}
+{% set home = '/root' if item == 'root' else '/home/' + item %}
 {% if users[item]["is_ansible_user"] %}
 #Ansible aliases
 alias a="nice -n 15 ansible --vault-password-file={{ home }}/.ansible/passwd -i {{ home }}/nauka/git_repos/pigfarm/hosts-{{ ansible_hostname }}"

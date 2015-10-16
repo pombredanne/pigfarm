@@ -23,7 +23,7 @@
     owner: root
     group: root
 
-- name: Configure journalctl (RHEL/CentOS)
+- name: Configure journalctl
   copy:
     src: misc/journald.conf.RedHat
     dest: /etc/systemd/journald.conf
@@ -35,10 +35,21 @@
     {{ ansible_os_family == 'RedHat' and
     (ansible_distribution == 'Fedora' or
     (ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version == '7')) }}
+    ansible_distribution_major_version == '7')) or
+    ansible_os_family == 'Debian' and
+    ansible_distribution_major_version == '8' }}
 
 - name: Make sure acpid demon is running
   service:
     name: acpid
     state: started
     enabled: true
+
+- name: Create profile snippets directory
+  file:
+    state: directory
+    name: "/{{ item if item == 'root' else 'home/' + item  }}/.profile.d/"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0750
+  with_items: users.keys()

@@ -1,0 +1,9 @@
+---
+- name: assemble user profile files
+  assemble:
+    dest: "/{{ 'root' if item == 'root' else 'home/' + item }}/.profile"
+    mode: 0750
+    owner: "{{ item  }}"
+    group: "{{ item  }}"
+    src: "/{{ 'root' if item == 'root' else 'home/' + item }}/.profile.d/"
+  with_items: users.keys()
