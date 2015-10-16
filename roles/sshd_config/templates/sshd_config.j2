@@ -164,7 +164,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
     {%- do allowed_users.append(user) %}
 {%- endfor %}
 
-{%- if inventory_hostname in groups['trusted'] or inventory_hostname in groups['isolated']%}
+{%- if inventory_hostname in groups['vms'] %}
     {%- do allowed_users.append('root') %}
 {%- endif %}
 
