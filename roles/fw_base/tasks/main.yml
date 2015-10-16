@@ -1,5 +1,5 @@
 ---
-- name: Include secrets
+- name: Include fw secrets
   include_vars: secrets/group_vars/all
   tags: fw
 

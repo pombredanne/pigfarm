@@ -4,6 +4,7 @@
   roles:
     - users_base
     - base_all
+    - sshd_config
     - sysdig
     - vim
 
@@ -11,7 +12,6 @@
   sudo: True
   roles:
     - base_hypervisor
-    - sshd_config
     - disk_schedulers
 #    - dns
 #    - koan_patching
@@ -21,7 +21,6 @@
   roles:
     - base_vms
     - users_vms
-    - sshd_config
     - disk_schedulers
 
 - hosts: trusted:isolated

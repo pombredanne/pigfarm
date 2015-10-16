@@ -20,7 +20,6 @@ table filter {
 
         # allow ping
         proto icmp icmp-type echo-request mod connlimit connlimit-above !5 ACCEPT;
-        {% endif %}
     }
 
     chain OUTPUT {

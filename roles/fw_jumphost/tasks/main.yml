@@ -4,7 +4,7 @@
   tags: fw
 
 - name: Include host secrets
-  include_vars: "secrets/host_vars/{{ ansible_hostname }}"
+  include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
   tags: fw
 
 - name: Upload ssh configuration/chains
