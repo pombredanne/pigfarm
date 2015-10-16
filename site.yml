@@ -2,7 +2,7 @@
 - hosts: all
   sudo: True
   roles:
-    - users_base
+    - users_all
     - base_all
     - sshd_config
     - sysdig
