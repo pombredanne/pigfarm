@@ -5,8 +5,11 @@
     name: "{{ item }}"
     state: present
   with_flattened:
-    - vim-enhanced-7.4.160
+    #- vim-enhanced-7.4.160
+    - vim-enhanced
   when: ansible_os_family == 'RedHat'
+  tags:
+    - base
 
 - name: Install vim packages for Debian/Ubuntu
   action:
@@ -22,6 +25,8 @@
   when: >
     ansible_os_family == 'Debian' and
     ansible_distribution_release != 'wheezy'
+  tags:
+    - base
 
 - name: Install vim packages for Debian7
   action:
@@ -34,6 +39,8 @@
   when: >
     ansible_os_family == 'Debian' and
     ansible_distribution_release == 'wheezy'
+  tags:
+    - base
 
 - name: Install vim-related python packages for Debian7/RHEL
   pip:
@@ -45,6 +52,8 @@
     - [ 'pip-3.2', 'pip' ]
   when: "(ansible_os_family == 'Debian' and ansible_distribution_release == 'wheezy') or \
          (ansible_os_family == 'RedHat' and item[1] != 'pip-3.2')"
+  tags:
+    - base
 
 - name: Upload vimrc file
   copy:
@@ -55,6 +64,10 @@
     group: "{{ item.key }}"
   with_dict: users
   when: item['key'] == 'root' or item['value']['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
 
 - name: Create vim directories
   file:
@@ -67,6 +80,10 @@
     - ['.vim', '.vim/colors', '.vim/autoload', '.vim/bundle', '.vim/ftplugin']
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
 
 - name: Upload vim plugins/configs
   copy:
@@ -76,9 +93,13 @@
     owner: "{{ item[1] }}"
     group: "{{ item[1] }}"
   with_nested:
-    - [{ name: "python_editing.vim", location: "ftplugin/"}, { name: "wombat256mod.vim", location: "colors/"}, { name: "pathogen.vim", location: "autoload/"}]
+    - vim_native_plugins
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
 
 - name: checkout plugins from local git mirrors
   git:
@@ -87,9 +108,13 @@
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
   with_nested:
-    - [ 'ctrlp.vim', 'jedi-vim', 'nerdtree', 'vim-airline', 'vim-autoformat', 'vim-flake8' ]
+    - vim_external_plugins
     - users.keys()
   when: proxing_enabled is defined and proxing_enabled == True and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
+  tags:
+    - base
+    - secret
+    - users
 
 - name: checkout plugins from upstream repos
   git:
@@ -97,15 +122,21 @@
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
   with_nested:
-    - [ 'ctrlp.vim', 'jedi-vim', 'nerdtree', 'vim-airline', 'vim-autoformat', 'vim-flake8' ]
+    - vim_external_plugins
     - users.keys()
   when: (proxing_enabled is not defined or proxing_enabled == False) and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
+  tags:
+    - base
+    - secret
+    - users
 
 - name: Set vim as default editor for Debian
   alternatives:
     name: editor
     path: /usr/bin/vim.nox
   when: ansible_os_family == 'Debian'
+  tags:
+    - base
 
 - name: Set vim as default editor for RHEL/CentOS
   copy:
@@ -114,3 +145,5 @@
     mode: 0755
     owner: root
     group: root
+  tags:
+    - base

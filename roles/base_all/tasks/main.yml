@@ -12,6 +12,7 @@
 - include: packages.yml
   tags:
     - base
+    #- dupa
 
 - include: sysctl.yml
   tags:
@@ -39,8 +40,3 @@
   tags:
     - base
     - users
-
-#- include: vim.yml
-#  tags:
-#    - base
-#    - users

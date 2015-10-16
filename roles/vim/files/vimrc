@@ -3,7 +3,7 @@ if v:lang =~ "utf8$" || v:lang =~ "UTF-8$"
 endif
 
 set nocompatible        " Use Vim defaults (much better!)
-set viminfo='20,\"50    " read/write a .viminfo file, don't store mor e
+set viminfo='20,\"50    " read/write a .viminfo file, don't store more
                         " than 50 lines of registers
 set ruler               " show the cursor position all the time
 
@@ -152,6 +152,9 @@ set smartcase
 " Settings for vim-powerline
 " cd ~/.vim/bundle
 " git clone git://github.com/Lokaltog/vim-powerline.git
+" The default setting of 'laststatus' is for the statusline to not appear until
+" a split is created. If you want it to appear all the time, add the following
+" to your vimrc:
 set laststatus=2
 
 
@@ -168,6 +171,8 @@ set wildignore+=*/coverage/*
 " cd ~/.vim/bundle
 " git clone git://github.com/davidhalter/jedi-vim.git
 let g:jedi#usages_command = "<leader>z"
+" Jedi automatically starts the completion, if you type a dot, e.g. str., if you
+" don't want this:
 let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first = 0
 map <Leader>b Oimport ipdb; ipdb.set_trace() # BREAKPOINT<C-c>
@@ -199,3 +204,29 @@ set nofoldenable
 "" Nerdtree:
 map <F3> :NERDTreeToggle<CR>
 let NERDTreeMapOpenInTab='<C-t>'
+
+"" Autoformat
+noremap <F6> :Autoformat<CR><CR>
+let g:formatdef_autopep8 = '"autopep8 - ".(&textwidth ? "--max-line-length=".&textwidth : "")'
+
+"" Flake8 - python3
+let g:flake8_cmd="/usr/bin/python3-flake8"
+
+"" vim-go
+let g:go_highlight_functions = 1
+let g:go_highlight_methods = 1
+let g:go_highlight_structs = 1
+let g:go_highlight_operators = 1
+let g:go_highlight_build_constraints = 1
+"" "" Prefer to trigger gofmt manually
+"" let g:go_fmt_autosave = 0
+"" Enable goimports to automatically insert import paths instead of gofmt:
+let g:go_fmt_command = "goimports"
+
+au FileType go nmap <leader>r <Plug>(go-run)
+au FileType go nmap <leader>b <Plug>(go-build)
+au FileType go nmap <leader>t <Plug>(go-test)
+au FileType go nmap <leader>c <Plug>(go-coverage)
+au FileType go nmap <Leader>gd <Plug>(go-doc)
+au FileType go nmap <Leader>gv <Plug>(go-doc-vertical)
+

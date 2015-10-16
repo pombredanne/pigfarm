@@ -5,6 +5,7 @@
     - users_base
     - base_all
     - sysdig
+    - vim
 
 - hosts: hypervisors
   sudo: True

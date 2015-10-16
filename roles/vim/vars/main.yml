@@ -1,0 +1,19 @@
+vim_native_plugins:
+  - { name: "python_editing.vim", location: "ftplugin/"}
+  - { name: "wombat256mod.vim", location: "colors/"}
+  - { name: "pathogen.vim", location: "autoload/"}
+
+vim_external_plugins:
+  - 'auto-pairs'
+  - 'ctrlp.vim'
+  - 'jedi-vim'
+  - 'nerdcommenter'
+  - 'nerdtree'
+  - 'vim-airline'
+  - 'vim-autoformat'
+  - 'vim-flake8'
+  - 'vim-gitgutter'
+  - 'vim-go'
+
+# To remove:
+#  - 'rope-vim'
