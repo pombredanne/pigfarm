@@ -19,14 +19,12 @@
 #    - koan_patching
 #
 - hosts: vms
-  sudo: True
   roles:
     - base_vms
     - users_vms
     - disk_schedulers
 
 - hosts: trusted:isolated
-  sudo: True
   roles:
     - proxy_settings
 
@@ -36,16 +34,15 @@
     - fw_base
     - fw_jumphost
 
-- hosts: mplay
+- hosts: mplay:c7t.tr
   sudo: True
   roles:
     - vagrant
 
-#- hosts: pxeservers
-  #sudo: True
-  #roles:
-#    - apache2_base
-#    - proxy
-#    - repo
-#    - cobbler
-#    - git_mirror
+- hosts: pxeservers
+  roles:
+    - apache2_base
+    - proxy
+    - repo
+    - cobbler
+    - git_mirror

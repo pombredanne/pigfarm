@@ -39,7 +39,7 @@ lang en_GB.UTF-8
     #set target_repo = '{{ yum_repos[yum_repo_flavour] }}'
 #end if
 {% endfor %}
-#echo 'url --url=' + $target_repo + ' --proxy={{ proxy_settings_http_proxy }}'
+#echo 'url --url=' + $target_repo
 
 # Network information
 $SNIPPET('network_config')

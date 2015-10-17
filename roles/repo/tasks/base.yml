@@ -2,8 +2,8 @@
 - name: Install createrepo package
   action:
     module: "{{ ansible_pkg_mgr  }}"
-      state: present
-      name: createrepo
+    state: present
+    name: createrepo
 
 - name: Create repo directories
   file:

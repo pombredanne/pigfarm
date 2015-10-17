@@ -51,7 +51,7 @@
     - libvirt-devel
   when: ansible_os_family == 'RedHat'
 
-- name: Install auxilary packages (RedHat)
+- name: Install auxilary packages (Debian)
   action:
     module: "{{ ansible_pkg_mgr }}"
     name: "{{ item }}"
@@ -66,6 +66,8 @@
     - vagrant_plugins.results
     - users.keys()
     - ['vagrant-libvirt', 'vagrant-mutate']
+  become: yes
+  become_user: "{{ item[1] }}"
   when: item[0]["item"] == item[1] and item[2] not in item[0]["stdout_lines"]
   tags:
     - secret
@@ -91,7 +93,7 @@
 
 - name: Install virtualbox repository key (RedHat)
   rpm_key:
-    key: roles/vagrant/files/oracle_vbox.asc
+    key: https://www.virtualbox.org/download/oracle_vbox.asc
     state: present
   when: ansible_os_family == 'RedHat'
 

@@ -1,5 +1,5 @@
 ---
-- name: Include secrets
+- name: Include secrets for base_vms
   include_vars: secrets/group_vars/all
   tags:
     - base

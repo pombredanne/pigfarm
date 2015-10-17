@@ -107,6 +107,8 @@
     key_file: /root/.ssh/git-mirror_rsa
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
+  become: yes
+  become_user: "{{ item[1] }}"
   with_nested:
     - vim_external_plugins
     - users.keys()
@@ -121,6 +123,8 @@
     repo: "{{ git_mirror_repos[item[0]]['url'] }}"
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
+  become: yes
+  become_user: "{{ item[1] }}"
   with_nested:
     - vim_external_plugins
     - users.keys()

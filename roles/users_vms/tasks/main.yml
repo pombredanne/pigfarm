@@ -4,6 +4,12 @@
   tags:
     - secret
 
+- name: Include git_mirror private ssh key
+  include_vars: secrets/ssh/git-mirror_rsa.yml
+  tags:
+    - secret
+    - users
+
 - include: users.yml
   tags:
     - users

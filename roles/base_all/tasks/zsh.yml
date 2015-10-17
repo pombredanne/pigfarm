@@ -11,6 +11,8 @@
    key_file: /root/.ssh/git-mirror_rsa
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
+  become: yes
+  become_user: "{{ item  }}"
   with_items: users.keys()
   when: proxing_enabled is defined and proxing_enabled == True and users[item]['shell'] == '/bin/zsh'
   tags: secret
@@ -21,6 +23,8 @@
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
   with_items: users.keys()
+  become: yes
+  become_user: "{{ item  }}"
   when: (proxing_enabled is not defined or proxing_enabled == False) and users[item]['shell'] == '/bin/zsh'
   tags: secret
 

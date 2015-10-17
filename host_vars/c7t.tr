@@ -1,0 +1,4 @@
+---
+#Chicken and egg problem - base is executed first and it will require git_mirror role
+# set up already in order to clone from local cache - better to disable it.
+proxing_enabled: False

@@ -1,5 +1,5 @@
 ---
-- name: Include global secrets
+- name: Include global secrets for cobbler
   include_vars: secrets/group_vars/all
   tags: [ secret, service ]
 

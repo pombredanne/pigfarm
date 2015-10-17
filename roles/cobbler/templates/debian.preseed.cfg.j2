@@ -86,7 +86,6 @@ d-i hw-detect/load_firmware boolean true
 d-i mirror/country string manual
 #echo 'd-i mirror/http/hostname string ' + $repo_hostname + '\n'
 #echo 'd-i mirror/http/directory string ' + $repo_directory + '\n'
-d-i mirror/http/proxy string {{ proxy_settings_http_proxy }}
 
 # Suite to install.
 #echo "d-i mirror/suite string " + $os_version
