@@ -6,6 +6,7 @@
 - inexistant hosts should get default values for variuos hostname-related
   params
 - ssh tightening - extra secure ciphers
+- removal of unneded vagrant plugins
 
 ### Kickstart/preseed:
  Debian:

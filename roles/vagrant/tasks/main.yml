@@ -71,16 +71,17 @@
     - secret
     - users
 
-- name: Remove redunant vagrant plugins
-  command: "vagrant plugin uninstall {{ item[2] }}"
-  with_nested:
-    - vagrant_plugins.results
-    - users.keys()
-    - ['vagrant-libvirt', 'vagrant-mutate']
-  when: item[0]["item"] == item[1] and item[0]["stdout_lines"] not in item[2]
-  tags:
-    - secret
-    - users
+# FIXME
+#- name: Remove redunant vagrant plugins
+  #command: "vagrant plugin uninstall {{ item[2] }}"
+  #with_nested:
+    #- vagrant_plugins.results
+    #- users.keys()
+    #- ['vagrant-libvirt', 'vagrant-mutate']
+  #when: item[0]["item"] == item[1] and item[0]["stdout_lines"] not in item[2]
+  #tags:
+    #- secret
+    #- users
 
 - name: Install virtualbox repository key (Debian)
   apt_key:
