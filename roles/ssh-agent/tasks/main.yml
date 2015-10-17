@@ -5,6 +5,22 @@
     - secret
     - users
 
+- name: Stop old ssh-agent service
+  service:
+    name: "ssh-agent@{{ item  }}.service"
+    state: stopped
+    enabled: false
+  with_items: users.keys()
+  tags:
+    - secret
+    - users
+
+- name: Remove old ssh-agent service file
+  file:
+    name: /etc/systemd/system/ssh-agent@.service
+    state: absent
+  notify: reload systemd
+
 # Systemd's instances will not cut it here - no way to reliably
 # determine the home dir of instance's user home dir
 - name: Upload ssh-agent's unit file
