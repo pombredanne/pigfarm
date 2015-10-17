@@ -14,6 +14,7 @@
     - base_hypervisor
     - disk_schedulers
     - ssh-agent
+    - vagrant
 #    - dns
 #    - koan_patching
 #
@@ -34,6 +35,11 @@
   roles:
     - fw_base
     - fw_jumphost
+
+- hosts: mplay
+  sudo: True
+  roles:
+    - vagrant
 
 #- hosts: pxeservers
   #sudo: True

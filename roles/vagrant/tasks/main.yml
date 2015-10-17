@@ -1,0 +1,116 @@
+---
+- name: Include user secrets for vagrant role
+  include_vars: secrets/group_vars/all
+  tags:
+    - secret
+    - users
+
+- name: Install vagrant packages (Fedora)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - vagrant
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
+
+- name: Install vagrant packages (CentOS)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.rpm
+    state: present
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS'
+
+- name: Install vagrant packages (Debian)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: https://dl.bintray.com/mitchellh/vagrant/vagrant_1.7.4_x86_64.deb
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Find installed plugins
+  shell: "vagrant plugin list | cut -d' '  -f 1"
+  register: vagrant_plugins
+  always_run: true
+  changed_when: False
+  with_items: "{{ users.keys() | sort() }}"
+  become: yes
+  become_user: "{{ item }}"
+  tags:
+    - secret
+    - users
+
+- debug: var=vagrant_plugins
+
+- name: Install auxilary packages (RedHat)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libvirt-devel
+  when: ansible_os_family == 'RedHat'
+
+- name: Install auxilary packages (RedHat)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libvirt-dev
+  when: ansible_os_family == 'Debian'
+
+- name: Install missing vagrant plugins
+  command: "vagrant plugin install {{ item[2] }}"
+  with_nested:
+    - vagrant_plugins.results
+    - users.keys()
+    - ['vagrant-libvirt', 'vagrant-mutate']
+  when: item[0]["item"] == item[1] and item[2] not in item[0]["stdout_lines"]
+  tags:
+    - secret
+    - users
+
+- name: Remove redunant vagrant plugins
+  command: "vagrant plugin uninstall {{ item[2] }}"
+  with_nested:
+    - vagrant_plugins.results
+    - users.keys()
+    - ['vagrant-libvirt', 'vagrant-mutate']
+  when: item[0]["item"] == item[1] and item[0]["stdout_lines"] not in item[2]
+  tags:
+    - secret
+    - users
+
+- name: Install virtualbox repository key (Debian)
+  apt_key:
+    file: oracle_vbox.asc
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install virtualbox repository key (RedHat)
+  rpm_key:
+    key: roles/vagrant/files/oracle_vbox.asc
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Install virtualbox repository (Debian)
+  apt_repository:
+    content: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install virtualbox repository (RedHat)
+  copy:
+    src: "virtualbox.{{ ansible_distribution }}.repo"
+    dest: /etc/yum.repos.d/virtualbox.repo
+  when: ansible_os_family == 'RedHat'
+
+- name: Install virtualbox packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - dkms
+    - VirtualBox-4.3
