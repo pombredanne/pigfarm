@@ -16,6 +16,7 @@
     mode: 0660
   notify:
     - reload ferm
+  tags: fw
 
 - name: Upload forwarding configuration/chains
   template:
@@ -26,3 +27,4 @@
     mode: 0660
   notify:
     - reload ferm
+  tags: fw
