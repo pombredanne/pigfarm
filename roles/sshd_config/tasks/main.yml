@@ -1,4 +1,10 @@
 ---
+- name: Include group secrets for sshd_config
+  include_vars: secrets/group_vars/all
+
+- name: Include host secrets for sshd_config
+  include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
+
 - name: upload sshd configuration
   template:
     src: sshd_config.j2
