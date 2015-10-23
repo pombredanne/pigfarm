@@ -1,9 +1,9 @@
 ---
-- name: Include group secrets
+- name: Include group secrets for fw_jumphost
   include_vars: secrets/group_vars/all
   tags: fw
 
-- name: Include host secrets
+- name: Include host secrets for fw_jumphost
   include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
   tags: fw
 
