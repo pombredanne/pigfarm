@@ -107,15 +107,16 @@
     - secret
     - users
 
-- name: checkout plugins from upstream repos
+- name: checkout plugins from upstream git repos
   git:
-    repo: "{{ git_mirror_repos[item[0]]['url'] }}"
+    repo: "{{ vim_external_plugins[item[0]]['url'] }}"
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
     accept_hostkey: yes
+    version: "{{ vim_external_plugins[item[0]]['version'] }}"
   become: yes
   become_user: "{{ item[1] }}"
   with_nested:
-    - vim_external_plugins
+    - vim_external_plugins.keys()
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
   tags:

@@ -7,9 +7,10 @@
 
 - name: Clone oh-my-zsh repo from upstream
   git:
-   repo: "{{ git_mirror_repos['oh-my-zsh']['url'] }}"
+   repo: https://github.com/robbyrussell/oh-my-zsh.git
    dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
    accept_hostkey: yes
+   version: e44aa50301cbdb9c713193263e6c0c5a9a5798c0
   with_items: users.keys()
   become: yes
   become_user: "{{ item  }}"

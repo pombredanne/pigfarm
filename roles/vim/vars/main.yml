@@ -4,16 +4,36 @@ vim_native_plugins:
   - { name: "pathogen.vim", location: "autoload/"}
 
 vim_external_plugins:
-  - 'auto-pairs'
-  - 'ctrlp.vim'
-  - 'jedi-vim'
-  - 'nerdcommenter'
-  - 'nerdtree'
-  - 'vim-airline'
-  - 'vim-autoformat'
-  - 'vim-flake8'
-  - 'vim-gitgutter'
-  - 'vim-go'
+  auto-pairs:
+    url: https://github.com/jiangmiao/auto-pairs
+    version: b647ef54cd2d991d5221b97fb5dbb3c0477fdc64
+  ctrlp.vim:
+    url: https://github.com/kien/ctrlp.vim.git
+    version: b5d3fe66a58a13d2ff8b6391f4387608496a030f
+  jedi-vim:
+    url: https://github.com/davidhalter/jedi-vim.git
+    version: 4b3284711056eec5e24c488719f34f61405bae4c
+  nerdcommenter:
+    url: https://github.com/scrooloose/nerdcommenter
+    version: 4b3284711056eec5e24c488719f34f61405bae4c
+  nerdtree:
+    url: https://github.com/scrooloose/nerdtree
+    version: 5cc672a4f2adb734ac671499476034f0cd1d3d72
+  vim-airline:
+    url: https://github.com/bling/vim-airline.git
+    version: 0b44415a3302030b56755cc1135ca9ca57dc1ada
+  vim-autoformat:
+    url: https://github.com/Chiel92/vim-autoformat.git
+    version: 14d14cf951c08fc88ca6c3e6f28fe47b99421e23
+  vim-flake8:
+    url: https://github.com/nvie/vim-flake8.git
+    version: f6bbac220b2ddb90dad2d16c514d5cd4ee66a419
+  vim-gitgutter:
+    url: https://github.com/airblade/vim-gitgutter
+    version: 21bc78d9a3a17653dd5ea1f6a6c92445d23b215b
+  vim-go:
+    url: https://github.com/fatih/vim-go
+    version: b18e23cdfa082dee7da8a2466db5a66907491e5b
 
 # To remove:
 #  - 'rope-vim'
