@@ -16,6 +16,7 @@
     - ssh-agent
     - vagrant
     - clamav
+    - google-chrome
 #    - dns
 #    - koan_patching
 #
