@@ -42,6 +42,7 @@ base_all_added_packages:
       - pykickstart
       - policycoreutils-python
       - iputils
+      - xorg-x11-xauth
     CentOS:
       common: []
       6:
@@ -72,6 +73,7 @@ base_all_added_packages:
       - python-apt
       - python-selinux
       - vlan
+      - xauth
 
 base_all_removed_packages:
   common: []
