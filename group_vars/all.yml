@@ -13,30 +13,6 @@ distribution_specific:
         sshd_service_name: sshd
         sudo_group_name: wheel
 
-git_mirror_repos:
-  auto-pairs:
-    url: https://github.com/jiangmiao/auto-pairs
-  ctrlp.vim:
-    url: https://github.com/kien/ctrlp.vim.git
-  jedi-vim:
-    url: https://github.com/davidhalter/jedi-vim.git
-  nerdcommenter:
-    url: https://github.com/scrooloose/nerdcommenter
-  nerdtree:
-    url: https://github.com/scrooloose/nerdtree
-  vim-airline:
-    url: https://github.com/bling/vim-airline.git
-  vim-autoformat:
-    url: https://github.com/Chiel92/vim-autoformat.git
-  vim-flake8:
-    url: https://github.com/nvie/vim-flake8.git
-  vim-gitgutter:
-    url: https://github.com/airblade/vim-gitgutter
-  vim-go:
-    url: https://github.com/fatih/vim-go
-  oh-my-zsh:
-    url: https://github.com/robbyrussell/oh-my-zsh.git
-
 yum_repos:
   CentOS-7-x86_64: http://ftp.prz.edu.pl/centos/7/os/x86_64/
   CentOS-6-x86_64: http://ftp.prz.edu.pl/centos/6.7/os/x86_64/

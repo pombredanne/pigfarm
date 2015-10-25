@@ -1,9 +1,0 @@
----
-- name: Upload ferm rules
-  template:
-    src: git_mirror.ferm.conf.j2
-    dest: /etc/ferm/rules.d/git_mirror.ferm.conf
-    owner: root
-    group: root
-    mode: 0644
-  notify: reload ferm

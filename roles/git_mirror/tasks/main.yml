@@ -1,9 +1,0 @@
----
-- include: base.yml
-  tags: service
-
-- include: repos.yml
-  tags: service
-
-- include: fw.yml
-  tags: fw
