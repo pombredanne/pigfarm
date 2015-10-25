@@ -5,11 +5,7 @@
     password: "{{ item.value.pass_crypted }}"
   with_dict: users
 
-- name: upload private key for git_mirror repos
-  copy:
-    content: "{{ git_mirror_ssh_key | b64decode }}"
-    owner: root
-    mode: 0600
-    group: root
-    dest: /root/.ssh/git-mirror_rsa
-  tags: secret
+- name: remove private key of obsoleted git_mirror role
+  file:
+    name: /root/.ssh/git-mirror_rsa
+    state: absent
