@@ -1,6 +1,6 @@
 ---
 - name: Include global secrets for cobbler
-  include_vars: secrets/group_vars/all
+  include_vars: secrets/group_vars/all.yml
   tags: [ secret, service ]
 
 - include: base.yml tags=service

@@ -1,6 +1,6 @@
 ---
 - name: Include secrets
-  include_vars: secrets/group_vars/all
+  include_vars: secrets/group_vars/all.yml
   tags:
     - base
     - users

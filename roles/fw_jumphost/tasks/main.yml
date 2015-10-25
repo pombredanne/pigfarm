@@ -1,6 +1,6 @@
 ---
 - name: Include group secrets for fw_jumphost
-  include_vars: secrets/group_vars/all
+  include_vars: secrets/group_vars/all.yml
   tags: fw
 
 - name: Check if there are any hosts secrets

@@ -1,6 +1,6 @@
 ---
 - name: Include global secrets
-  include_vars: secrets/group_vars/all
+  include_vars: secrets/group_vars/all.yml
 
 - name: Install bind
   action:
