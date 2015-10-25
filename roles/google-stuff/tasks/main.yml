@@ -11,7 +11,7 @@
     state: present
   when: ansible_os_family == 'Debian'
 
-- name: Add google repositories (RedHat):
+- name: Add google repositories (RedHat)
   copy:
     src: "google-{{ item }}.repo"
     dest: "/etc/yum.repos.d/google-{{ item  }}.repo"
@@ -23,7 +23,7 @@
     - talkplugin
     - chrome
 
-- name: Add google repositories (RedHat):
+- name: Add google repositories (RedHat)
   assert:
     that:
       - false #  FIXME
