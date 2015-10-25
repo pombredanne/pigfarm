@@ -1,0 +1,8 @@
+---
+clamav_packages:
+  RedHat:
+    - clamav
+    - clamav-update
+  Debian:
+    - clamav
+    - clamav-freshclam

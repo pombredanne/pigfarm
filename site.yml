@@ -15,6 +15,7 @@
     - disk_schedulers
     - ssh-agent
     - vagrant
+    - clamav
 #    - dns
 #    - koan_patching
 #
