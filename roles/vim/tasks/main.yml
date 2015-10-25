@@ -107,23 +107,6 @@
     - secret
     - users
 
-- name: checkout plugins from local git mirrors
-  git:
-    repo: "ssh://git@{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2/home/git/{{ item[0] }}.git/"
-    key_file: /root/.ssh/git-mirror_rsa
-    dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
-    accept_hostkey: yes
-  become: yes
-  become_user: "{{ item[1] }}"
-  with_nested:
-    - vim_external_plugins
-    - users.keys()
-  when: proxing_enabled is defined and proxing_enabled == True and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
-  tags:
-    - base
-    - secret
-    - users
-
 - name: checkout plugins from upstream repos
   git:
     repo: "{{ git_mirror_repos[item[0]]['url'] }}"
@@ -134,7 +117,7 @@
   with_nested:
     - vim_external_plugins
     - users.keys()
-  when: (proxing_enabled is not defined or proxing_enabled == False) and (item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True)
+  when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
   tags:
     - base
     - secret
