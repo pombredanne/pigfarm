@@ -14,7 +14,9 @@
   become: yes
   become_user: "{{ item  }}"
   with_items: users.keys()
-  when: proxing_enabled is defined and proxing_enabled == True and users[item]['shell'] == '/bin/zsh'
+  when: >
+    proxing_enabled is defined and proxing_enabled == True and
+    users[item]['shell'] == '/bin/zsh'
   tags: secret
 
 - name: Clone oh-my-zsh repo from upstream
@@ -25,7 +27,9 @@
   with_items: users.keys()
   become: yes
   become_user: "{{ item  }}"
-  when: (proxing_enabled is not defined or proxing_enabled == False) and users[item]['shell'] == '/bin/zsh'
+  when: >
+    (proxing_enabled is not defined or proxing_enabled == False) and
+    users[item]['shell'] == '/bin/zsh'
   tags: secret
 
 - name: Upload zshrc file
