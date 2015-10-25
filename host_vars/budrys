@@ -1,0 +1,33 @@
+---
+base_all_extra_added_packages:
+  common:
+    - k3b
+  RedHat:
+    common: []
+    CentOS:
+      common: []
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common: []
+
+base_all_extra_removed_packages:
+  common: []
+  RedHat:
+    common: []
+    CentOS:
+      common: []
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common: []

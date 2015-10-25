@@ -1,0 +1,47 @@
+---
+base_hypervisor_added_packages:
+  common:
+    - audacious
+    - audacious-plugins
+    - audacious-plugins-freeworld-mp3
+    - azureus
+    - dia
+    - digikam
+    - firefox
+    - gimp
+    - httrack
+    - krusader
+    - libreoffice
+    - thunderbird
+    - vlc
+    - wireshark
+    - youtube-dl
+  RedHat:
+    common: []
+    CentOS:
+      common: []
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common: []
+
+base_hypervisor_removed_packages:
+  common: []
+  RedHat:
+    common: []
+    CentOS:
+      common: []
+      6: []
+      7: []
+    Fedora:
+      common: []
+      21: []
+      22: []
+      23: []
+  Debian:
+    common: []
