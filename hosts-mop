@@ -1,5 +1,5 @@
 [hypervisors]
-localhost ansible_connection=local
+mop ansible_connection=local
 
 [jumphosts]
 
