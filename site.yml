@@ -22,8 +22,8 @@
 #
 - hosts: vms
   roles:
-    - base_vms
     - users_vms
+    - base_vms
     - disk_schedulers
 
 - hosts: trusted:isolated
