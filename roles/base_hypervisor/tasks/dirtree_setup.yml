@@ -25,5 +25,5 @@
 
 - debug: var=shared_dirs_contents
 
-- name: Create symbolic links to shared directories
-  shell: "echo -e '{{ item['stdout'] }}' | xargs -n 1 -r echo ln -s /home/{{ item['item'][0] }}/{{ item['item'][1] }}/_shared-{{ item['item'][1] }}-{{ item['item'][2] }}/"
+#- name: Create symbolic links to shared directories
+#  shell: "echo -e '{{ item['stdout'] }}' | xargs -n 1 -r echo ln -s /home/{{ item['item'][0] }}/{{ item['item'][1] }}/_shared-{{ item['item'][1] }}-{{ item['item'][2] }}/"

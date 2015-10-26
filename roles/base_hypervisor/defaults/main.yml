@@ -1,5 +1,5 @@
 ---
-base_all_extra_added_packages:
+base_hypervisor_extra_added_packages:
   common: []
   RedHat:
     common: []
@@ -15,7 +15,7 @@ base_all_extra_added_packages:
   Debian:
     common: []
 
-base_all_extra_removed_packages:
+base_hypervisor_extra_removed_packages:
   common: []
   RedHat:
     common: []
