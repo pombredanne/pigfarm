@@ -15,25 +15,25 @@ vim_external_plugins:
     version: 4b3284711056eec5e24c488719f34f61405bae4c
   nerdcommenter:
     url: https://github.com/scrooloose/nerdcommenter
-    version: 4b3284711056eec5e24c488719f34f61405bae4c
+    version: 5cc672a4f2adb734ac671499476034f0cd1d3d72
   nerdtree:
     url: https://github.com/scrooloose/nerdtree
-    version: 5cc672a4f2adb734ac671499476034f0cd1d3d72
+    version: 0b44415a3302030b56755cc1135ca9ca57dc1ada
   vim-airline:
     url: https://github.com/bling/vim-airline.git
-    version: 0b44415a3302030b56755cc1135ca9ca57dc1ada
+    version: 14d14cf951c08fc88ca6c3e6f28fe47b99421e23
   vim-autoformat:
     url: https://github.com/Chiel92/vim-autoformat.git
-    version: 14d14cf951c08fc88ca6c3e6f28fe47b99421e23
+    version: f6bbac220b2ddb90dad2d16c514d5cd4ee66a419
   vim-flake8:
     url: https://github.com/nvie/vim-flake8.git
-    version: f6bbac220b2ddb90dad2d16c514d5cd4ee66a419
+    version: 21bc78d9a3a17653dd5ea1f6a6c92445d23b215b
   vim-gitgutter:
     url: https://github.com/airblade/vim-gitgutter
-    version: 21bc78d9a3a17653dd5ea1f6a6c92445d23b215b
+    version: b18e23cdfa082dee7da8a2466db5a66907491e5b
   vim-go:
     url: https://github.com/fatih/vim-go
-    version: b18e23cdfa082dee7da8a2466db5a66907491e5b
+    version: 8f11f67bc8383f010f7cf8bd6490fdbeaa444f4e
 
 # To remove:
 #  - 'rope-vim'
