@@ -27,3 +27,4 @@
   assert:
     that:
       - false #  FIXME
+  when: ansible_os_family == 'Debian'
