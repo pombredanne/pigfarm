@@ -1,5 +1,5 @@
 ---
-- name: Include secrets
+- name: Include secrets for base role
   include_vars: secrets/group_vars/all.yml
   tags:
     - base
@@ -12,7 +12,6 @@
 - include: packages.yml
   tags:
     - base
-    #- dupa
 
 - include: sysctl.yml
   tags:
