@@ -1,0 +1,29 @@
+---
+- name: Create main directories
+  file:
+    state: directory
+    name: "/home/{{ item[0] }}/{{ item[1] }}/_shared-{{ item[1] }}-{{ item[2] }}/"
+    owner: "{{ item[0] }}"
+    group: "{{ item[0] }}"
+    mode: 0750
+  with_nested:
+    - users.keys()
+    - ['nauka', 'misc', 'work', 'media' ]
+    - ['big', 'small']
+  when: item[0] != 'root'
+
+- name: Find files/dirs that need linking
+  shell: "ls -1 /home/{{ item[0]  }}/{{ item[1]  }}/_shared-{{ item[1]  }}-{{ item[2]  }}/"
+  always_run: true
+  changed_when: false
+  register: shared_dirs_contents
+  with_nested:
+    - users.keys()
+    - ['nauka', 'misc', 'work', 'media' ]
+    - ['big', 'small']
+  when: item[0] != 'root'
+
+- debug: var=shared_dirs_contents
+
+- name: Create symbolic links to shared directories
+  shell: "echo -e '{{ item['stdout'] }}' | xargs -n 1 -r echo ln -s /home/{{ item['item'][0] }}/{{ item['item'][1] }}/_shared-{{ item['item'][1] }}-{{ item['item'][2] }}/"

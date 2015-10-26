@@ -1,34 +1,27 @@
 ---
-- name: Add extra packages to base
-  action:
-    module: "{{ ansible_pkg_mgr  }}"
-    name: "{{ item }}"
-    state: present
-  with_flattened:
-    - base_hypervisor_added_packages['common']
-    - base_hypervisor_added_packages[ansible_os_family]['common']
-    - base_hypervisor_added_packages[ansible_os_family][ansible_distribution]['common']
-    - "{{base_hypervisor_added_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int]}}"
-    - base_hypervisor_extra_added_packages['common']
-    - base_hypervisor_extra_added_packages[ansible_os_family]['common']
-    - base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution]['common']
-    - "{{base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int]}}"
+- name: Include secrets for base hypervisor role
+  include_vars: secrets/group_vars/all
   tags:
     - base
+    - secret
 
-- name: Remove redundant packages from base
-  action:
-    module: "{{ ansible_pkg_mgr  }}"
-    name: "{{ item }}"
-    state: absent
-  with_flattened:
-    - base_hypervisor_removed_packages['common']
-    - base_hypervisor_removed_packages[ansible_os_family]['common']
-    - base_hypervisor_removed_packages[ansible_os_family][ansible_distribution]['common']
-    - "{{base_hypervisor_removed_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int]}}"
-    - base_hypervisor_extra_removed_packages['common']
-    - base_hypervisor_extra_removed_packages[ansible_os_family]['common']
-    - base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution]['common']
-    - "{{base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int]}}"
+- name: Check if there are any hosts secrets
+  stat: path="secrets/host_vars/{{ ansible_hostname  }}.yml"
+  register: host_secrets_exist
+
+- name: Include host secrets
+  include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
+  tags:
+    - secret
+    - users
+  when: host_secrets_exist.stat.exists == True
+
+- include: packages.yml
   tags:
     - base
+    - secret
+
+- include: dirtree_setup.yml
+  tags:
+    - base
+    - secret
