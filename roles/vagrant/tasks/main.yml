@@ -49,6 +49,8 @@
     state: present
   with_items:
     - libvirt-devel
+    - ruby-devel
+    - gcc
   when: ansible_os_family == 'RedHat'
 
 - name: Install auxilary packages (Debian)
@@ -58,6 +60,8 @@
     state: present
   with_items:
     - libvirt-dev
+    - ruby-dev
+    - gcc
   when: ansible_os_family == 'Debian'
 
 - name: Install missing vagrant plugins
