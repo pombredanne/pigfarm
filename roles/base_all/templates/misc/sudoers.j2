@@ -122,3 +122,9 @@ Defaults:%{{ distribution_specific[ansible_distribution]["sudo_group_name"]  }} 
 
 ## Read drop-in files from /etc/sudoers.d (the # here does not mean a comment)
 #includedir /etc/sudoers.d
+
+# Cache sudo passwords for 1h:
+timestamp_timeout=60
+
+# Cache sudo passwords between terminals (not sure):
+# Defaults   !tty_tickets
