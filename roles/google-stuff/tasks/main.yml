@@ -11,6 +11,12 @@
     state: present
   when: ansible_os_family == 'Debian'
 
+- name: Add google repositories (Debian)
+  assert:
+    that:
+      - false
+  when: ansible_os_family == 'Debian'
+
 - name: Add google repositories (RedHat)
   copy:
     src: "google-{{ item }}.repo"
