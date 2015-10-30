@@ -1,38 +1,17 @@
 ---
 - name: Install Python packages for Debian-like systems
-  apt:
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
     state: present
   with_items:
-    - python-pip
+    - python
     - python-ipdb
+    - python-pip
     - python-virtualenv
     - python3
-    - python3-pip
     - python3-ipdb
+    - python3-pip
+    - python3-virtualenv
     - ipython
     - ipython3
-  when: >
-    ansible_distribution_release != 'wheezy' or
-    item not in ["ipython", "ipython3", "python3-ipdb", "python3-virtualenv"]
-
-- name: Install missing Python packages for Debian 7 systems
-  apt:
-    name: "{{ item }}"
-    state: present
-    default_release: wheezy-backports
-  with_items:
-    - ipython
-    - ipython3
-  when: ansible_distribution_release == 'wheezy'
-
-# No ipdb for python3.2, niether in backports, niether in pip
-- name: Install missing pip packages for Debian 7
-  pip:
-    executable: "{{ item[1] }}"
-    name: "{{ item[0] }}"
-    state: present
-  with_nested:
-    - [ 'ipdb', 'virtualenv' ]
-    - [ 'pip-3.2' ]
-  when: ansible_distribution_release == 'wheezy'
