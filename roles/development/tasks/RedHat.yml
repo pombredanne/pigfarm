@@ -17,7 +17,9 @@
     - python27-devel
 #    - python-pymisc
 #    - python3-pymisc
-  when: item != 'python27-devel' or item == 'python27-devel' and ansible_distribution_major_version == "6"
+  when: >
+    item != 'python27-devel' or
+    item == 'python27-devel' and ansible_distribution_major_version == "6"
 
 - name: Install remaining development stuff using PIP (RHEL/CentOS)
   pip:
@@ -35,4 +37,6 @@
     - { "name": "dnspython", "exec": "pip2.7", "release": "6" }
     - { "name": "nose" }
     - { "name": "nose", "exec": "pip2.7", "release": "6" }
-  when: '"release" not in item or item["release"] == ansible_distribution_major_version'
+  when: >
+    "release" not in item or
+    item["release"] == ansible_distribution_major_version
