@@ -4,6 +4,7 @@
   tags:
     - base
     - secret
+    - dupa
 
 - name: Install vim packages for RHEL/CentOS (all versions)
   action:
@@ -119,6 +120,50 @@
     - vim_external_plugins.keys()
     - users.keys()
   when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Find currently installed git plugins
+  shell: "ls -1 /{{ item if item == 'root' else 'home/' + item }}/.vim/bundle/"
+  changed_when: false
+  always_run: true
+  register: vim_current_git_plugins
+  with_items: users.keys()
+  tags:
+    - base
+    - secret
+    - users
+
+- debug: var=vim_current_git_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Calculate differences between current plugins list and desired plugins
+  action: nested_looping_helper
+  args:
+    current_elements_hash: '{{ vim_current_git_plugins }}'
+    desired_elements_list: '{{ vim_external_plugins.keys() }}'
+    output_variable_name: vim_redundant_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- debug: var=vim_redundant_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Remove redundant vim git plugins
+  file:
+    name: "/{{ item.item_key if item.item_key == 'root' else 'home/' + item.item_key }}/.vim/bundle/{{ item.item_val }}"
+    state: absent
+  with_items: vim_redundant_plugins
   tags:
     - base
     - secret
