@@ -1,0 +1,4 @@
+---
+vagrant_required_plugins:
+  - vagrant-libvirt
+  - vagrant-mutate
