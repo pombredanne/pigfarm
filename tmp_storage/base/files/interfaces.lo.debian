@@ -1,4 +1,0 @@
-# The loopback network interfac
-auto lo
-iface lo inet loopback
-

@@ -1,6 +1,0 @@
----
-- name: Include secrets
-  include_vars: secrets/group_vars/all.yml
-  tags: fw
-
-- include: base.yml tags=fw
