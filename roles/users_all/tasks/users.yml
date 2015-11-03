@@ -12,11 +12,17 @@
     name: "{{ item.key }}"
     uid: "{{ item.value.uid }}"
     group: "{{ item.key }}"
-    groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] if item.value.is_sudoer == true else "" }}'
     createhome: yes
     state: present
   with_dict: users
   when: item.key != 'root'
+
+- name: enable sudoing for selected users
+  user:
+    name: "{{ item.key }}"
+    groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] }}'
+  with_dict: users
+  when: item.key != 'root' and item.value.is_sudoer == true
 
 - name: set ssh-keys for users permitted to login
   authorized_key:

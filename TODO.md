@@ -1,7 +1,5 @@
 # While rewritting:
-- removal of unused vim plugins/repos
 - ssh tightening - extra secure ciphers
-- removal of unneded vagrant plugins
 - cleanup of sync-conflict- files
 
 ### Kickstart/preseed:

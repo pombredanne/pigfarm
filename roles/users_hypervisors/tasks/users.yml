@@ -1,0 +1,54 @@
+---
+- name: add users to selected groups (common to all hypervisors)
+  user:
+    name: "{{ item }}"
+    groups: "{{users_hypervisors_user_groups | join(',')}}"
+  with_items: users.keys()
+  when: item != 'root'
+
+- name: add users to selected groups (hypervisor specific)
+  user:
+    name: "{{ item }}"
+    groups: "{{users_hypervisors_user_groups_hypervisor_specific | join(',')}}"
+  with_items: users.keys()
+  when: item != 'root'
+
+#- name: add users to selected groups (common to all distros)
+  #user:
+    #name: "{{ item }}"
+    #groups: "{{users_hypervisors_extra_user_groups['common'] | join(',')}}"
+  #with_items: users.keys()
+  #when: item != 'root'
+
+#- name: add users to selected groups (common to all family of distro)
+  #user:
+    #name: "{{ item }}"
+    #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family]['common'] | join(',')}}"
+  #with_items: users.keys()
+  #when: item != 'root'
+
+#- name: add users to selected groups (common to all flavours of distro)
+  #user:
+    #name: "{{ item }}"
+    #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution]['common'] | join(',')}}"
+  #with_items: users.keys()
+  #when: item != 'root'
+
+#- name: add users to selected groups (distro specific)
+  #user:
+    #name: "{{ item }}"
+    #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] | join(',')}}"
+  #with_items: users.keys()
+  #when: item != 'root'
+
+#- name: add users to selected groups (per-user per distro)
+  #user:
+    #name: "{{ item }}"
+    #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] | join(',')}}"
+  #with_items: users.keys()
+  #when: >
+    #item != 'root' and
+    #item in users_hypervisors_user_specific_groups and
+    #ansible_os_family in users_hypervisors_user_specific_groups[item] and
+    #ansible_distribution in users_hypervisors_user_specific_groups[item][ansible_os_family] and
+    #ansible_distribution_major_version|int in users_hypervisors_user_specific_groups[item][ansible_os_family][ansible_distribution]

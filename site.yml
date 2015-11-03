@@ -12,6 +12,7 @@
   sudo: True
   roles:
     - base_hypervisors
+    - users_hypervisors
     - disk_schedulers
     - ssh-agent
     - vagrant
