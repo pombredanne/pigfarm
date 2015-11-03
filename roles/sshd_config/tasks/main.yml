@@ -44,3 +44,10 @@
     feature_sets['default']['sftp_server']
   tags:
     - base
+
+- name: Add users to sftp group
+  user:
+    name: "{{ item }}"
+    group: sftp
+  with_items: users.keys()
+  when: sshd_config_sftp_server_enabled == true
