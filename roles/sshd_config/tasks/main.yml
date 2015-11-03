@@ -39,9 +39,7 @@
     shell: /usr/sbin/nologin
     state: present
     uid: 1005
-  when: >
-    ansible_hostname in feature_sets and feature_sets[ansible_hostname]['sftp_server'] or
-    feature_sets['default']['sftp_server']
+  when: sshd_config_sftp_server_enabled == true
   tags:
     - base
 
