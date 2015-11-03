@@ -1,7 +1,6 @@
-{% set git_id = git_identification[ansible_hostname] | default(git_identification['default']) %}
 [user]
-    name = {{ git_id.name }}
-    email = {{ git_id.email }}
+    name = {{ git_identification.name }}
+    email = {{ git_identification.email }}
 [core]
     autocrlf = input
     safecrlf = true
