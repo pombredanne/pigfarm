@@ -1,0 +1,27 @@
+---
+- name: upload sshd configuration
+  template:
+    src: sshd_config.j2
+    dest: /etc/ssh/sshd_config
+    mode: 0600
+    owner: root
+    group: root
+  notify: restart sshd
+
+- name: create sftp user and shared folder
+  user:
+    name: sftp
+    home: /home/shared/sftp/
+    createhome: yes
+    password: "{{ sftp_server_pass }}"
+    shell: /usr/sbin/nologin
+    state: present
+    uid: 1005
+  when: sshd_config_sftp_server_enabled == true
+
+- name: Add users to sftp group
+  user:
+    name: "{{ item }}"
+    group: sftp
+  with_items: users.keys()
+  when: sshd_config_sftp_server_enabled == true

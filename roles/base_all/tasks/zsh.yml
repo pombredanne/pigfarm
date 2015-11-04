@@ -15,7 +15,6 @@
   become: yes
   become_user: "{{ item  }}"
   when: users[item]['shell'] == '/bin/zsh'
-  tags: secret
 
 - name: Upload zshrc file
   template:

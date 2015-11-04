@@ -1,0 +1,45 @@
+---
+- name: Import GPG key for RPM repo (RedHat)
+  rpm_key:
+    key: https://dl.google.com/linux/linux_signing_key.pub
+    state: present
+  when: ansible_os_family == 'RedHat'
+
+- name: Import GPG key for RPM repo (Debian)
+  apt_key:
+    file: google_linux_signing_key.pub
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Add google repositories (Debian)
+  assert:
+    that:
+      - false
+  when: ansible_os_family == 'Debian'
+
+- name: Add google repositories (RedHat)
+  copy:
+    src: "google-{{ item }}.repo"
+    dest: "/etc/yum.repos.d/google-{{ item  }}.repo"
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_os_family == 'RedHat'
+  with_items:
+    - talkplugin
+    - chrome
+
+- name: Add google repositories (RedHat)
+  assert:
+    that:
+      - false #  FIXME
+  when: ansible_os_family == 'Debian'
+
+- name: Install google stuff
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - google-chrome-stable
+    - google-talkplugin

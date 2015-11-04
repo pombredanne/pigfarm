@@ -1,0 +1,181 @@
+---
+- name: Install vim packages for RHEL/CentOS (all versions)
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    #- vim-enhanced-7.4.160
+    - vim-enhanced
+  when: ansible_os_family == 'RedHat'
+  tags:
+    - base
+
+- name: Install vim packages for Debian/Ubuntu
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: present
+  with_flattened:
+    - vim-nox
+    - python-jedi
+    - python-flake8
+    - python3-jedi
+    - python3-flake8
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release != 'wheezy'
+  tags:
+    - base
+
+- name: Install vim packages for Debian7
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: present
+    default_release: wheezy-backports
+  with_flattened:
+    - vim-nox
+  when: >
+    ansible_os_family == 'Debian' and
+    ansible_distribution_release == 'wheezy'
+  tags:
+    - base
+
+- name: Install vim-related python packages for Debian7/RHEL
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'jedi', 'flake8' ]
+    - [ 'pip-3.2', 'pip' ]
+  when: "(ansible_os_family == 'Debian' and ansible_distribution_release == 'wheezy') or \
+         (ansible_os_family == 'RedHat' and item[1] != 'pip-3.2')"
+  tags:
+    - base
+
+- name: Upload vimrc file
+  copy:
+    src: vimrc
+    dest: "/{{ item.key if item.key == 'root' else 'home/' + item.key }}/.vimrc"
+    mode: 0640
+    owner: "{{ item.key }}"
+    group: "{{ item.key }}"
+  with_dict: users
+  when: item['key'] == 'root' or item['value']['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Create vim directories
+  file:
+    name: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/{{ item[0] }}/"
+    state: directory
+    mode: 0755
+    owner: "{{ item[1] }}"
+    group: "{{ item[1] }}"
+  with_nested:
+    - ['.vim', '.vim/colors', '.vim/autoload', '.vim/bundle', '.vim/ftplugin']
+    - users.keys()
+  when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Upload vim plugins/configs
+  copy:
+    src: "{{ item[0].name }}"
+    dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/{{ item[0].location }}/{{ item[0].name }}"
+    mode: 0640
+    owner: "{{ item[1] }}"
+    group: "{{ item[1] }}"
+  with_nested:
+    - vim_native_plugins
+    - users.keys()
+  when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
+
+- name: checkout plugins from upstream git repos
+  git:
+    repo: "{{ vim_external_plugins[item[0]]['url'] }}"
+    dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/bundle/{{ item[0] }}"
+    accept_hostkey: yes
+    version: "{{ vim_external_plugins[item[0]]['version'] }}"
+  become: yes
+  become_user: "{{ item[1] }}"
+  with_nested:
+    - vim_external_plugins.keys()
+    - users.keys()
+  when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Find currently installed git plugins
+  shell: "ls -1 /{{ item if item == 'root' else 'home/' + item }}/.vim/bundle/"
+  changed_when: false
+  always_run: true
+  register: vim_current_git_plugins
+  with_items: users.keys()
+  tags:
+    - base
+    - secret
+    - users
+
+- debug: var=vim_current_git_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Calculate differences between current plugins list and desired plugins
+  action: nested_looping_helper
+  args:
+    current_elements_hash: '{{ vim_current_git_plugins }}'
+    desired_elements_list: '{{ vim_external_plugins.keys() }}'
+    output_variable_name: vim_redundant_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- debug: var=vim_redundant_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Remove redundant vim git plugins
+  file:
+    name: "/{{ item.item_key if item.item_key == 'root' else 'home/' + item.item_key }}/.vim/bundle/{{ item.item_val }}"
+    state: absent
+  with_items: vim_redundant_plugins
+  tags:
+    - base
+    - secret
+    - users
+
+- name: Set vim as default editor for Debian
+  alternatives:
+    name: editor
+    path: /usr/bin/vim.nox
+  when: ansible_os_family == 'Debian'
+  tags:
+    - base
+
+- name: Set vim as default editor for RHEL/CentOS
+  copy:
+    content: "export VISUAL='/usr/bin/vim'\nexport EDITOR='/usr/bin/vim'\n"
+    dest: /etc/profile.d/editor.sh
+    mode: 0755
+    owner: root
+    group: root
+  tags:
+    - base

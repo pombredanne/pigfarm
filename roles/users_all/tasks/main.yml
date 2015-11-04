@@ -1,5 +1,3 @@
 ---
-- include: users.yml
-  tags:
-    - users
-    - secret
+- include: users_all.yml
+  tags: users_all

@@ -1,35 +1,24 @@
 ---
 - include: repos/repos.yml
-  tags:
-    - base
+  tags: base_all
 
 - include: packages.yml
-  tags:
-    - base
+  tags: base_all
 
 - include: sysctl.yml
-  tags:
-    - base
+  tags: base_all
 
 - include: misc.yml
-  tags:
-    - base
+  tags: base_all
 
 - include: python/python.yml
-  tags:
-    - base
+  tags: base_all
 
 - include: git.yml
-  tags:
-    - base
-    - users
+  tags: base_all
 
 - include: tmux.yml
-  tags:
-    - base
-    - users
+  tags: base_all
 
 - include: zsh.yml
-  tags:
-    - base
-    - users
+  tags: base_all

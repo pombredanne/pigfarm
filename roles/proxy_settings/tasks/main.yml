@@ -1,14 +1,10 @@
 ---
 - name: Enable proxing through central proxy
   include: enable_proxy.yml
-  tags:
-    - base
-    - secret
+  tags: proxy_settings
   when: proxing_enabled is defined and proxing_enabled == True
 
 - name: Disable proxing through central proxy
   include: disable_proxy.yml
-  tags:
-    - base
-    - secret
+  tags: proxy_settings
   when: proxing_enabled is not defined or proxing_enabled == False

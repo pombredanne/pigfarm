@@ -1,4 +1,3 @@
 ---
 - include: repos.yml
-  tags:
-    - base
+  tags: base_vms

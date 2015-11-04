@@ -40,7 +40,6 @@
 
 - name: Include cobbler certificate key
   include_vars: "secrets/ssl/cobbler.{{ hypervisor }}.vespian.net.key"
-  tags: secret
 
 - name: Upload cobbler certificate key
   copy:
@@ -50,7 +49,6 @@
     group: "{{ apache2_base_runas_user[ansible_os_family] }}"
     mode: 0640
   notify: Restart apache
-  tags: secret
 
 - name: Configure cobbler vhosts
   template:

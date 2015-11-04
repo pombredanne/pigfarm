@@ -13,8 +13,6 @@
     - base_hypervisor_extra_added_packages[ansible_os_family]['common']
     - base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution]['common']
     - "{{ base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"
-  tags:
-    - base
 
 - name: Remove redundant packages from base
   action:
@@ -30,6 +28,3 @@
     - base_hypervisor_extra_removed_packages[ansible_os_family]['common']
     - base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution]['common']
     - "{{ base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"
-  tags:
-    - base
-

@@ -6,7 +6,6 @@
       mode: 0644
       owner: root
       group: root
-  tags: secret
   when: >
     inventory_hostname not in groups['pxeservers'] and
     ansible_os_family == 'RedHat'

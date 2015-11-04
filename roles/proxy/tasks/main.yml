@@ -1,6 +1,6 @@
 ---
 - include: service.yml
-  tags: [ secret, service ]
+  tags: proxy
 
 - include: fw.yml
-  tags: [ secret, fw ]
+  tags: proxy

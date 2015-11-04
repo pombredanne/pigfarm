@@ -1,10 +1,8 @@
 ---
 - include: Debian.yml
   when: ansible_os_family == 'Debian'
-  tags:
-    - base
+  tags: development
 
 - include: RedHat.yml
   when: ansible_os_family == 'RedHat'
-  tags:
-    - base
+  tags: development

@@ -1,3 +1,6 @@
 ---
-- include: base.yml tags=service
-- include: packages.yml tags=service
+- include: base.yml
+  tags: repo
+
+- include: packages.yml
+  tags: repo

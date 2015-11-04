@@ -1,0 +1,62 @@
+---
+- name: Stop old ssh-agent service
+  service:
+    name: "ssh-agent@{{ item  }}.service"
+    state: stopped
+    enabled: false
+  with_items: users.keys()
+  tags:
+    - secret
+    - users
+
+- name: Remove old ssh-agent service file
+  file:
+    name: /etc/systemd/system/ssh-agent@.service
+    state: absent
+  notify: reload systemd
+
+# Systemd's instances will not cut it here - no way to reliably
+# determine the home dir of instance's user home dir
+- name: Upload ssh-agent's unit file
+  template:
+    src: ssh-agent@.service
+    dest: "/etc/systemd/system/ssh-agent-{{ item }}.service"
+    owner: root
+    group: root
+    mode: 0640
+  notify: reload systemd
+  with_items: users.keys()
+  register: unitfile_updated
+
+- name: Restart ssh-agent services
+  service:
+    name: "ssh-agent-{{ item }}.service"
+    state: restarted
+  with_items: users.keys()
+  when: unitfile_updated.changed
+
+- name: Enable ssh-agent for users
+  service:
+    name: "ssh-agent-{{ item }}.service"
+    state: running
+    enabled: true
+  with_items: users.keys()
+
+- name: Set ssh-agent variables globally
+  copy:
+    src: profile.sh
+    dest: /etc/profile.d/ssh-agent.sh
+    owner: root
+    group: root
+    mode: 0755
+
+# X11 checks if ssh-agent is running via SSH_AGENT_PID var test
+- name: Set ssh-agent variables per-profile
+  copy:
+    src: profile.sh
+    dest: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/ssh-agent.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0640
+  with_items: users.keys()
+  notify: assemble user profile files
