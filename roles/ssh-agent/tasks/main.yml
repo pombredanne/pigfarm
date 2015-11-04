@@ -1,10 +1,4 @@
 ---
-- name: Include ssh-agent user secrets
-  include_vars: secrets/group_vars/all.yml
-  tags:
-    - secret
-    - users
-
 - name: Stop old ssh-agent service
   service:
     name: "ssh-agent@{{ item  }}.service"

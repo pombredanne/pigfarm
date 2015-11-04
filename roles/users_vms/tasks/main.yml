@@ -1,9 +1,4 @@
 ---
-- name: Include secrets
-  include_vars: secrets/group_vars/all.yml
-  tags:
-    - secret
-
 - name: Include git_mirror private ssh key
   include_vars: secrets/ssh/git-mirror_rsa.yml
   tags:

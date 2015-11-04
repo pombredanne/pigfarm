@@ -1,11 +1,4 @@
 ---
-- name: Include secrets for VIM role
-  include_vars: secrets/group_vars/all.yml
-  tags:
-    - base
-    - secret
-    - dupa
-
 - name: Install vim packages for RHEL/CentOS (all versions)
   action:
     module: "{{ ansible_pkg_mgr  }}"

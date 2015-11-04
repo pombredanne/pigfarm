@@ -1,10 +1,4 @@
 ---
-- name: Include secrets for base_vms
-  include_vars: secrets/group_vars/all.yml
-  tags:
-    - base
-    - secret
-
 - include: repos.yml
   tags:
     - base
