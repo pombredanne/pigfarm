@@ -32,3 +32,7 @@ base_all_extra_removed_packages:
     common: []
 
 ip_forwarding: false
+
+git_identification:
+  name: Jon Doe
+  email: jon.doe@example.com
