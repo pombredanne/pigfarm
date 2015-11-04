@@ -19,7 +19,7 @@ set vendorclass = option vendor-class-identifier;
 option pxe-system-type code 93 = unsigned integer 16;
 
 {% for type in ['trusted', 'unsafe'] %}
-    {%- set obj = nework_configuration[hypervisor][type] %}
+    {%- set obj = network_configuration[type] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
 subnet {{ obj['net'] }} netmask {{ obj['mask_long'] }} {
      option routers             {{ net_prefix }}.1;

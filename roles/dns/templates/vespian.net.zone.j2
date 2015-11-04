@@ -13,4 +13,4 @@ repository  IN  CNAME repository.tr.{{ hypervisor }}
 cobbler  IN  CNAME cobbler.tr.{{ hypervisor }}
 tr.{{ hypervisor }} IN NS cobbler.tr.{{ hypervisor }}
 us.{{ hypervisor }} IN NS cobbler.tr.{{ hypervisor }}
-cobbler.tr.{{ hypervisor }} IN A {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2
+cobbler.tr.{{ hypervisor }} IN A {{ '.'.join(network_configuration['trusted']['net'].split('.')[:3]) }}.2

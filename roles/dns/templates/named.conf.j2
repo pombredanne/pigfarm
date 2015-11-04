@@ -104,8 +104,8 @@ controls {
 include "/etc/named.rfc1912.zones";
 include "/etc/named.root.key";
 
-{% set trusted_net_octets = nework_configuration[hypervisor]['trusted']['net'].split('.') %}
-{% set unsafe_net_octets = nework_configuration[hypervisor]['unsafe']['net'].split('.') %}
+{% set trusted_net_octets = network_configuration['trusted']['net'].split('.') %}
+{% set unsafe_net_octets = network_configuration['unsafe']['net'].split('.') %}
 
 {% for type in ['tr', 'us'] %}
 zone "{{ type }}.{{ hypervisor }}.vespian.net." {

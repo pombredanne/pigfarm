@@ -1,18 +1,18 @@
 {%- if inventory_hostname in groups['pxeservers'] %}
-    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set obj = network_configuration['trusted'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set nameserver = net_prefix + '.1' %}
     {%- set prefix = 'tr' %}
 nameserver 127.0.0.1
 nameserver {{ nameserver }}
 {% elif inventory_hostname[-3:] == '.tr' %}
-    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set obj = network_configuration['trusted'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set nameserver = net_prefix + '.2' %}
     {%- set prefix = 'tr' %}
 nameserver {{ nameserver }}
 {% else %}
-    {%- set obj = nework_configuration[hypervisor]['unsafe'] %}
+    {%- set obj = network_configuration['unsafe'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set nameserver = net_prefix + '.2' %}
     {%- set prefix = 'us' %}

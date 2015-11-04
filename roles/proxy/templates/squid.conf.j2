@@ -15,8 +15,8 @@
     include /etc/squid/rules.conf
 
     # Hosts on the same hypervisor:
-    acl localnet_trusted src {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }}
-    acl localnet_unsafe src {{ nework_configuration[hypervisor]['unsafe']['net'] }}/{{ nework_configuration[hypervisor]['unsafe']['mask_short'] }}
+    acl localnet_trusted src {{ network_configuration['trusted']['net'] }}/{{ network_configuration['trusted']['mask_short'] }}
+    acl localnet_unsafe src {{ network_configuration['unsafe']['net'] }}/{{ network_configuration['unsafe']['mask_short'] }}
 
     # Connection related:
     acl SSL_ports port 443

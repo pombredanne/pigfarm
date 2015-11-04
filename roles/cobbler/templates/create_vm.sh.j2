@@ -10,7 +10,7 @@ cobbler system add  --name $HOSTNAME \
                     --profile {{ "-".join(item.split("-")[:2]) }} \
                     --status production \
                     --netboot-enabled 1 \
-                    --kopts proxy=http://{{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2:3128 \
+                    --kopts proxy=http://{{ '.'.join(network_configuration['trusted']['net'].split('.')[:3]) }}.2:3128 \
                     --hostname ${HOSTNAME}.{{ hypervisor }}.vespian.net \
                     --interface eth0 \
                     --mac-address random \

@@ -7,8 +7,8 @@ options {
         recursion yes;
         listen-on port 53 {
             127.0.0.1;
-            {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
-            {{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2;
+            {{ '.'.join(network_configuration['trusted']['net'].split('.')[:3]) }}.2;
+            {{ '.'.join(network_configuration['unsafe']['net'].split('.')[:3]) }}.2;
         };
         allow-query {
             localhost;
@@ -102,11 +102,11 @@ controls {
 };
 
 acl "trusted_net" {
-    {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
+    {{ network_configuration['trusted']['net'] }}/{{ network_configuration['trusted']['mask_short'] }};
 };
 
 acl "unsafe_net" {
-    {{ nework_configuration[hypervisor]['trusted']['net'] }}/{{ nework_configuration[hypervisor]['trusted']['mask_short'] }};
+    {{ network_configuration['trusted']['net'] }}/{{ network_configuration['trusted']['mask_short'] }};
 };
 
 acl "hypervisor" {

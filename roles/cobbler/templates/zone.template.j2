@@ -9,10 +9,10 @@
 
                         IN      NS      $cobbler_server.
 {% if item == 'tr' %}
-repository  IN  A   {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
-cobbler  IN  A   {{ '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) }}.2;
+repository  IN  A   {{ '.'.join(network_configuration['trusted']['net'].split('.')[:3]) }}.2;
+cobbler  IN  A   {{ '.'.join(network_configuration['trusted']['net'].split('.')[:3]) }}.2;
 {% else %}
-repository  IN  A   {{ '.'.join(nework_configuration[hypervisor]['unsafe']['net'].split('.')[:3]) }}.2;
+repository  IN  A   {{ '.'.join(network_configuration['unsafe']['net'].split('.')[:3]) }}.2;
 {% endif %}
 
 $cname_record

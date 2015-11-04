@@ -3,15 +3,15 @@
 
 {% set hostname = inventory_hostname.split('.')[0] %}
 {%- if inventory_hostname in groups['pxeservers'] %}
-    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set obj = network_configuration['trusted'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set prefix = 'tr' %}
 {% elif inventory_hostname[-3:] == '.tr' %}
-    {%- set obj = nework_configuration[hypervisor]['trusted'] %}
+    {%- set obj = network_configuration['trusted'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set prefix = 'tr' %}
 {% else %}
-    {%- set obj = nework_configuration[hypervisor]['unsafe'] %}
+    {%- set obj = network_configuration['unsafe'] %}
     {%- set net_prefix = '.'.join(obj['net'].split('.')[:3]) %}
     {%- set prefix = 'us' %}
 {% endif %}

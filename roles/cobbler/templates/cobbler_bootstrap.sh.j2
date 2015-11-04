@@ -1,7 +1,7 @@
 #jinja2:trim_blocks: False
 #!/bin/sh
 {%- for d_type in ["Centos-6", "Centos-7", "Debian-7", "Debian-8", "Ubuntu-14"] %}
-    {%- set proxy = '.'.join(nework_configuration[hypervisor]['trusted']['net'].split('.')[:3]) %}
+    {%- set proxy = '.'.join(network_configuration['trusted']['net'].split('.')[:3]) %}
     {%- if d_type[:6] == "Centos" %}
         {%- set initrd = "initrd.img" %}
         {%- set kernel = "vmlinuz" %}
