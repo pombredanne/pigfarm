@@ -124,7 +124,7 @@ Defaults:%{{ distribution_specific[ansible_distribution]["sudo_group_name"]  }} 
 #includedir /etc/sudoers.d
 
 # Cache sudo passwords for 1h:
-timestamp_timeout=60
+Defaults:ALL timestamp_timeout=60
 
 # Cache sudo passwords between terminals (not sure):
 # Defaults   !tty_tickets
