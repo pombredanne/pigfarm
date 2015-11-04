@@ -1,7 +1,7 @@
 table filter {
     chain "SERVICES" {
         proto tcp dport ( 443 ) @subchain "COBBLER_WEB_CLIENTS" {
-{% for host in trusted_hosts[hypervisor] %}
+{% for host in trusted_hosts %}
             saddr {{ host  }}/32 ACCEPT;
 {% endfor %}
         }

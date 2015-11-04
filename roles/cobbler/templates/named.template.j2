@@ -14,7 +14,7 @@ options {
             localhost;
             trusted_net;
             unsafe_net;
-{% for host in trusted_hosts[hypervisor] %}
+{% for host in trusted_hosts %}
             {{ host  }};
 {% endfor %}
         };
@@ -110,7 +110,7 @@ acl "unsafe_net" {
 };
 
 acl "hypervisor" {
-{% for host in trusted_hosts[hypervisor] %}
+{% for host in trusted_hosts %}
     {{ host }}/32;
 {% endfor %}
 };
