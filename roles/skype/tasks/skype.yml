@@ -1,0 +1,44 @@
+---
+# Skype does not provide a repository, so we need to manually check for
+# upgrades:
+- name: Find the current version of Skype available
+  shell: curl "{{ skype_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's/.*\///' | sed -e 's/\.rpm//'
+  always_run: true
+  changed_when: false
+  register: skype_version_available
+
+- debug: var=skype_version_available
+
+- name: Find currently instaled version of Skype
+  shell: rpm -qa | grep skype-
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: skype_version_installed
+
+- debug: var=skype_version_installed
+
+- name: Download newest version of skype
+  get_url:
+    url: "{{ skype_download_url }}"
+    dest: /tmp/skype.rpm
+    force: yes
+    owner: root
+    group: root
+    mode: 0400
+  register: skype_rpm_downloaded
+  when: >
+    skype_version_installed.rc != 0 or
+    skype_version_installed.stdout != skype_version_available.stdout
+
+- name: Install Newest version of skype
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: /tmp/skype.rpm
+    state: present
+  when: skype_rpm_downloaded.changed
+
+- name: Remove tempoarary file
+  file:
+    name: /tmp/skype.rpm
+    state: absent
