@@ -16,6 +16,7 @@ base_hypervisor_added_packages:
     - vlc
     - wireshark
     - youtube-dl
+    - pavucontrol
   RedHat:
     common: []
     CentOS:
