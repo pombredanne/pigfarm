@@ -30,6 +30,22 @@ manual update of libosinfo signatures
 =======
 sudo wget https://git.fedorahosted.org/cgit/libosinfo.git/plain/data/oses/ubuntu.xml.in\?id\=dafbab7cf5e1d9a8f9cde7f56e58f83e0820799e -O  /usr/share/libosinfo/db/oses/ubuntu.xml
 
+patching koan in order to fix generic26 bug:
+=======
+--- /usr/lib/python2.7/site-packages/koan/virtinstall.py	2015-03-07 11:24:03.000000000 +0100
++++ /usr/lib/python2.7/site-packages/koan/virtinstall.py.new	2015-11-06 23:56:01.941153750 +0100
+@@ -378,6 +378,10 @@ def build_commandline(uri,
+             found = False
+             if os_version in supported_variants:
+                 pass # os_version is correct
++            elif os_version == 'ubuntutrusty':
++                os_version = 'ubuntu14.04'
++            elif os_version == 'debian8':
++                os_version = 'debian7'
+             elif os_version + ".0" in supported_variants:
+                 # osinfo based virt-install only knows about major.minor
+                 # variants, not just major variants like it used to. Default
+
 notes
 =======
 ### Playbook:
