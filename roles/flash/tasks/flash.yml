@@ -1,17 +1,13 @@
 ---
+- fail: msg="This role currently supports only Fedora"
+  when: ansible_distribution != 'Fedora'
+
 - name: Install Adobe's flash repository (RedHat)
   action:
     module: "{{ ansible_pkg_mgr  }}"
     name: http://linuxdownload.adobe.com/adobe-release/adobe-release-x86_64-1.0-1.noarch.rpm
     state: present
   when: ansible_os_family == 'RedHat'
-
-# No support for Debian now
-- name: Install Adobe's flash repository (Debian)
-  assert:
-    that:
-      - false
-  when: ansible_os_family == 'Debian'
 
 - name: Install the plugin
   action:

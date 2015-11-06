@@ -1,4 +1,7 @@
 ---
+- fail: msg="This role currently supports only Fedora"
+  when: ansible_distribution != 'Fedora'
+
 # Skype does not provide a repository, so we need to manually check for
 # upgrades:
 - name: Find the current version of Skype available

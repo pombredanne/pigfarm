@@ -1,4 +1,7 @@
 ---
+- fail: msg="This role currently supports only Fedora"
+  when: ansible_os_family != 'RedHat'
+
 - name: Import GPG key for RPM repo (RedHat)
   rpm_key:
     key: https://dl.google.com/linux/linux_signing_key.pub
@@ -28,12 +31,6 @@
   with_items:
     - talkplugin
     - chrome
-
-- name: Add google repositories (RedHat)
-  assert:
-    that:
-      - false #  FIXME
-  when: ansible_os_family == 'Debian'
 
 - name: Install google stuff
   action:
