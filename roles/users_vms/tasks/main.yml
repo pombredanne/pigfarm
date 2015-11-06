@@ -1,7 +1,3 @@
 ---
-- name: Include git_mirror private ssh key
-  include_vars: secrets/ssh/git-mirror_rsa.yml
-  tags: users_vms
-
 - include: users_vms.yml
   tags: users_vms
