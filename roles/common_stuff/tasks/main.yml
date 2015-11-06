@@ -1,14 +1,3 @@
 ---
-- name: Include global secrets
-  include_vars: secrets/group_vars/all.yml
-  tags: common
-
-- name: Check if there are any hosts secrets
-  stat: path="secrets/host_vars/{{ ansible_hostname }}.yml"
-  register: host_secrets_exist
-  tags: common
-
-- name: Include per-host secrets
-  include_vars: "secrets/host_vars/{{ ansible_hostname }}.yml"
-  when: host_secrets_exist.stat.exists == True
-  tags: common
+- include: common_stuff.yml
+  tags: common_stuff
