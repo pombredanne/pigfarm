@@ -21,8 +21,8 @@
     - flash
     - skype
     - koan_patching
-#    - dns
-#
+    - dns
+
 - hosts: vms
   roles:
     - users_vms
