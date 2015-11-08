@@ -24,4 +24,4 @@
     name: "{{ item }}"
     group: sftp
   with_items: users.keys()
-  when: sshd_config_sftp_server_enabled == true
+  when: item != 'root' and sshd_config_sftp_server_enabled == true

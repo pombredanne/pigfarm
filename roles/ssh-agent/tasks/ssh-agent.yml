@@ -1,12 +1,12 @@
 ---
 - fail: msg="This role requires systemd based distro"
   when: >
-    "{{ ansible_os_family == 'RedHat' and
-    ansible_distribution != 'Fedora' and
+    ansible_os_family == 'RedHat' and
+    (ansible_distribution != 'Fedora' or
     ansible_distribution == 'CentOS' and
-    ansible_distribution_major_version != '7' or
+    ansible_distribution_major_version != '7') or
     ansible_os_family == 'Debian' and
-    ansible_distribution_major_version != '8' }}"
+    ansible_distribution_major_version != '8'
 
 - name: Stop old ssh-agent service
   service:
@@ -14,9 +14,6 @@
     state: stopped
     enabled: false
   with_items: users.keys()
-  tags:
-    - secret
-    - users
 
 - name: Remove old ssh-agent service file
   file:
