@@ -17,6 +17,7 @@ base_hypervisor_added_packages:
     - wireshark
     - youtube-dl
     - pavucontrol
+    - smartmontools
   RedHat:
     common: []
     CentOS:
