@@ -1,5 +1,5 @@
 ---
-- name: Install development packages for RHEL/CentOS
+- name: Install Python development packages for RHEL/CentOS
   action:
     module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
