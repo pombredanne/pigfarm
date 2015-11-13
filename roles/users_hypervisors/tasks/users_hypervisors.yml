@@ -3,6 +3,7 @@
   user:
     name: "{{ item }}"
     groups: "{{users_hypervisors_user_groups | join(',')}}"
+    append: yes
   with_items: users.keys()
   when: item != 'root'
 
@@ -10,6 +11,7 @@
   user:
     name: "{{ item }}"
     groups: "{{users_hypervisors_user_groups_hypervisor_specific | join(',')}}"
+    append: yes
   with_items: users.keys()
   when: item != 'root'
 

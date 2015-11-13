@@ -23,5 +23,6 @@
   user:
     name: "{{ item }}"
     group: sftp
+    append: yes
   with_items: users.keys()
   when: item != 'root' and sshd_config_sftp_server_enabled == true
