@@ -6,18 +6,13 @@
     path: /opt/syncthing/syncthing
   register: syncthing_stat
 
-- name: Check if we have old syncthing setup here
-  stat:
-    path: /opt/syncthing
-  register: old_syncthing_stat
-
 - name: Remove old syncthing setup
   file:
     name: /opt/syncthing
     state: absent
   when: >
-    old_syncthing_stat.stat.exists == True and
-    old_syncthing_stat.stat.isreg == True
+    syncthing_stat.stat.exists == True and
+    syncthing_stat.stat.isreg == True
 
 - name: Find the current version of Syncthing available
   shell: curl "{{ syncthing_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
@@ -33,10 +28,14 @@
   changed_when: false
   ignore_errors: true
   register: syncthing_version_installed
-  when: syncthing_stat.stat.exists == True
+  when: >
+    syncthing_stat.stat.exists == True and
+    syncthing_stat.stat.isdir == True
 
 - debug: var=syncthing_version_installed
-  when: syncthing_stat.stat.exists == True
+  when: >
+    syncthing_stat.stat.exists == True and
+    syncthing_stat.stat.isdir == True
 
 - name: Download newest version of syncthing
   get_url:
@@ -49,6 +48,7 @@
   register: syncthing_downloaded
   when: >
     syncthing_stat.stat.exists == False or
+    syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Remove current version of syncthing
@@ -57,6 +57,7 @@
     state: absent
   when: >
     syncthing_stat.stat.exists == False or
+    syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Unpack newest version of syncthing
@@ -70,6 +71,7 @@
     src: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
   when: >
     syncthing_stat.stat.exists == False or
+    syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Remove temporary file
@@ -78,12 +80,14 @@
     state: absent
   when: >
     syncthing_stat.stat.exists == False or
+    syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Rename newly downloaded syncthing folder
   command: "mv -v /opt/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}/ /opt/syncthing/"
   when: >
     syncthing_stat.stat.exists == False or
+    syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Install systemd unit file
