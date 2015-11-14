@@ -42,6 +42,7 @@
     - libvirt-dev
     - ruby-dev
     - gcc
+    - gcc-c++
     - rubygem-builder
   when: ansible_os_family == 'Debian'
 
