@@ -12,8 +12,15 @@
    accept_hostkey: yes
    version: e44aa50301cbdb9c713193263e6c0c5a9a5798c0
   with_items: users.keys()
-  become: yes
-  become_user: "{{ item }}"
+  when: item in local_users and users[item]['shell'] == '/bin/zsh'
+
+- name: Fix ownership of oh-my-zsh repo
+  file:
+    path:  "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    recurse: yes
+  with_items: users.keys()
   when: item in local_users and users[item]['shell'] == '/bin/zsh'
 
 - name: Upload zshrc file
