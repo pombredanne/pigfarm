@@ -5,7 +5,7 @@
     groups: "{{users_hypervisors_user_groups | join(',')}}"
     append: yes
   with_items: users.keys()
-  when: item != 'root'
+  when: item in local_users and item != 'root'
 
 - name: add users to selected groups (hypervisor specific)
   user:
@@ -13,7 +13,7 @@
     groups: "{{users_hypervisors_user_groups_hypervisor_specific | join(',')}}"
     append: yes
   with_items: users.keys()
-  when: item != 'root'
+  when: item in local_users and item != 'root'
 
 #- name: add users to selected groups (common to all distros)
   #user:

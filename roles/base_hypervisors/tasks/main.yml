@@ -1,6 +1,3 @@
 ---
 - include: packages.yml
   tags: base_hypervisors
-
-- include: dirtree_setup.yml
-  tags: base_hypervisors

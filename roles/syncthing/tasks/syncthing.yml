@@ -101,4 +101,6 @@
     enabled: true
     state: running
   with_items: users.keys()
-  when: item != 'root'
+  when: >
+    item in local_users and
+    users[item]['is_syncthing_user'] == True

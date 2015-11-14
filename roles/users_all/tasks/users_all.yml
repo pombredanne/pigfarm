@@ -5,7 +5,7 @@
     gid: "{{ item.value.gid }}"
     state: present
   with_dict: users
-  when: item.key != 'root'
+  when: item.key in local_users and item.key != 'root'
 
 - name: create non-root users
   user:
@@ -16,7 +16,7 @@
     state: present
     append: yes
   with_dict: users
-  when: item.key != 'root'
+  when: item.key in local_users and item.key != 'root'
 
 - name: enable sudoing for selected users
   user:
@@ -24,7 +24,10 @@
     groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] }}'
     append: yes
   with_dict: users
-  when: item.key != 'root' and item.value.is_sudoer == true
+  when: >
+    item.key in local_users and
+    item.key != 'root' and
+    item.value.is_sudoer == true
 
 - name: set ssh-keys for users permitted to login
   authorized_key:
@@ -33,7 +36,9 @@
     state: "{{ item.state }}"
     key: "{{ login_key[item.host] }}"
   with_items: authorized_login_keys
-  when: users[item.user]['ssh_login_permitted'] == True
+  when: >
+    item.user in local_users and
+    users[item.user]['ssh_login_permitted'] == True
 
 - name: remove ssh-keys from users denied login
   authorized_key:
@@ -42,4 +47,6 @@
     state: absent
     key: "{{ login_key[item.host] }}"
   with_items: authorized_login_keys
-  when: users[item.user]['ssh_login_permitted'] == False or item.state != 'present'
+  when: >
+    users[item.user]['ssh_login_permitted'] == False or
+    item.state != 'present'

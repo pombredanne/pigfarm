@@ -1,6 +1,6 @@
 [user]
-    name = {{ git_identification.name }}
-    email = {{ git_identification.email }}
+    name = {{ git_identification[item[1]]['name'] }}
+    email = {{ git_identification[item[1]]['email']}}
 [core]
     autocrlf = input
     safecrlf = true

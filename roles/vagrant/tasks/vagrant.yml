@@ -50,9 +50,12 @@
   register: vagrant_installed_plugins
   always_run: true
   changed_when: False
-  with_items: "{{ users.keys() | sort() }}"
   become: yes
   become_user: "{{ item }}"
+  with_items: "{{ users.keys() | sort() }}"
+  when: >
+    item in local_users and
+    users[item]['is_vagrant_user'] == True
 
 - debug: var=vagrant_installed_plugins
 
@@ -64,7 +67,11 @@
     - vagrant_required_plugins
   become: yes
   become_user: "{{ item[1] }}"
-  when: item[0]["item"] == item[1] and item[2] not in item[0]["stdout_lines"]
+  when: >
+    item[1] in local_users and
+    users[item[1]['is_vagrant_user'] == True and
+    item[0]["item"] == item[1] and
+    item[2] not in item[0]["stdout_lines"]
 
 - name: Calculate differences between current plugins list and desired plugins
   action: nested_looping_helper

@@ -15,4 +15,6 @@
   with_nested:
     - [ 'gitignore', 'gitconfig']
     - users.keys()
-  when: item[1] == 'root' or users[item[1]]['ssh_login_permitted'] == True
+  when: >
+    item[1] in local_users and
+    users[item[1]]['is_git_user'] == True

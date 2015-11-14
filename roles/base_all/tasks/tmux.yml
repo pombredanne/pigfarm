@@ -13,4 +13,4 @@
     group: "{{ item }}"
     mode: 0640
   with_items: users.keys()
-  when: item == 'root' or users[item]['ssh_login_permitted'] == True
+  when: item in local_users and users[item]['is_tmux_user'] == True

@@ -13,8 +13,8 @@
    version: e44aa50301cbdb9c713193263e6c0c5a9a5798c0
   with_items: users.keys()
   become: yes
-  become_user: "{{ item  }}"
-  when: users[item]['shell'] == '/bin/zsh'
+  become_user: "{{ item }}"
+  when: item in local_users and users[item]['shell'] == '/bin/zsh'
 
 - name: Upload zshrc file
   template:
@@ -24,20 +24,11 @@
     owner: "{{ item }}"
     group: "{{ item }}"
   with_items: users.keys()
-  when: users[item]['shell'] == '/bin/zsh'
-
-#- name: Upload custom oh-my-zsh theme
-  #copy:
-    #src: vesclean.zsh-theme
-    #dest: "/{{ item if item == 'root' else 'home/' + item }}/.oh-my-zsh/themes/vesclean.zsh-theme"
-    #mode: 0640
-    #owner: "{{ item }}"
-    #group: "{{ item }}"
-  #with_items: users.keys()
-  #when: users[item]['shell'] == '/bin/zsh'
+  when: item in local_users and users[item]['shell'] == '/bin/zsh'
 
 - name: Set users shell
   user:
     name: '{{ item.key }}'
     shell: '{{ item.value.shell }}'
   with_dict: users
+  when: item.key in local_users

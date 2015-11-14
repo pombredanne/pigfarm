@@ -10,7 +10,7 @@
     - users.keys()
     - ['nauka', 'misc', 'work', 'media' ]
     - ['big', 'small']
-  when: item[0] != 'root'
+  when: item[0] in local_users and users[item[0]]['is_me']
 
 - name: Find files/dirs that need linking
   shell: "ls -1 /home/{{ item[0]  }}/{{ item[1]  }}/_shared-{{ item[1]  }}-{{ item[2]  }}/"
@@ -21,7 +21,7 @@
     - users.keys()
     - ['nauka', 'misc', 'work', 'media' ]
     - ['big', 'small']
-  when: item[0] != 'root'
+  when: item[0] in local_users and users[item[0]]['is_me']
 
 - debug: var=shared_dirs_contents
 

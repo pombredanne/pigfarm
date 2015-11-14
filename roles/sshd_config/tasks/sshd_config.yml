@@ -17,7 +17,7 @@
     shell: /usr/sbin/nologin
     state: present
     uid: 1005
-  when: sshd_config_sftp_server_enabled == true
+  when: sshd_config_sftp_server_enabled == True
 
 - name: Add users to sftp group
   user:
@@ -25,4 +25,7 @@
     group: sftp
     append: yes
   with_items: users.keys()
-  when: item != 'root' and sshd_config_sftp_server_enabled == true
+  when: >
+    item in local_users and
+    users[item]['is_sftp_user'] == True and
+    sshd_config_sftp_server_enabled == True and
