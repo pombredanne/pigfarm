@@ -3,7 +3,7 @@
 # upgrades:
 - name: Check if syncthing is installed
   stat:
-    path: /opt/syncthing/syncthing
+    path: /opt/syncthing
   register: syncthing_stat
 
 - name: Remove old syncthing setup
@@ -55,9 +55,10 @@
   file:
     name: /opt/syncthing/
     state: absent
+    recurse: true
   when: >
-    syncthing_stat.stat.exists == False or
-    syncthing_stat.stat.isdir == False or
+    syncthing_stat.stat.exists == True and
+    syncthing_stat.stat.isdir == True and
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Unpack newest version of syncthing
@@ -78,10 +79,6 @@
   file:
     name: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
     state: absent
-  when: >
-    syncthing_stat.stat.exists == False or
-    syncthing_stat.stat.isdir == False or
-    syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Rename newly downloaded syncthing folder
   command: "mv -v /opt/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}/ /opt/syncthing/"
