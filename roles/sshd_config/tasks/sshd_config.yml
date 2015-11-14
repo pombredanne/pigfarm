@@ -28,4 +28,4 @@
   when: >
     item in local_users and
     users[item]['is_sftp_user'] == True and
-    sshd_config_sftp_server_enabled == True and
+    sshd_config_sftp_server_enabled == True

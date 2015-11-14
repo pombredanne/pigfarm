@@ -89,6 +89,8 @@ class ActionModule(object):
             msg.append("'current_elements_hash' does not contain any results")
         else:
             for tmp in elements_hash['results']:
+                if 'skipped' in tmp and tmp['skipped']:
+                    continue
                 if tmp['rc'] != 0:
                     txt = 'Non-zero exit status found for result {0}'
                     msg.append(txt.format(tmp))
@@ -130,6 +132,8 @@ class ActionModule(object):
         output = []
 
         for tmp in args["current_elements_hash"]['results']:
+            if 'skipped' in tmp and tmp['skipped']:
+                continue
             for entry in tmp['stdout_lines']:
                 if entry in args['desired_elements_list']:
                     continue
