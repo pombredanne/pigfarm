@@ -1,0 +1,104 @@
+---
+# Syncthing does not provide a repository, so we need to manually check for
+# upgrades:
+- name: Check if syncthing is installed
+  stat:
+    path: /opt/syncthing/syncthing
+  register: syncthing_stat
+
+- name: Check if we have old syncthing setup here
+  stat:
+    path: /opt/syncthing
+  register: old_syncthing_stat
+
+- name: Remove old syncthing setup
+  file:
+    name: /opt/syncthing
+    state: absent
+  when: >
+    old_syncthing_stat.stat.exists == True and
+    old_syncthing_stat.stat.isreg == True
+
+- name: Find the current version of Syncthing available
+  shell: curl "{{ syncthing_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
+  always_run: true
+  changed_when: false
+  register: syncthing_version_available
+
+- debug: var=syncthing_version_available
+
+- name: Find currently instaled version of Syncthing
+  shell: /opt/syncthing/syncthing -version | awk '{print $2}'
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: syncthing_version_installed
+  when: syncthing_stat.stat.exists == True
+
+- debug: var=syncthing_version_installed
+  when: syncthing_stat.stat.exists == True
+
+- name: Download newest version of syncthing
+  get_url:
+    url: "https://github.com/syncthing/syncthing/releases/download/{{ syncthing_version_available.stdout }}/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    dest: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    force: yes
+    owner: root
+    group: root
+    mode: 0400
+  register: syncthing_downloaded
+  when: >
+    syncthing_stat.stat.exists == False or
+    syncthing_version_installed.stdout != syncthing_version_available.stdout
+
+- name: Remove current version of syncthing
+  file:
+    name: /opt/syncthing/
+    state: absent
+  when: >
+    syncthing_stat.stat.exists == False or
+    syncthing_version_installed.stdout != syncthing_version_available.stdout
+
+- name: Unpack newest version of syncthing
+  unarchive:
+    copy: false
+    dest: /opt/
+    creates: "/opt/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}/"
+    mode: 0755
+    owner: root
+    group: root
+    src: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+  when: >
+    syncthing_stat.stat.exists == False or
+    syncthing_version_installed.stdout != syncthing_version_available.stdout
+
+- name: Remove temporary file
+  file:
+    name: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    state: absent
+  when: >
+    syncthing_stat.stat.exists == False or
+    syncthing_version_installed.stdout != syncthing_version_available.stdout
+
+- name: Rename newly downloaded syncthing folder
+  command: "mv -v /opt/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}/ /opt/syncthing/"
+  when: >
+    syncthing_stat.stat.exists == False or
+    syncthing_version_installed.stdout != syncthing_version_available.stdout
+
+- name: Install systemd unit file
+  copy:
+    src: syncthing@.service
+    dest: /etc/systemd/system/syncthing@.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload systemd
+
+- name: Start syncthing services for all the users
+  service:
+    name: "syncthing@{{ item }}.service"
+    enabled: true
+    state: running
+  with_items: users.keys()
+  when: item != 'root'

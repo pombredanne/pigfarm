@@ -1,0 +1,80 @@
+---
+# syncthing-inotify does not provide a repository, so we need to manually check for
+# upgrades:
+- name: Check if syncthing-inotify is installed
+  stat:
+    path: /opt/syncthing-inotify
+  register: syncthing_inotify_stat
+
+- name: Find the current version of syncthing-inotify available
+  shell: curl "{{ syncthing_inotify_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
+  always_run: true
+  changed_when: false
+  register: syncthing_inotify_version_available
+
+- debug: var=syncthing_inotify_version_available
+
+- name: Find currently instaled version of syncthing-inotify
+  shell: /opt/syncthing-inotify -version | awk '{print $2}'
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: syncthing_inotify_version_installed
+  when: syncthing_inotify_stat.stat.exists == True
+
+- debug: var=syncthing_inotify_version_installed
+  when: syncthing_inotify_stat.stat.exists == True
+
+- name: Download newest version of syncthing_intofify
+  get_url:
+    url: "https://github.com/syncthing/syncthing-inotify/releases/download/{{ syncthing_inotify_version_available.stdout }}/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    dest: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    force: yes
+    owner: root
+    group: root
+    mode: 0400
+  register: syncthing_inotify_downloaded
+  when: >
+    syncthing_inotify_stat.stat.exists == False or
+    syncthing_inotify_version_installed.stdout != syncthing_inotify_version_available.stdout
+
+- name: Remove current version of syncthing-inotify
+  file:
+    name: /opt/syncthing-inotify
+    state: absent
+  when: syncthing_inotify_downloaded.changed
+
+- name: Unpack newest version of syncthing-inotify
+  unarchive:
+    copy: false
+    dest: /opt/
+    creates: "/opt/syncthing-inotify"
+    mode: 0755
+    owner: root
+    group: root
+    src: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+  when: syncthing_inotify_downloaded.changed
+
+- name: Remove temporary file
+  file:
+    name: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    state: absent
+  when: syncthing_inotify_downloaded.changed
+
+- name: Install systemd unit file
+  copy:
+    src: syncthing-inotify@.service
+    dest: /etc/systemd/system/syncthing-inotify@.service
+    owner: root
+    group: root
+    mode: 0644
+  notify: reload systemd
+
+- name: Start syncthing-inotify services for all the users
+  service:
+    name: "syncthing-inotify@{{ item }}.service"
+    enabled: true
+    state: running
+  with_items: users.keys()
+  when: item != 'root'
+

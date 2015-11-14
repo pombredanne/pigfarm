@@ -22,6 +22,7 @@
     - skype
     - koan_patching
     - dns
+    - syncthing
 
 - hosts: vms
   roles:
