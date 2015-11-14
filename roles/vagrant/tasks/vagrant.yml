@@ -31,6 +31,7 @@
     - libvirt-devel
     - ruby-devel
     - gcc
+    - gcc-c++
   when: ansible_os_family == 'RedHat'
 
 - name: Install auxilary packages (Debian)
