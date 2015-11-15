@@ -23,6 +23,7 @@
     - koan_patching
     - dns
     - syncthing
+    - development
 
 - hosts: vms
   roles:

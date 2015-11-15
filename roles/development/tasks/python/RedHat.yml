@@ -1,5 +1,5 @@
 ---
-- name: Install Python development packages for RHEL/CentOS
+- name: Install Python development packages for RHEL family distros
   action:
     module: "{{ ansible_pkg_mgr  }}"
     name: "{{ item }}"
@@ -7,21 +7,40 @@
   with_items:
     - libyaml
     - libyaml-devel
-    - python-mock
     - PyYAML
     - python-coverage
-    - python-dns
-    - python-nose
     - python-devel
+    - python-dns
+    - python-mock
+    - python-nose
+
+- name: Install Python development packages for Fedora based distros
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - python3-PyYAML
+    - python3-coverage
+    - python3-devel
+    - python3-dns
+    - python3-mock
+    - python3-nose
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Python development packages for Centos distros
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
     - python34u-devel.x86_64
     - python27-devel
-#    - python-pymisc
-#    - python3-pymisc
   when: >
     item != 'python27-devel' or
     item == 'python27-devel' and ansible_distribution_major_version == "6"
 
-- name: Install remaining development stuff using PIP (RHEL/CentOS)
+- name: Install remaining development stuff for CentOS using PIP
   pip:
     executable: "{{ item.exec | default('pip3.4') }}"
     name: "{{ item.name }}"
@@ -29,12 +48,12 @@
   with_items:
     - { "name": "pyaml" }
     - { "name": "pyaml", "exec": "pip2.7", "release": "6" }
-    - { "name": "mock" }
-    - { "name": "mock", "exec": "pip2.7", "release": "6" }
     - { "name": "coverage" }
     - { "name": "coverage", "exec": "pip2.7", "release": "6" }
     - { "name": "dnspython" }
     - { "name": "dnspython", "exec": "pip2.7", "release": "6" }
+    - { "name": "mock" }
+    - { "name": "mock", "exec": "pip2.7", "release": "6" }
     - { "name": "nose" }
     - { "name": "nose", "exec": "pip2.7", "release": "6" }
   when: >

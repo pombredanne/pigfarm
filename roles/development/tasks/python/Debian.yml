@@ -12,14 +12,12 @@
     - python-dnspython
     - python-mock
     - python-nose
-    - python-pymisc
     - python-yaml
     - python3-all
     - python3-coverage
     - python3-dnspython
     - python3-mock
     - python3-nose
-    - python3-pymisc
     - python3-yaml
   when: ansible_distribution_release != 'wheezy' or
     item.package not in ["python-mock", "python3-mock", "dh-python", "python-coverage", "python3-coverage"]
