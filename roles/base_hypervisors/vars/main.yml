@@ -5,6 +5,7 @@ base_hypervisor_added_packages:
     - audacious-plugins
     - audacious-plugins-freeworld-mp3
     - azureus
+    - clipit
     - dia
     - digikam
     - firefox
@@ -12,12 +13,12 @@ base_hypervisor_added_packages:
     - httrack
     - krusader
     - libreoffice
+    - pavucontrol
+    - smartmontools
     - thunderbird
     - vlc
     - wireshark
     - youtube-dl
-    - pavucontrol
-    - smartmontools
   RedHat:
     common: []
     CentOS:
