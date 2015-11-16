@@ -6,3 +6,11 @@
 - include: python/RedHat.yml
   when: ansible_os_family == 'RedHat'
   tags: development
+
+- include: golang-non_Fedora.yml
+  when: ansible_distribution != 'Fedora'
+  tags: development
+
+- include: golang-Fedora.yml
+  when: ansible_distribution == 'Fedora'
+  tags: development

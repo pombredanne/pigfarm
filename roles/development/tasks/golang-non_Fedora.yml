@@ -1,0 +1,50 @@
+---
+- name: Find out if golang is installed at all
+  stat:
+    path: /opt/go
+  register: golang_installed
+
+- name: Find version of currently installed Go compiler
+  shell: /opt/go/bin/go version | awk '{print $3}'
+  register: current_golang_version
+  changed_when: False
+  always_run: True
+  when: golang_installed.stat.exists == True
+
+- name: Download golang compiler
+  get_url:
+    url: "https://storage.googleapis.com/golang/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+    dest: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+    force: yes
+    owner: root
+    group: root
+    mode: 0400
+  when: >
+    golang_installed.stat.exists == False or
+    development_golang_pinned_version != current_golang_version.stdout
+
+- name: Remove current golang environment
+  file:
+    path: /opt/go
+    state: absent
+  when: >
+    golang_installed.stat.exists == False or
+    development_golang_pinned_version != current_golang_version.stdout
+
+- name: Unpack new golang environment
+  unarchive:
+    copy: false
+    dest: /opt/
+    creates: "/opt/go/"
+    mode: 0755
+    owner: root
+    group: root
+    src: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+  when: >
+    golang_installed.stat.exists == False or
+    development_golang_pinned_version != current_golang_version.stdout
+
+- name: Remove downloaded golang archive
+  file:
+    path: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+    state: absent
