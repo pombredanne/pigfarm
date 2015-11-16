@@ -57,7 +57,13 @@ alias ad="ansible-doc"
 {% endif %}
 
 {% if item in local_users and users[item]["is_golang_user"] %}
-export GOPATH={{ home }}/nauka/programming/golang/workspace
+export GOPATH={{ home }}/{{ "" if item == 'root' else 'nauka/programming/' }}golang/workspace/
+{% if ansible_distribution != 'Fedora' %}
+export GOROOT=/opt/go/
+export GOBIN=$GOPATH/bin/
+export PATH=$PATH:$GOBIN:$GOROOT/bin/
+{% else %}
 export GOBIN=$GOPATH/bin
 export PATH=$PATH:$GOBIN
+{% endif %}
 {% endif %}
