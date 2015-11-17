@@ -37,8 +37,9 @@
     - python34u-devel.x86_64
     - python27-devel
   when: >
-    item != 'python27-devel' or
-    item == 'python27-devel' and ansible_distribution_major_version == "6"
+    ansible_distribution == 'CentOS' and
+    (item != 'python27-devel' or
+    item == 'python27-devel' and ansible_distribution_major_version == "6")
 
 - name: Install remaining development stuff for CentOS using PIP
   pip:
@@ -57,5 +58,6 @@
     - { "name": "nose" }
     - { "name": "nose", "exec": "pip2.7", "release": "6" }
   when: >
-    "release" not in item or
-    item["release"] == ansible_distribution_major_version
+    ansible_distribution == 'CentOS' and
+    ("release" not in item or
+    item["release"] == ansible_distribution_major_version)
