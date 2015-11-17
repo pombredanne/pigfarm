@@ -5,9 +5,10 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - PyYAML
     - libyaml
     - libyaml-devel
-    - PyYAML
+    - pytest
     - python-coverage
     - python-devel
     - python-dns
@@ -26,6 +27,7 @@
     - python3-dns
     - python3-mock
     - python3-nose
+    - python3-pytest
   when: ansible_distribution == 'Fedora'
 
 - name: Install Python development packages for Centos distros
@@ -47,6 +49,8 @@
     name: "{{ item.name }}"
     state: present
   with_items:
+    - { "name": "pytest" }
+    - { "name": "pytest", "exec": "pip2.7", "release": "6" }
     - { "name": "pyaml" }
     - { "name": "pyaml", "exec": "pip2.7", "release": "6" }
     - { "name": "coverage" }
