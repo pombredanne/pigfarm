@@ -90,6 +90,7 @@
   become: yes
   become_user: "{{ item.item_key }}"
   with_items: vagrant_redundant_plugins
+  when: item.item_val != 'vagrant-share'
 
 - name: Install virtualbox repository key (Debian)
   apt_key:
