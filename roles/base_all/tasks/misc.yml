@@ -53,7 +53,7 @@
     group: "{{ item }}"
     mode: 0750
   with_items: users.keys()
-  when: item in local_users
+  when: item in local_users or item == 'root'
 
 - name: Check vconsole keyboard layout settings
   shell: localectl status | grep 'VC Keymap' | grep pl2

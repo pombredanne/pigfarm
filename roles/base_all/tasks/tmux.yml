@@ -13,4 +13,6 @@
     group: "{{ item }}"
     mode: 0640
   with_items: users.keys()
-  when: item in local_users and users[item]['is_tmux_user'] == True
+  when: >
+    (item in local_users or item == 'root') and
+    users[item]['is_tmux_user'] == True

@@ -67,7 +67,7 @@
     group: "{{ item.key }}"
   with_dict: users
   when: >
-    item.key in local_users and
+    (item.key in local_users or item.key == 'root') and
     item['value']['is_vim_user'] == True
 
 - name: Create vim directories
@@ -81,7 +81,7 @@
     - ['.vim', '.vim/colors', '.vim/autoload', '.vim/bundle', '.vim/ftplugin']
     - users.keys()
   when: >
-    item[1] in local_users and
+    (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
 - name: Upload vim plugins/configs
@@ -95,7 +95,7 @@
     - vim_native_plugins
     - users.keys()
   when: >
-    item[1] in local_users and
+    (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
 - name: checkout plugins from upstream git repos
@@ -108,7 +108,7 @@
     - vim_external_plugins.keys()
     - users.keys()
   when: >
-    item[1] in local_users and
+    (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
 - name: Fix ownership of the repositories
@@ -121,7 +121,7 @@
     - vim_external_plugins.keys()
     - users.keys()
   when: >
-    item[1] in local_users and
+    (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
 
@@ -132,7 +132,7 @@
   register: vim_current_git_plugins
   with_items: users.keys()
   when: >
-    item in local_users and
+    (item in local_users or item == 'root') and
     users[item]['is_vim_user'] == True
 
 - debug: var=vim_current_git_plugins

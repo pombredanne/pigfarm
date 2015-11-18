@@ -161,7 +161,7 @@ Subsystem sftp /usr/lib/openssh/sftp-server
 
 {%- if sshd_config_username_login_restrictions == true %}
 {%- set allowed_users = [] %}
-{%- for user in users if user in local_users and users[user]['ssh_login_permitted'] == True %}
+{%- for user in users if (user in local_users or user == 'root') and users[user]['ssh_login_permitted'] == True %}
     {%- do allowed_users.append(user) %}
 {%- endfor %}
 

@@ -7,4 +7,4 @@
     group: "{{ item  }}"
     src: "/{{ 'root' if item == 'root' else 'home/' + item }}/.profile.d/"
   with_items: users.keys()
-  when: item in local_users
+  when: item in local_users or item == 'root'

@@ -56,7 +56,7 @@
   become_user: "{{ item }}"
   with_items: "{{ users.keys() | sort() }}"
   when: >
-    item in local_users and
+    (item in local_users or item == 'root') and
     users[item]['is_vagrant_user'] == True
 
 - debug: var=vagrant_installed_plugins
@@ -70,7 +70,7 @@
   become: yes
   become_user: "{{ item[1] }}"
   when: >
-    item[1] in local_users and
+    (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vagrant_user'] == True and
     ('skipped' not in item[0] or item[0]['skipped'] == False) and
     item[0]["item"] == item[1] and
