@@ -98,10 +98,14 @@
     state: present
   when: ansible_os_family == 'Debian'
 
+#http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
 - name: Install virtualbox repository key (RedHat)
-  rpm_key:
-    key: https://www.virtualbox.org/download/oracle_vbox.asc
-    state: present
+  copy:
+    src: oracle_vbox.asc
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-vbox
+    owner: root
+    group: root
+    mode: 0644
   when: ansible_os_family == 'RedHat'
 
 - name: Install virtualbox repository (Debian)
