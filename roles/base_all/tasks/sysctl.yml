@@ -8,6 +8,14 @@
     group: root
   notify: sysctl reload
 
+- name: Make sure /etc/sysctl.d/ dir exists
+  file:
+    path: /etc/sysctl.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+
 - name: Upload basic sysctl config
   template:
     src: "sysctl/{{ item }}.sysctl.conf.j2"
