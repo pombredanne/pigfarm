@@ -1,9 +1,0 @@
----
-- include: "Debian.yml"
-  when: ansible_os_family == 'Debian'
-
-- include: "CentOS.yml"
-  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS'
-
-- include: "Fedora.yml"
-  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'

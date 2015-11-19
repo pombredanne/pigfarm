@@ -1,5 +1,14 @@
 ---
-- include: repos/repos.yml
+- include: "repos_Debian.yml"
+  when: ansible_os_family == 'Debian'
+  tags: base_all
+
+- include: "repos_CentOS.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS'
+  tags: base_all
+
+- include: "repos_Fedora.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
   tags: base_all
 
 - include: packages.yml
@@ -11,7 +20,16 @@
 - include: misc.yml
   tags: base_all
 
-- include: python/python.yml
+- include: "python_Debian.yml"
+  when: ansible_os_family == 'Debian'
+  tags: base_all
+
+- include: "python_CentOS.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS'
+  tags: base_all
+
+- include: "python_Fedora.yml"
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
   tags: base_all
 
 - include: git.yml
