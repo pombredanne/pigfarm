@@ -14,6 +14,13 @@ base_all_extra_added_packages:
       23: []
   Debian:
     common: []
+    Debian:
+      common: []
+      7: []
+      8: []
+    Ubuntu:
+      common: []
+      14: []
 
 base_all_extra_removed_packages:
   common: []
@@ -30,6 +37,13 @@ base_all_extra_removed_packages:
       23: []
   Debian:
     common: []
+    Debian:
+      common: []
+      7: []
+      8: []
+    Ubuntu:
+      common: []
+      14: []
 
 ip_forwarding: false
 

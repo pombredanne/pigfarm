@@ -17,3 +17,10 @@ base_all_extra_removed_packages:
   Debian:
     common:
       - lm-sensors
+    Debian:
+      common: []
+      7: []
+      8: []
+    Ubuntu:
+      common: []
+      14: []

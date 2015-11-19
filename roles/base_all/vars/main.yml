@@ -74,6 +74,13 @@ base_all_added_packages:
       - python-selinux
       - vlan
       - xauth
+    Debian:
+      common: []
+      7: []
+      8: []
+    Ubuntu:
+      common: []
+      14: []
 
 base_all_removed_packages:
   common: []
@@ -93,3 +100,10 @@ base_all_removed_packages:
       23: []
   Debian:
     common: []
+    Debian:
+      common: []
+      7: []
+      8: []
+    Ubuntu:
+      common: []
+      14: []
