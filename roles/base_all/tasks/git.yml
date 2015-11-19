@@ -7,7 +7,7 @@
 
 - name: Upload gitconfig and gitignore files
   template:
-    src: "{{ item[0] }}.j2"
+    src: "git/{{ item[0] }}.j2"
     dest: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.{{ item[0] }}"
     mode: 0640
     owner: "{{ item[1] }}"

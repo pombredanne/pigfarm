@@ -17,7 +17,7 @@
 
 - name: Normalize sudo configuration and enable pipelining for ansible
   template:
-    src: sudoers.j2
+    src: misc/sudoers.j2
     dest: /etc/sudoers
     mode: 0440
     owner: root
