@@ -35,19 +35,22 @@
   with_items:
     - libvirt-dev
     - ruby-dev
-    - gcc
-    - gcc-c++
-    - rubygem-builder
+    - build-essential
+    - ruby-builder
 
 - name: Install virtualbox repository key (Debian)
   apt_key:
-    file: oracle_vbox.asc
+    data: "{{ lookup('file', '../files/oracle_vbox.asc') }}"
     state: present
 
 - name: Install virtualbox repository (Debian)
   apt_repository:
-    content: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    repo: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
     state: present
+  notify: Debian update repos
+
+# Update repository data _NOW_
+- meta: flush_handlers
 
 - name: Install virtualbox packages
   action:
@@ -56,4 +59,4 @@
     state: present
   with_items:
     - dkms
-    - VirtualBox-4.3
+    - virtualbox-4.3

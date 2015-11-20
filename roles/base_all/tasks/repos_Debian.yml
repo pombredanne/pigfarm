@@ -13,6 +13,9 @@
     group: root
   notify: Debian update repos
 
+# Update repository data _NOW_
+- meta: flush_handlers
+
 - name: select default Debian release to use
   copy:
     content: 'APT::Default-Release "{{ ansible_distribution_release }}";'
@@ -28,6 +31,3 @@
     mode: 0644
     owner: root
     group: root
-
-# Update repository data _NOW_
-- meta: flush_handlers
