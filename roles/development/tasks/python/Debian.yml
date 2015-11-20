@@ -3,6 +3,8 @@
   apt:
     name: "{{ item }}"
     state: present
+# Problems with versions of libyaml-0-2 :(
+    force: true
   with_items:
     - devscripts
     - dh-python
@@ -12,15 +14,17 @@
     - python-dnspython
     - python-mock
     - python-nose
+    - python-pytest
     - python-yaml
     - python3-all
     - python3-coverage
     - python3-dnspython
     - python3-mock
     - python3-nose
+    - python3-pytest
     - python3-yaml
   when: ansible_distribution_release != 'wheezy' or
-    item.package not in ["python-mock", "python3-mock", "dh-python", "python-coverage", "python3-coverage"]
+    item not in ["python-mock", "python3-mock", "dh-python", "python-coverage", "python3-coverage"]
 
 - name: Install development packages for Debian7
   apt:
