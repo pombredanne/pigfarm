@@ -210,7 +210,13 @@ noremap <F6> :Autoformat<CR><CR>
 let g:formatdef_autopep8 = '"autopep8 - ".(&textwidth ? "--max-line-length=".&textwidth : "")'
 
 "" Flake8 - python3
+{% if ansible_distribution == 'Fedora' or ansible_os_family == 'Debian' and ansible_distribution_release != 'wheezy' %}
 let g:flake8_cmd="/usr/bin/python3-flake8"
+{% elif ansible_os_family == 'Debian' and ansible_distribution_release == 'wheezy' %}
+let g:flake8_cmd="/usr/local/bin/flake8"
+{% else %}
+let g:flake8_cmd="/usr/bin/flake8"
+{% endif %}
 
 "" vim-go
 let g:go_highlight_functions = 1

@@ -59,8 +59,8 @@
     item[1] != 'pip-3.2')
 
 - name: Upload vimrc file
-  copy:
-    src: vimrc
+  template:
+    src: vimrc.j2
     dest: "/{{ item.key if item.key == 'root' else 'home/' + item.key }}/.vimrc"
     mode: 0640
     owner: "{{ item.key }}"
