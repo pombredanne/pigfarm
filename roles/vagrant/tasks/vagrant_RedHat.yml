@@ -1,0 +1,52 @@
+---
+- name: Install vagrant packages (Fedora)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - vagrant
+  when: ansible_distribution == 'Fedora'
+
+- name: Install vagrant packages (CentOS)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ vagrant_download_url_rpm }}"
+    state: present
+  when: ansible_distribution == 'CentOS'
+
+- name: Install auxilary packages (RedHat)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libvirt-devel
+    - ruby-devel
+    - gcc
+    - gcc-c++
+
+#http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
+- name: Install virtualbox repository key (RedHat)
+  copy:
+    src: oracle_vbox.asc
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-vbox
+    owner: root
+    group: root
+    mode: 0644
+  when: ansible_os_family == 'RedHat'
+
+- name: Install virtualbox repository (RedHat)
+  copy:
+    src: "virtualbox.{{ ansible_distribution }}.repo"
+    dest: /etc/yum.repos.d/virtualbox.repo
+  when: ansible_os_family == 'RedHat'
+
+- name: Install virtualbox packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - dkms
+    - VirtualBox-4.3

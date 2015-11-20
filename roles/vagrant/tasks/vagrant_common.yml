@@ -1,0 +1,45 @@
+---
+- name: Find installed plugins
+  shell: "vagrant plugin list | cut -d' ' -f 1"
+  register: vagrant_installed_plugins
+  always_run: true
+  changed_when: False
+  become: yes
+  become_user: "{{ item }}"
+  with_items: "{{ users.keys() | sort() }}"
+  when: >
+    (item in local_users or item == 'root') and
+    users[item]['is_vagrant_user'] == True
+
+- debug: var=vagrant_installed_plugins
+
+- name: Install missing vagrant plugins
+  command: "vagrant plugin install {{ item[2] }}"
+  with_nested:
+    - vagrant_installed_plugins.results
+    - users.keys()
+    - vagrant_required_plugins
+  become: yes
+  become_user: "{{ item[1] }}"
+  when: >
+    (item[1] in local_users or item[1] == 'root') and
+    users[item[1]]['is_vagrant_user'] == True and
+    ('skipped' not in item[0] or item[0]['skipped'] == False) and
+    item[0]["item"] == item[1] and
+    item[2] not in item[0]["stdout_lines"]
+
+- name: Calculate differences between current plugins list and desired plugins
+  action: nested_looping_helper
+  args:
+    current_elements_hash: '{{ vagrant_installed_plugins }}'
+    desired_elements_list: '{{ vagrant_required_plugins }}'
+    output_variable_name: vagrant_redundant_plugins
+
+- debug: var=vagrant_redundant_plugins
+
+- name: Remove redundant vagrant plugins
+  command: "vagrant plugin uninstall {{ item.item_val }}"
+  become: yes
+  become_user: "{{ item.item_key }}"
+  with_items: vagrant_redundant_plugins
+  when: item.item_val != 'vagrant-share'

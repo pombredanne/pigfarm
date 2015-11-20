@@ -1,3 +1,11 @@
 ---
-- include: vagrant.yml
+- include: vagrant_Debian.yml
+  tags: vagrant
+  when: ansible_os_family == 'Debian'
+
+- include: vagrant_RedHat.yml
+  tags: vagrant
+  when: ansible_os_family == 'RedHat'
+
+- include: vagrant_common.yml
   tags: vagrant

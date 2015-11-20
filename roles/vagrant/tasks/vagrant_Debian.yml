@@ -1,0 +1,59 @@
+---
+- name: Check if vagrant package is instaled (Debian)
+  command: dpkg -s vagrant
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: vagrant_installed
+
+- name: Dowload vagrant package
+  get_url:
+    url: "{{ vagrant_download_url_deb }}"
+    timeout: 300
+    dest: /tmp/vagrant_1.7.4_x86_64.deb
+    owner: root
+    group: root
+    mode: 0640
+  when: vagrant_installed | failed
+
+- name: Install vagrant packages (Debian)
+  apt:
+    deb: /tmp/vagrant_1.7.4_x86_64.deb
+    state: present
+  when: vagrant_installed | failed
+
+- name: Clean up temporary file
+  file:
+    path: /tmp/vagrant_1.7.4_x86_64.deb
+    state: absent
+
+- name: Install auxilary packages (Debian)
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - libvirt-dev
+    - ruby-dev
+    - gcc
+    - gcc-c++
+    - rubygem-builder
+
+- name: Install virtualbox repository key (Debian)
+  apt_key:
+    file: oracle_vbox.asc
+    state: present
+
+- name: Install virtualbox repository (Debian)
+  apt_repository:
+    content: "deb http://download.virtualbox.org/virtualbox/debian {{ ansible_distribution_release }} contrib"
+    state: present
+
+- name: Install virtualbox packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - dkms
+    - VirtualBox-4.3
