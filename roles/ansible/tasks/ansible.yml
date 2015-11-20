@@ -1,0 +1,52 @@
+---
+- name: Install Ansible
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: ansible
+    state: present
+
+- name: Install Ansible-lint for Fedora
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: ansible-lint
+    state: present
+  when: ansible_distribution == 'Fedora'
+
+- name: Install Ansible-doc for Debian systems
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: ansible-doc
+    state: present
+  when: ansible_os_family == 'Debian'
+
+- name: Install Ansible-lint for non-Fedora systems
+  pip:
+    executable: "{{ item[1] }}"
+    name: "{{ item[0] }}"
+    state: present
+  with_nested:
+    - [ 'ansible-lint', ]
+    - [ 'pip3.4', 'pip-3.2', 'pip' ]
+  when: >
+    (ansible_os_family == 'Debian' and
+    ansible_distribution_release == 'wheezy'
+    and item[1] != 'pip3.4') or
+    (ansible_os_family == 'RedHat' and
+    ansible_distribution != 'Fedora' and
+    item[1] != 'pip-3.2')
+
+- name: Upload Ansible configuration
+  template:
+    src: ansible.cfg.j2
+    dest: /etc/ansible/ansible.cfg
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Create vault-cat file
+  copy:
+    src: vault-cat.sh
+    dest: /opt/vault-cat.sh
+    owner: root
+    group: root
+    mode: 0755

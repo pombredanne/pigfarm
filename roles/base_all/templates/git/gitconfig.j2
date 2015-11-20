@@ -5,8 +5,15 @@
     autocrlf = input
     safecrlf = true
     excludesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitignore
+{% if users[item[1]]['is_ansible_user'] == True %}
+    attributesfile = /{{ 'root' if item[1] == 'root' else 'home/' + item[1] }}/.gitattributes
+{% endif %}
 [color]
     diff = auto
     grep = auto
 [push]
     default = tracking
+{% if users[item[1]]['is_ansible_user'] == True %}
+[diff "vault"]
+    textconv = /opt/vault-cat.sh
+{% endif %}

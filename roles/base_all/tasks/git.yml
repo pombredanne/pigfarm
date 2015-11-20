@@ -13,8 +13,17 @@
     owner: "{{ item[1] }}"
     group: "{{ item[1] }}"
   with_nested:
-    - [ 'gitignore', 'gitconfig']
+    - [ 'gitignore', 'gitconfig', 'gitattributes']
     - users.keys()
   when: >
     item[1] in local_users and
-    users[item[1]]['is_git_user'] == True
+    users[item[1]]['is_git_user'] == True and
+    (item[1] != 'gitattributes' or
+    item[1] == 'gitattributes' and users[item[1]]['is_ansible_user'] == True)
+
+- name: Remove gitattributes file if not needed
+  file:
+    name: "/{{ item if item == 'root' else 'home/' + item }}/.gitattributes"
+    state: absent
+  with_items: users.keys()
+  when: users[item]['is_ansible_user'] == False
