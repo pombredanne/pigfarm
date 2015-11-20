@@ -1,0 +1,8 @@
+---
+- name: Upload puk-puk script
+  template:
+    src: pukpuk.sh.j2
+    dest: /opt/pukpuk.sh
+    owner: root
+    group: root
+    mode: 0755

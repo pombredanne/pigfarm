@@ -128,3 +128,11 @@ Defaults:ALL timestamp_timeout=60
 
 # Cache sudo passwords between terminals (not sure):
 # Defaults   !tty_tickets
+
+{% if inventory_hostname in groups['hypervisors'] %}
+{% for user in local_users %}
+{% for port in pukpuk_sequence %}
+{{user}} ALL = NOPASSWD: /sbin/hping3 -S -V -p {{ port }} {{ pukpuk_ip }} -c 1
+{% endfor %}
+{% endfor %}
+{% endif %}

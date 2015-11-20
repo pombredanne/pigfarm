@@ -1,0 +1,7 @@
+#!/bin/bash
+{% for port in pukpuk_sequence %}
+{% for rep in range(0, pukpuk_repetitions) %}
+sudo /sbin/hping3 -S -V -p {{ port }} {{ pukpuk_ip }} -c 1
+{% endfor %}
+sleep 1
+{% endfor %}

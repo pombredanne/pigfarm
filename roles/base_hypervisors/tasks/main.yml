@@ -1,3 +1,6 @@
 ---
 - include: packages.yml
   tags: base_hypervisors
+
+- include: misc.yml
+  tags: base_hypervisors
