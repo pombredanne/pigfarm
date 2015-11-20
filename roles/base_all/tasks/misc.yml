@@ -57,6 +57,7 @@
 
 - name: Check vconsole keyboard layout settings
   shell: localectl status | grep 'VC Keymap' | grep pl2
+  ignore_errors: true
   always_run: true
   changed_when: false
   register: pl2_layout_present
