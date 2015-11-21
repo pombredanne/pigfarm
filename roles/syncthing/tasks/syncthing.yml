@@ -55,7 +55,6 @@
   file:
     name: /opt/syncthing/
     state: absent
-    recurse: true
   when: >
     syncthing_stat.stat.exists == True and
     syncthing_stat.stat.isdir == True and
