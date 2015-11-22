@@ -4,3 +4,5 @@
 
 - include: misc.yml
   tags: base_hypervisors
+
+- meta: flush_handlers

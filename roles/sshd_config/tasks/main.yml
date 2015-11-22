@@ -1,3 +1,5 @@
 ---
 - include: sshd_config.yml
   tags: sshd_config
+
+- meta: flush_handlers

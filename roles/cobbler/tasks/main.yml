@@ -16,3 +16,5 @@
 
 - include: fw.yml
   tags: cobbler
+
+- meta: flush_handlers

@@ -1,3 +1,5 @@
 ---
 - include: repos.yml
   tags: base_vms
+
+- meta: flush_handlers

@@ -9,3 +9,5 @@
 
 - include: vagrant_common.yml
   tags: vagrant
+
+- meta: flush_handlers

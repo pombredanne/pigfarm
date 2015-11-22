@@ -1,3 +1,5 @@
 ---
 - include: users_vms.yml
   tags: users_vms
+
+- meta: flush_handlers

@@ -6,3 +6,5 @@
 - include: "RedHat.yml"
   tags: sysdig
   when: ansible_os_family == 'RedHat'
+
+- meta: flush_handlers

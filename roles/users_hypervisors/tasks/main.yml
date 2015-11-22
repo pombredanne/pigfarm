@@ -1,3 +1,5 @@
 ---
 - include: users_hypervisors.yml
   tags: users_hypervissors
+
+- meta: flush_handlers

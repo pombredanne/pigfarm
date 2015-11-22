@@ -1,3 +1,5 @@
 ---
 - include: ssh-agent.yml
   tags: ssh-agent
+
+- meta: flush_handlers

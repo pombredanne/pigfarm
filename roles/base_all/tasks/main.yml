@@ -40,3 +40,5 @@
 
 - include: zsh.yml
   tags: base_all
+
+- meta: flush_handlers

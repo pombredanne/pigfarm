@@ -8,3 +8,5 @@
     group: root
   notify: udev reload
   tags: disk_schedulers
+
+- meta: flush_handlers

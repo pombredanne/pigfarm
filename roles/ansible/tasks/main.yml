@@ -1,3 +1,5 @@
 ---
 - include: ansible.yml
   tags: ansible
+
+- meta: flush_handlers

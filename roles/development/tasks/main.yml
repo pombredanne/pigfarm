@@ -14,3 +14,5 @@
 - include: golang-Fedora.yml
   when: ansible_distribution == 'Fedora'
   tags: development
+
+- meta: flush_handlers

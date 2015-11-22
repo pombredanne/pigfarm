@@ -1,3 +1,5 @@
 ---
 - include: flash.yml
   tags: flash
+
+- meta: flush_handlers

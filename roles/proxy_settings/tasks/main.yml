@@ -8,3 +8,5 @@
   include: disable_proxy.yml
   tags: proxy_settings
   when: proxing_enabled is not defined or proxing_enabled == False
+
+- meta: flush_handlers

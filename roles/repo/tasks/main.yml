@@ -4,3 +4,5 @@
 
 - include: packages.yml
   tags: repo
+
+- meta: flush_handlers

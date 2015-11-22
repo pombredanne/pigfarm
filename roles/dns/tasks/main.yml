@@ -1,3 +1,5 @@
 ---
 - include: dns.yml
   tags: dns
+
+- meta: flush_handlers

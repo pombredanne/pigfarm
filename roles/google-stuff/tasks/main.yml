@@ -1,3 +1,5 @@
 ---
 - include: google-stuff.yml
   tags: google-stuff
+
+- meta: flush_handlers

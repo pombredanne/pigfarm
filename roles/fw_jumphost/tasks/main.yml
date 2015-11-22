@@ -20,3 +20,5 @@
   notify:
     - reload ferm
   tags: fw
+
+- meta: flush_handlers

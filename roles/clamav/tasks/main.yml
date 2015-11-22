@@ -1,3 +1,5 @@
 ---
 - include: clamav.yml
   tags: clamav
+
+- meta: flush_handlers

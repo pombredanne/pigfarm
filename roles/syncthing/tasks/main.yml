@@ -16,3 +16,5 @@
 
 - include: syncthing-inotify.yml
   tags: syncthing
+
+- meta: flush_handlers

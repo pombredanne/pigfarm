@@ -1,3 +1,5 @@
 ---
 - include: skype.yml
   tags: skype
+
+- meta: flush_handlers
