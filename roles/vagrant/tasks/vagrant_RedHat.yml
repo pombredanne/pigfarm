@@ -27,6 +27,21 @@
     - gcc-c++
     - zlib
     - zlib-devel
+    - rubygem-builder
+    - rubygem-diff-lcs
+    - rubygem-excon
+    - rubygem-fog-core
+    - rubygem-fog-libvirt
+    - rubygem-fog-xml
+    - rubygem-formatador
+    - rubygem-multi_json
+    - rubygem-rake
+    - rubygem-rspec2
+    - rubygem-rspec2-core
+    - rubygem-rspec2-expectations
+    - rubygem-rspec2-mocks
+    - rubygem-ruby-libvirt
+    - redhat-rpm-config
 
 #http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
 - name: install virtualbox repository key (redhat)
