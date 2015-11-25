@@ -1,5 +1,5 @@
 [Journal]
 Compress=yes
-SystemMaxUse=200m
+SystemMaxUse=200M
 MaxRetentionSec=28day
 Storage=persistent
