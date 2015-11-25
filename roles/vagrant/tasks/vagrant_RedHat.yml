@@ -25,12 +25,14 @@
     - ruby-devel
     - gcc
     - gcc-c++
+    - zlib
+    - zlib-devel
 
 #http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
-- name: Install virtualbox repository key (RedHat)
+- name: install virtualbox repository key (redhat)
   copy:
     src: oracle_vbox.asc
-    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-vbox
+    dest: /etc/pki/rpm-gpg/rpm-gpg-key-oracle-vbox
     owner: root
     group: root
     mode: 0644

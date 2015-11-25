@@ -1,6 +1,6 @@
 ---
 - name: Find installed plugins
-  shell: "vagrant plugin list | cut -d' ' -f 1"
+  shell: "vagrant plugin list | grep -v 'No plugins installed' | cut -d' ' -f 1"
   register: vagrant_installed_plugins
   always_run: true
   changed_when: False
