@@ -37,3 +37,21 @@
   service:
     name: named
     state: restarted
+
+- name: restart syncthing
+  service:
+    name: "syncthing@{{ item }}.service"
+    state: restarted
+  with_items: users.keys()
+  when: >
+    item in local_users and
+    users[item]['is_syncthing_user'] == True
+
+- name: restart syncthing-inotify
+  service:
+    name: "syncthing-inotify@{{ item }}.service"
+    state: restarted
+  with_items: users.keys()
+  when: >
+    item in local_users and
+    users[item]['is_syncthing_user'] == True

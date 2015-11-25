@@ -54,6 +54,7 @@
     group: root
     src: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
   when: syncthing_inotify_downloaded.changed
+  notify: restart syncthing-inotify
 
 - name: Remove temporary file
   file:

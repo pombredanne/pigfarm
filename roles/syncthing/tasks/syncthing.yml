@@ -85,6 +85,7 @@
     syncthing_stat.stat.exists == False or
     syncthing_stat.stat.isdir == False or
     syncthing_version_installed.stdout != syncthing_version_available.stdout
+  notify: restart syncthing
 
 - name: Install systemd unit file
   copy:
