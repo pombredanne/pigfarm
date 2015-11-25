@@ -1,6 +1,6 @@
 [hypervisors]
 mop ansible_connection=local
-fedora.tr
+fedora.tr ansible_ssh_user=vespian
 
 [jumphosts]
 
@@ -16,8 +16,8 @@ peppa.tr
 
 [trusted]
 peppa.tr
-c7t.tr ansible_user=root
-c6t.tr ansible_user=root
-d7t.tr ansible_user=root
-d8t.tr ansible_user=root
-ubu.tr ansible_user=root
+c7t.tr
+c6t.tr
+d7t.tr ansible_user=root ansible_become=false
+d8t.tr ansible_user=root ansible_become=false
+ubu.tr ansible_user=root ansible_become=false
