@@ -10,6 +10,11 @@ base_hypervisor_added_packages:
     - digikam
     - firefox
     - gimp
+    - gstreamer-ffmpeg
+    - gstreamer-plugins-bad
+    - gstreamer-plugins-bad-free-extras
+    - gstreamer-plugins-bad-nonfree
+    - gstreamer-plugins-ugly
     - httrack
     - keepassx
     - krusader
