@@ -16,6 +16,7 @@ base_hypervisor_added_packages:
     - libreoffice
     - pavucontrol
     - smartmontools
+    - smplayer
     - thunderbird
     - vlc
     - wireshark
