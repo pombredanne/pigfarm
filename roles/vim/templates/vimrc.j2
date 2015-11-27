@@ -196,9 +196,9 @@ inoremap <silent><C-k> <C-R>=OmniPopup('k')<CR>
 inoremap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
 
 
-" Python folding
-" mkdir -p ~/.vim/ftplugin
-" wget -O ~/.vim/ftplugin/python_editing.vim http://www.vim.org/scripts/download_script.php?src_id=5492
+" Code folding
+set foldmethod=indent
+set foldlevelstart=4
 set nofoldenable
 
 "" Nerdtree:

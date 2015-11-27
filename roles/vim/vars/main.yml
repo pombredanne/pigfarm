@@ -1,7 +1,9 @@
 vim_native_plugins:
-  - { name: "python_editing.vim", location: "ftplugin/"}
   - { name: "wombat256mod.vim", location: "colors/"}
   - { name: "pathogen.vim", location: "autoload/"}
+
+vim_removed_native_plugins:
+  - { name: "python_editing.vim", location: "ftplugin/"}
 
 vim_external_plugins:
   auto-pairs:

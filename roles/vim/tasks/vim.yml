@@ -98,6 +98,17 @@
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
 
+- name: Remove vim plugins/configs that are no longer used
+  file:
+    path: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/{{ item[0].location }}/{{ item[0].name }}"
+    state: absent
+  with_nested:
+    - vim_removed_native_plugins
+    - users.keys()
+  when: >
+    (item[1] in local_users or item[1] == 'root') and
+    users[item[1]]['is_vim_user'] == True
+
 - name: checkout plugins from upstream git repos
   git:
     repo: "{{ vim_external_plugins[item[0]]['url'] }}"
