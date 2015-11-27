@@ -54,9 +54,10 @@ base_all_added_packages:
     Fedora:
       common:
         - bind-utils
-        - mtr
-        - policycoreutils-python
         - iputils
+        - mtr
+        - pbzip2
+        - policycoreutils-python
       21: []
       22: []
       23: []
