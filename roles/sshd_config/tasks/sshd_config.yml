@@ -29,3 +29,9 @@
     (item in local_users or item == 'root') and
     users[item]['is_sftp_user'] == True and
     sshd_config_sftp_server_enabled == True
+
+- name: Enable and start sshd server
+  service:
+    name: "{{ distribution_specific[ansible_distribution]['sshd_service_name'] }}"
+    state: started
+    enabled: true
