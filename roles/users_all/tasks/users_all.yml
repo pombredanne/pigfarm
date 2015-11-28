@@ -14,7 +14,6 @@
     group: "{{ item.key }}"
     createhome: yes
     state: present
-    append: yes
   with_dict: users
   when: item.key in local_users and item.key != 'root'
 

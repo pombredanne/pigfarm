@@ -22,7 +22,7 @@
 - name: Add users to sftp group
   user:
     name: "{{ item }}"
-    group: sftp
+    groups: sftp
     append: yes
   with_items: users.keys()
   when: >
