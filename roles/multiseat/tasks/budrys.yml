@@ -1,0 +1,9 @@
+---
+- name: Add libGL exports to profile
+  copy:
+    content: "export LD_PRELOAD=/lib64/libGL.so.1"
+    dest: /home/kamila/.profile.d/libgl_hack.sh
+    owner: kamila
+    group: kamila
+    mode: 0750
+  notify: assemble user profile files

@@ -26,6 +26,11 @@
     - development
     - ansible
 
+- hosts: budrys
+  sudo: True
+  roles:
+    - multiseat
+
 - hosts: vms
   roles:
     - users_vms

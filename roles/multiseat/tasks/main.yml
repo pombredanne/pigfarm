@@ -1,0 +1,6 @@
+---
+- include: budrys.yml
+  when: inventory_hostname == 'budrys'
+  tags: multiseat
+
+- meta: flush_handlers
