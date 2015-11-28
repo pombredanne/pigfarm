@@ -31,8 +31,6 @@
     - rubygem-diff-lcs
     - rubygem-excon
     - rubygem-fog-core
-    - rubygem-fog-libvirt
-    - rubygem-fog-xml
     - rubygem-formatador
     - rubygem-multi_json
     - rubygem-rake
