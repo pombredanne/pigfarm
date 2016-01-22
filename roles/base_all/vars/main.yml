@@ -4,6 +4,7 @@ base_all_added_packages:
     - acpid
     - binutils
     - bridge-utils
+    - colordiff
     - dstat
     - git
     - hping3
