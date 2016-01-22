@@ -60,6 +60,12 @@ noremap <C-Z> :update<CR>
 vnoremap <C-Z> <C-C>:update<CR>
 inoremap <C-Z> <C-O>:update<CR>
 
+" GitGutter/git integration:
+nmap <Leader>hn <Plug>GitGutterNextHunk
+nmap <Leader>hp <Plug>GitGutterPrevHunk
+nmap <Leader>hs <Plug>GitGutterStageHunk
+nmap <Leader>hr <Plug>GitGutterRevertHunk
+nmap <Leader>hv <Plug>GitGutterPreviewHunk
 
 " Quick quit/save command
 noremap <Leader>e :quit<CR>  " Quit current window
