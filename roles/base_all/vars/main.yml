@@ -25,6 +25,7 @@ base_all_added_packages:
     - python
     - python-pycurl
     - rsync
+    - sponge
     - strace
     - sudo
     - sysstat
