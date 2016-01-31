@@ -1,0 +1,58 @@
+{
+    "builders": [
+        {
+            "boot_command": [
+            "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
+            ],
+            "disk_size": 6000,
+            "guest_os_type": "RedHat_64",
+            "http_directory": "httpd_contents",
+            "iso_checksum": "dba29c59117400b111633be2bf2aaf0e",
+            "iso_checksum_type": "md5",
+            "iso_url": "../CentOS-7-x86_64-Everything-1511.iso",
+            "shutdown_command": "shutdown -P now",
+            "ssh_password": "test1234",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "3600s",
+            "type": "virtualbox-iso",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--vram",
+                    "64"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "inline": [
+                "sleep 30",
+                "yum install -y ansible"
+            ],
+            "type": "shell"
+        },
+        {
+            "command": "ansible-playbook",
+            "extra_arguments": "-D",
+            "inventory_groups": "all",
+            "playbook_dir": "playbooks",
+            "playbook_file": "playbooks/site.yml",
+            "type": "ansible-local"
+        }
+    ]
+
+}

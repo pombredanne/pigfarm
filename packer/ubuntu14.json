@@ -1,0 +1,92 @@
+{
+    "builders": [
+        {
+            "boot_command": [
+                "<esc><wait>",
+                "<esc><wait>",
+                "<enter><wait>",
+                " /install/vmlinuz",
+                " auto",
+                " console-setup/ask_detect=false",
+                " console-setup/layoutcode=pl",
+                " console-setup/modelcode=pc105",
+                " debian-installer=en_GB",
+                " fb=false",
+                " initrd=/install/initrd.gz",
+                " kbd-chooser/method=pl",
+                " keyboard-configuration/layout=PL",
+                " keyboard-configuration/variant=PL",
+                " locale=en_GB.UTF-8",
+                " netcfg/get_hostname=ubuntu-1404",
+                " netcfg/get_domain=vagrantup.com",
+                " noapic",
+                " preseed/url=http://{{.HTTPIP}}:{{.HTTPPort}}/ubuntu14.preseed.cfg",
+                " --",
+                "<enter><wait>"
+            ],
+            "disk_size": 6000,
+            "guest_os_type": "Ubuntu_64",
+            "http_directory": "httpd_contents",
+            "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
+            "iso_checksum_type": "md5",
+            "iso_url": "http://releases.ubuntu.com/14.04.3/ubuntu-14.04.3-server-amd64.iso",
+            "shutdown_command": "shutdown -P now",
+            "ssh_password": "test1234",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "3600s",
+            "type": "virtualbox-iso",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--vram",
+                    "128"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--audio",
+                    "none"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ],
+               [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--ioapic",
+                    "on"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--pae",
+                    "on"
+                ]
+            ]
+        }
+    ],
+    "provisioners": [
+        {
+            "command": "/usr/bin/ansible-playbook",
+            "extra_arguments": ["-D", "--vault-password-file=/home/vespian/.ansible/passwd", "-e hypervisor={{user `hypervisor`}}"],
+            "groups": ["all", "vms"],
+            "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False"],
+            "empty_groups": "hypervisors,jumphosts,pxeservers,isolated,trusted",
+            "playbook_file": "/home/vespian/nauka/git_repos/pigfarm/playbooks/site.yml",
+            "type": "ansible"
+        }
+    ],
+    "variables": {
+        "hypervisor": "budrys"
+    }
+}
