@@ -24,69 +24,70 @@
                 " --",
                 "<enter><wait>"
             ],
+            "disk_discard": "unmap",
+            "disk_interface": "virtio",
             "disk_size": 6000,
-            "guest_os_type": "Ubuntu_64",
+            "headless": false,
             "http_directory": "httpd_contents",
             "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
             "iso_checksum_type": "md5",
             "iso_url": "http://releases.ubuntu.com/14.04.3/ubuntu-14.04.3-server-amd64.iso",
+            "machine_type": "pc-q35-2.3",
+            "net_device": "virtio-net",
+            "qemuargs": [
+                [
+                    "-m",
+                    "1024M"
+                ],
+                [
+                    "-smp",
+                    "cpus=2,maxcpus=2,cores=1,threads=2,sockets=1"
+                ],
+                [
+                    "-netdev",
+                    "user,hostfwd=tcp::{{ .SSHHostPort }}-:22,id=forward"
+                ],
+                [
+                    "-device",
+                    "virtio-net,netdev=forward,id=net0"
+                ]
+            ],
             "shutdown_command": "shutdown -P now",
             "ssh_password": "test1234",
             "ssh_username": "root",
             "ssh_wait_timeout": "3600s",
-            "type": "virtualbox-iso",
-            "vboxmanage": [
-                [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--memory",
-                    "1024"
-                ],
-                [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--vram",
-                    "128"
-                ],
-                [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--audio",
-                    "none"
-                ],
-                [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--cpus",
-                    "2"
-                ],
-               [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--ioapic",
-                    "on"
-                ],
-                [
-                    "modifyvm",
-                    "{{.Name}}",
-                    "--pae",
-                    "on"
-                ]
-            ]
+            "type": "qemu"
         }
     ],
     "provisioners": [
         {
+            "ansible_env_vars": [
+                "ANSIBLE_HOST_KEY_CHECKING=False"
+            ],
             "command": "/usr/bin/ansible-playbook",
-            "extra_arguments": ["-D", "--vault-password-file=/home/vespian/.ansible/passwd", "-e hypervisor={{user `hypervisor`}}"],
-            "groups": ["all", "vms"],
-            "ansible_env_vars": ["ANSIBLE_HOST_KEY_CHECKING=False"],
-            "empty_groups": "hypervisors,jumphosts,pxeservers,isolated,trusted",
-            "playbook_file": "/home/vespian/nauka/git_repos/pigfarm/playbooks/site.yml",
+            "empty_groups": [
+                "hypervisors",
+                "jumphosts",
+                "pxeservers",
+                "isolated",
+                "trusted"
+            ],
+            "extra_arguments": [
+                "-D",
+                "--vault-password-file={{user `vault_passwd`}}",
+                "-e hypervisor={{user `hypervisor`}}"
+            ],
+            "groups": [
+                "all",
+                "vms"
+            ],
+            "playbook_file": "{{user `playbook`}}",
             "type": "ansible"
         }
     ],
     "variables": {
-        "hypervisor": "budrys"
+        "playbook": "/home/vespian/nauka/git_repos/pigfarm/playbooks/site.yml",
+        "hypervisor": "budrys",
+        "vault_passwd": "/home/vespian/.ansible/passwd"
     }
 }
