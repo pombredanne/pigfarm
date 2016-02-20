@@ -1,18 +1,34 @@
 {
+    "variables": {
+        "hypervisor": "budrys",
+        "playbook": "/home/vespian/nauka/git_repos/pigfarm/playbooks/site.yml",
+        "vault_passwd": "/home/vespian/.ansible/passwd"
+    },
     "builders": [
         {
             "name": "centos7-qemu",
+            "type": "qemu",
+
+
+            "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+            "iso_checksum_type": "md5",
+            "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
             "boot_command": [
                 "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
             ],
-            "disk_discard": "unmap",
-            "disk_interface": "virtio",
+
+
             "disk_size": 6000,
             "headless": false,
             "http_directory": "httpd_contents",
-            "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
-            "iso_checksum_type": "md5",
-            "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+            "shutdown_command": "shutdown -P now",
+            "ssh_password": "test1234",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "3600s",
+
+
+            "disk_discard": "unmap",
+            "disk_interface": "virtio",
             "machine_type": "pc-q35-2.3",
             "net_device": "virtio-net",
             "qemuargs": [
@@ -32,15 +48,61 @@
                     "-device",
                     "virtio-net,netdev=forward,id=net0"
                 ]
+            ]
+        },
+        {
+            "name": "centos7-vbox",
+            "type": "virtualbox-iso",
+
+
+            "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+            "iso_checksum_type": "md5",
+            "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+            "boot_command": [
+                "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
             ],
+
+
+            "disk_size": 6000,
+            "headless": false,
+            "http_directory": "httpd_contents",
             "shutdown_command": "shutdown -P now",
             "ssh_password": "test1234",
             "ssh_username": "root",
             "ssh_wait_timeout": "3600s",
-            "type": "qemu"
+
+
+            "guest_os_type": "RedHat_64",
+            "hard_drive_interface": "sata",
+            "vboxmanage": [
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--memory",
+                    "1024"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--vram",
+                    "64"
+                ],
+                [
+                    "modifyvm",
+                    "{{.Name}}",
+                    "--cpus",
+                    "2"
+                ]
+            ]
         },
         {
             "name": "ubuntu14-qemu",
+            "type": "qemu",
+
+
+            "iso_url": "http://releases.ubuntu.com/14.04.3/ubuntu-14.04.3-server-amd64.iso",
+            "iso_checksum_type": "md5",
+            "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
             "boot_command": [
                 "<esc><wait>",
                 "<esc><wait>",
@@ -64,14 +126,19 @@
                 " --",
                 "<enter><wait>"
             ],
-            "disk_discard": "unmap",
-            "disk_interface": "virtio",
+
+
             "disk_size": 6000,
             "headless": false,
             "http_directory": "httpd_contents",
-            "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
-            "iso_checksum_type": "md5",
-            "iso_url": "http://releases.ubuntu.com/14.04.3/ubuntu-14.04.3-server-amd64.iso",
+            "shutdown_command": "shutdown -P now",
+            "ssh_password": "test1234",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "3600s",
+
+
+            "disk_discard": "unmap",
+            "disk_interface": "virtio",
             "machine_type": "pc-q35-2.3",
             "net_device": "virtio-net",
             "qemuargs": [
@@ -91,27 +158,26 @@
                     "-device",
                     "virtio-net,netdev=forward,id=net0"
                 ]
-            ],
-            "shutdown_command": "shutdown -P now",
-            "ssh_password": "test1234",
-            "ssh_username": "root",
-            "ssh_wait_timeout": "3600s",
-            "type": "qemu"
-        }
-    ],
-    "post-processors": [
-        {
-            "keep_input_artifact": true,
-            "type": "vagrant",
-            "vagrantfile_template": "Vagrantfile_template.rb"
+            ]
         }
     ],
     "provisioners": [
         {
+            "type": "ansible",
+            "command": "/usr/bin/ansible-playbook",
+            "extra_arguments": [
+                "-D",
+                "--vault-password-file={{user `vault_passwd`}}",
+                "-e hypervisor={{user `hypervisor`}}"
+            ],
             "ansible_env_vars": [
                 "ANSIBLE_HOST_KEY_CHECKING=False"
             ],
-            "command": "/usr/bin/ansible-playbook",
+            "groups": [
+                "all",
+                "packerized",
+                "vms"
+            ],
             "empty_groups": [
                 "hypervisors",
                 "jumphosts",
@@ -119,23 +185,21 @@
                 "isolated",
                 "trusted"
             ],
-            "extra_arguments": [
-                "-D",
-                "--vault-password-file={{user `vault_passwd`}}",
-                "-e hypervisor={{user `hypervisor`}}"
-            ],
-            "groups": [
-                "all",
-                "packerized",
-                "vms"
-            ],
             "playbook_file": "{{user `playbook`}}",
-            "type": "ansible"
+            "override": {
+                "centos7-qemu": {
+                  "sftp_command": "/usr/libexec/openssh/sftp-server"
+                }
+            }
         }
     ],
-    "variables": {
-        "hypervisor": "budrys",
-        "playbook": "/home/vespian/nauka/git_repos/pigfarm/playbooks/site.yml",
-        "vault_passwd": "/home/vespian/.ansible/passwd"
-    }
+    "post-processors": [
+        {
+            "type": "vagrant",
+            "keep_input_artifact": true,
+            "vagrantfile_template": "Vagrantfile_template.rb",
+            "compression_level": 9,
+            "output": "{{.BuildName}}-{{.Provider}}.box"
+        }
+    ]
 }
