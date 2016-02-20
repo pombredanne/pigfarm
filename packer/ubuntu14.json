@@ -1,6 +1,46 @@
 {
     "builders": [
         {
+            "name": "centos7-qemu",
+            "boot_command": [
+                "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
+            ],
+            "disk_discard": "unmap",
+            "disk_interface": "virtio",
+            "disk_size": 6000,
+            "headless": false,
+            "http_directory": "httpd_contents",
+            "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+            "iso_checksum_type": "md5",
+            "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
+            "machine_type": "pc-q35-2.3",
+            "net_device": "virtio-net",
+            "qemuargs": [
+                [
+                    "-m",
+                    "1024M"
+                ],
+                [
+                    "-smp",
+                    "cpus=2,maxcpus=2,cores=1,threads=2,sockets=1"
+                ],
+                [
+                    "-netdev",
+                    "user,hostfwd=tcp::{{ .SSHHostPort }}-:22,id=forward"
+                ],
+                [
+                    "-device",
+                    "virtio-net,netdev=forward,id=net0"
+                ]
+            ],
+            "shutdown_command": "shutdown -P now",
+            "ssh_password": "test1234",
+            "ssh_username": "root",
+            "ssh_wait_timeout": "3600s",
+            "type": "qemu"
+        },
+        {
+            "name": "ubuntu14-qemu",
             "boot_command": [
                 "<esc><wait>",
                 "<esc><wait>",
@@ -63,8 +103,7 @@
         {
             "keep_input_artifact": true,
             "type": "vagrant",
-            "vagrantfile_template": "Vagrantfile_template.rb",
-            "output
+            "vagrantfile_template": "Vagrantfile_template.rb"
         }
     ],
     "provisioners": [

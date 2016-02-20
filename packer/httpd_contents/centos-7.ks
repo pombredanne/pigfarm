@@ -6,10 +6,10 @@ text
 auth --enableshadow --passalgo=sha512
 
 # Disk:
-clearpart --drives=sda --all --initlabel
-bootloader --location=mbr --boot-drive=sda
-part / --fstype="xfs" --ondisk=sda --grow
-part swap --fstype="swap" --ondisk=sda --size=512
+clearpart --drives=vda --all --initlabel
+bootloader --location=mbr --boot-drive=vda
+part / --fstype="xfs" --ondisk=vda --grow
+part swap --fstype="swap" --ondisk=vda --size=512
 
 # Other:
 firewall --enabled --ssh
@@ -88,5 +88,4 @@ sed -i '/Defaults.*requiretty/d' /etc/sudoers
 
 # Do postinstall system configuration
 sed -i -e 's/PermitRootLogin \S*/PermitRootLogin yes/g' /etc/ssh/sshd_config
-rpm -Uvh https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 %end
