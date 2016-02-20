@@ -21,3 +21,5 @@ c6t.tr
 d7t.tr ansible_user=root ansible_become=false
 d8t.tr ansible_user=root ansible_become=false
 ubu.tr ansible_user=root ansible_become=false
+
+[packerized]

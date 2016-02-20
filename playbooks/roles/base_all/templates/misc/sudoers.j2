@@ -105,7 +105,15 @@ root	ALL=(ALL) 	ALL
 # %sys ALL = NETWORKING, SOFTWARE, SERVICES, STORAGE, DELEGATING, PROCESSES, LOCATE, DRIVERS
 
 ## Allows people in group wheel to run all commands
+{# Hosts belong to this group only during installation using packer. Later,
+druing Ansible run this is removed as the host does not belong to "packerized"
+hosts. The reason why we allow passwordless sudo is Vagrant and it's
+post-setup scripts that execute sudo during initial VM setup. #}
+{% if inventory_hostname in groups['packerized'] %}
+%{{ distribution_specific[ansible_distribution]["sudo_group_name"] }} ALL= NOPASSWD: ALL
+{% else %}
 %{{ distribution_specific[ansible_distribution]["sudo_group_name"] }} ALL=(ALL) ALL
+{% endif %}
 
 ## Same thing without a password
 # %wheel	ALL=(ALL)	NOPASSWD: ALL
