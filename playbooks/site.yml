@@ -64,3 +64,9 @@
     - proxy
     - repo
     - cobbler
+
+- hosts: packerized
+  become: True
+  become_method: sudo
+  roles:
+    - provisioning_cleanup
