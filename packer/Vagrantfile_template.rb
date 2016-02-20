@@ -1,4 +1,3 @@
-config.ssh.username = 'vespian'
 Vagrant.configure('2') do |config|
   config.ssh.username = 'vespian'
   config.ssh.insert_key = 'false'
