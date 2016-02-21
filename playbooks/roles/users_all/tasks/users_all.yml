@@ -17,6 +17,13 @@
   with_dict: users
   when: item.key in local_users and item.key != 'root'
 
+- name: Protect users home directories
+  file:
+    name: "/{{ item.key if item.key == 'root' else 'home/' + item.key }}"
+    mode: 0750
+  with_dict: users
+  when: item.key in local_users or item.key == 'root'
+
 - name: enable sudoing for selected users
   user:
     name: "{{ item.key }}"
