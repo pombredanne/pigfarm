@@ -52,6 +52,14 @@
 # Update repository data _NOW_
 - meta: flush_handlers
 
+- name: Remove old virtualbox packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - virtualbox-4.3
+
 - name: Install virtualbox packages
   action:
     module: "{{ ansible_pkg_mgr }}"

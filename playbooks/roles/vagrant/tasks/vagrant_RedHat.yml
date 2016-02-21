@@ -57,6 +57,14 @@
     dest: /etc/yum.repos.d/virtualbox.repo
   when: ansible_os_family == 'RedHat'
 
+- name: Remove old virtualbox packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - VirtualBox-4.3
+
 - name: Install virtualbox packages
   action:
     module: "{{ ansible_pkg_mgr }}"
