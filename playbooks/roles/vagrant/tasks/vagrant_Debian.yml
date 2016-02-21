@@ -59,4 +59,4 @@
     state: present
   with_items:
     - dkms
-    - virtualbox-4.3
+    - virtualbox-5.0
