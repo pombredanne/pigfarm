@@ -208,6 +208,9 @@
             "override": {
                 "centos7-qemu": {
                   "sftp_command": "/usr/libexec/openssh/sftp-server"
+                },
+                "centos7-vbox": {
+                  "sftp_command": "/usr/libexec/openssh/sftp-server"
                 }
             }
         }
