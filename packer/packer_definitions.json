@@ -13,6 +13,7 @@
             "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
             "iso_checksum_type": "md5",
             "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+            "boot_wait": "3s",
             "boot_command": [
                 "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
             ],
@@ -58,6 +59,7 @@
             "iso_url": "http://mirror.onet.pl/pub/mirrors/centos/7/isos/x86_64/CentOS-7-x86_64-Minimal-1511.iso",
             "iso_checksum_type": "md5",
             "iso_checksum": "88c0437f0a14c6e2c94426df9d43cd67",
+            "boot_wait": "3s",
             "boot_command": [
                 "<tab> text ks=http://{{ .HTTPIP  }}:{{ .HTTPPort  }}/centos-7.ks<enter><wait>"
             ],
@@ -103,6 +105,7 @@
             "iso_url": "http://releases.ubuntu.com/14.04.3/ubuntu-14.04.3-server-amd64.iso",
             "iso_checksum_type": "md5",
             "iso_checksum": "9e5fecc94b3925bededed0fdca1bd417",
+            "boot_wait": "3s",
             "boot_command": [
                 "<esc><wait>",
                 "<esc><wait>",
