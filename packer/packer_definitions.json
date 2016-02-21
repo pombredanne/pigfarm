@@ -28,7 +28,7 @@
 
 
             "disk_discard": "unmap",
-            "disk_interface": "virtio",
+            "disk_interface": "virtio-scsi",
             "machine_type": "pc-q35-2.3",
             "net_device": "virtio-net",
             "qemuargs": [
@@ -138,7 +138,7 @@
 
 
             "disk_discard": "unmap",
-            "disk_interface": "virtio",
+            "disk_interface": "virtio-scsi",
             "machine_type": "pc-q35-2.3",
             "net_device": "virtio-net",
             "qemuargs": [

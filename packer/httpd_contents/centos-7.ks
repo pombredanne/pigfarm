@@ -6,10 +6,10 @@ text
 auth --enableshadow --passalgo=sha512
 
 # Disk:
-clearpart --drives=vda --all --initlabel
-bootloader --location=mbr --boot-drive=vda
-part / --fstype="xfs" --ondisk=vda --grow
-part swap --fstype="swap" --ondisk=vda --size=512
+clearpart --drives=sda --all --initlabel
+bootloader --location=mbr --boot-drive=sda
+part / --fstype="xfs" --ondisk=sda --grow
+part swap --fstype="swap" --ondisk=sda --size=512
 
 # Other:
 firewall --enabled --ssh
