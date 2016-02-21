@@ -1,7 +1,0 @@
-{% set distro_name = '-'.join([ansible_distribution, ansible_distribution_major_version, ansible_architecture]) %}
-[local]
-name=Local packages RPM repo for {{ distro_name }}
-baseurl=http://repository.{{ inventory_hostname[-2:] }}.{{ hypervisor }}.vespian.net/rpm/{{ distro_name }}/
-gpgcheck=0
-enabled=1
-proxy=_none_
