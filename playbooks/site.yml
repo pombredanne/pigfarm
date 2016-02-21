@@ -69,4 +69,4 @@
   become: True
   become_method: sudo
   roles:
-    - provisioning_cleanup
+    - post_provisioning
