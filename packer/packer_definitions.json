@@ -221,7 +221,7 @@
         },
         {
             "type": "compress",
-            "output": "log_{{.BuildName}}.gz",
+            "output": "{{.BuildName}}.qcow.gz",
             "compression_level": 9,
             "only": ["centos7-qemu", "ubuntu14-qemu"]
         }
