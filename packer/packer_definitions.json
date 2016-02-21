@@ -199,10 +199,15 @@
     "post-processors": [
         {
             "type": "vagrant",
-            "keep_input_artifact": true,
             "vagrantfile_template": "Vagrantfile_template.rb",
             "compression_level": 9,
             "output": "{{.BuildName}}-{{.Provider}}.box"
+        },
+        {
+            "type": "compress",
+            "output": "log_{{.BuildName}}.gz",
+            "compression_level": 9,
+            "only": ["centos7-qemu", "ubuntu14-qemu"]
         }
     ]
 }
