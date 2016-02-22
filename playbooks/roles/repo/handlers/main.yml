@@ -1,6 +1,0 @@
----
-- name: Regenerate rpm repos
-  command: createrepo .
-  args:
-   chdir: "/var/www/repository/rpm/{{ item }}"
-  with_items: yum_repos.keys()

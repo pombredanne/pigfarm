@@ -1,8 +1,0 @@
----
-- include: service.yml
-  tags: proxy
-
-- include: fw.yml
-  tags: proxy
-
-- meta: flush_handlers

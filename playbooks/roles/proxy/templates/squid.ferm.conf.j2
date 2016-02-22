@@ -1,8 +1,0 @@
-table filter {
-    chain "SERVICES" {
-        proto tcp dport 3128 @subchain "PROXY_CLIENTS" {
-            saddr {{ network_configuration['trusted']['net'] }}/{{ network_configuration['trusted']['mask_short'] }} ACCEPT;
-            saddr {{ network_configuration['unsafe']['net'] }}/{{ network_configuration['unsafe']['mask_short'] }} ACCEPT;
-        }
-    }
-}
