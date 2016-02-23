@@ -1,4 +1,6 @@
 ---
+- debug: var=local_users
+
 - name: Find installed plugins
   shell: "vagrant plugin list | grep -v 'No plugins installed' | cut -d' ' -f 1"
   register: vagrant_installed_plugins
@@ -6,7 +8,7 @@
   changed_when: False
   become: yes
   become_user: "{{ item }}"
-  with_items: "{{ users.keys() | sort() }}"
+  with_items: "{{ local_users | sort() }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_vagrant_user'] == True
@@ -17,7 +19,7 @@
   command: "vagrant plugin install {{ item[2] }}"
   with_nested:
     - vagrant_installed_plugins.results
-    - users.keys()
+    - local_users
     - vagrant_required_plugins
   become: yes
   become_user: "{{ item[1] }}"

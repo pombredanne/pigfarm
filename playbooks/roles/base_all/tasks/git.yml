@@ -14,9 +14,8 @@
     group: "{{ item[1] }}"
   with_nested:
     - [ 'gitignore', 'gitconfig', 'gitattributes']
-    - users.keys()
+    - local_users
   when: >
-    item[1] in local_users and
     users[item[1]]['is_git_user'] == True and
     (item[1] != 'gitattributes' or
     item[1] == 'gitattributes' and users[item[1]]['is_ansible_user'] == True)
@@ -25,5 +24,5 @@
   file:
     name: "/{{ item if item == 'root' else 'home/' + item }}/.gitattributes"
     state: absent
-  with_items: users.keys()
+  with_items: local_users
   when: users[item]['is_ansible_user'] == False
