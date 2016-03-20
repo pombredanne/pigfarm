@@ -8,11 +8,11 @@
   tags: development
 
 - include: golang-non_Fedora.yml
-  when: ansible_distribution != 'Fedora'
+  #when: ansible_distribution != 'Fedora'
   tags: development
 
-- include: golang-Fedora.yml
-  when: ansible_distribution == 'Fedora'
-  tags: development
+#- include: golang-Fedora.yml
+  #when: ansible_distribution == 'Fedora'
+  #tags: development
 
 - meta: flush_handlers
