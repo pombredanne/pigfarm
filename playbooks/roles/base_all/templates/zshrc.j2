@@ -66,3 +66,5 @@ alias gml="gometalinter -j 1 --deadline=60s"
 {% if (item in local_users or item == 'root') and users[item]["is_packer_user"] %}
 export PATH=/opt/packer/:$PATH
 {% endif %}
+
+export DOCKER_GRAPHDRIVER=overlay
