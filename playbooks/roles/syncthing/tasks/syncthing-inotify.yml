@@ -8,6 +8,8 @@
 
 - name: Find the current version of syncthing-inotify available
   shell: curl "{{ syncthing_inotify_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
+  args:
+    warn: false
   always_run: true
   changed_when: false
   register: syncthing_inotify_version_available
@@ -28,7 +30,7 @@
 - name: Download newest version of syncthing_intofify
   get_url:
     url: "https://github.com/syncthing/syncthing-inotify/releases/download/{{ syncthing_inotify_version_available.stdout }}/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
-    dest: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    dest: "{{ '/tmp/syncthing-inotify-linux-amd64-' + syncthing_inotify_version_available.stdout + '.tar.gz' }}"
     force: yes
     owner: root
     group: root
@@ -52,13 +54,13 @@
     mode: 0755
     owner: root
     group: root
-    src: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    src: "{{ '/tmp/syncthing-inotify-linux-amd64-' + syncthing_inotify_version_available.stdout + '.tar.gz'}}"
   when: syncthing_inotify_downloaded.changed
   notify: restart syncthing-inotify
 
 - name: Remove temporary file
   file:
-    name: "/tmp/syncthing-inotify-linux-amd64-{{ syncthing_inotify_version_available.stdout }}.tar.gz"
+    name: "{{ '/tmp/syncthing-inotify-linux-amd64-' + syncthing_inotify_version_available.stdout + '.tar.gz' }}"
     state: absent
   when: syncthing_inotify_downloaded.changed
 

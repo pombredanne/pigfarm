@@ -16,6 +16,8 @@
 
 - name: Find the current version of Syncthing available
   shell: curl "{{ syncthing_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
+  args:
+    warn: no
   always_run: true
   changed_when: false
   register: syncthing_version_available
@@ -40,7 +42,7 @@
 - name: Download newest version of syncthing
   get_url:
     url: "https://github.com/syncthing/syncthing/releases/download/{{ syncthing_version_available.stdout }}/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
-    dest: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    dest: "{{ '/tmp/syncthing-linux-amd64-' + syncthing_version_available.stdout + '.tar.gz'}}"
     force: yes
     owner: root
     group: root
@@ -64,11 +66,11 @@
   unarchive:
     copy: false
     dest: /opt/
-    creates: "/opt/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}/"
+    creates: "{{ '/opt/syncthing-linux-amd64-' + syncthing_version_available.stdout + '/'}}"
     mode: 0755
     owner: root
     group: root
-    src: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    src: "{{ '/tmp/syncthing-linux-amd64-' + syncthing_version_available.stdout + '.tar.gz' }}"
   when: >
     syncthing_stat.stat.exists == False or
     syncthing_stat.stat.isdir == False or
@@ -76,7 +78,7 @@
 
 - name: Remove temporary file
   file:
-    name: "/tmp/syncthing-linux-amd64-{{ syncthing_version_available.stdout }}.tar.gz"
+    name: "{{ '/tmp/syncthing-linux-amd64-' + syncthing_version_available.stdout + '.tar.gz'}}"
     state: absent
 
 - name: Rename newly downloaded syncthing folder
