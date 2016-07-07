@@ -6,3 +6,14 @@
     owner: root
     group: root
     mode: 0755
+
+- name: Remove PackageKit
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: PackageKit
+    state: absent
+
+- name: Clean up PackageKit files
+  file:
+    path: /var/cache/PackageKit
+    state: absent
