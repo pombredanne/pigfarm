@@ -1,20 +1,4 @@
 ---
-- name: Install vagrant packages (Fedora)
-  action:
-    module: "{{ ansible_pkg_mgr }}"
-    name: "{{ item }}"
-    state: present
-  with_items:
-    - vagrant
-  when: ansible_distribution == 'Fedora'
-
-- name: Install vagrant packages (CentOS)
-  action:
-    module: "{{ ansible_pkg_mgr }}"
-    name: "{{ vagrant_download_url_rpm }}"
-    state: present
-  when: ansible_distribution == 'CentOS'
-
 - name: Install auxilary packages (RedHat)
   action:
     module: "{{ ansible_pkg_mgr }}"

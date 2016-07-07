@@ -1,6 +1,48 @@
 ---
 - debug: var=local_users
 
+- name: Find out if vagrant is installed
+  shell: vagrant -v
+  register: vagrant_ok
+  changed_when: false
+  always_run: true
+
+- name: Find out version of vagrant
+  shell: vagrant -v | awk '{ print $2 }'
+  register: vagrant_ver
+  changed_when: false
+  always_run: true
+  when: vagrant_ok|succeeded
+
+- name: Find out the newest version of vagrant available
+  shell: curl -s https://releases.hashicorp.com/vagrant/ | perl -w -n -e '/>vagrant_(\d+\.\d+\.\d+)</ && print "$1\n"' | sort -nr | head -n 1
+  args:
+    warn: false
+  register: vagrant_latest
+  changed_when: false
+  always_run: true
+
+- name: Set vagrant download URL (RedHat)
+  set_fact:
+    vagrant_dl_url="https://releases.hashicorp.com/vagrant/{{ vagrant_latest.stdout }}/vagrant_{{ vagrant_latest.stdout }}_x86_64.rpm"
+  when: ansible_os_family == 'RedHat'
+
+- name: Set vagrant download URL (Debian)
+  set_fact:
+    vagrant_dl_url="https://releases.hashicorp.com/vagrant/{{ vagrant_latest.stdout }}/vagrant_{{ vagrant_latest.stdout }}_x86_64.deb"
+  when: ansible_os_family == 'Debian'
+
+- debug: var=vagrant_dl_url
+
+- name: Install latest vagrant package
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ vagrant_dl_url }}"
+    state: present
+  when: >
+    vagrant_ok|failed or
+    vagrant_ver.stdout != vagrant_latest.stdout
+
 - name: Find installed plugins
   shell: "vagrant plugin list | grep -v 'No plugins installed' | cut -d' ' -f 1"
   register: vagrant_installed_plugins
