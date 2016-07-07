@@ -14,7 +14,7 @@
 - name: Download golang compiler
   get_url:
     url: "https://storage.googleapis.com/golang/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
-    dest: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+    dest: "{{ '/tmp/' + development_golang_pinned_version + '.linux-amd64.tar.gz' }}"
     force: yes
     owner: root
     group: root
@@ -32,19 +32,15 @@
     development_golang_pinned_version != current_golang_version.stdout
 
 - name: Unpack new golang environment
-  unarchive:
-    copy: false
-    dest: /opt/
-    creates: "/opt/go/"
-    mode: 0755
-    owner: root
-    group: root
-    src: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+  command: tar -xf "{{ '/tmp/' + development_golang_pinned_version + '.linux-amd64.tar.gz' }}"
+  args:
+    chdir: /opt/
+    creates: /opt/go
   when: >
     golang_installed.stat.exists == False or
     development_golang_pinned_version != current_golang_version.stdout
 
 - name: Remove downloaded golang archive
   file:
-    path: "/tmp/{{ development_golang_pinned_version }}.linux-amd64.tar.gz"
+    path: "{{ '/tmp/' + development_golang_pinned_version + '.linux-amd64.tar.gz' }}"
     state: absent

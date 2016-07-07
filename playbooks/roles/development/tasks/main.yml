@@ -7,12 +7,7 @@
   when: ansible_os_family == 'RedHat'
   tags: development
 
-- include: golang-non_Fedora.yml
-  #when: ansible_distribution != 'Fedora'
+- include: golang.yml
   tags: development
-
-#- include: golang-Fedora.yml
-  #when: ansible_distribution == 'Fedora'
-  #tags: development
 
 - meta: flush_handlers
