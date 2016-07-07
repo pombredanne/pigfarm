@@ -56,3 +56,6 @@ docs/_build/
 
 # PyBuilder
 target/
+
+# Ansible specific
+site.retry
