@@ -7,7 +7,7 @@
     group: "{{ item[0] }}"
     mode: 0750
   with_nested:
-    - users.keys()
+    - "{{users.keys()}}"
     - ['nauka', 'misc', 'work', 'media' ]
     - ['big', 'small']
   when: item[0] in local_users and users[item[0]]['is_me']
@@ -18,7 +18,7 @@
   changed_when: false
   register: shared_dirs_contents
   with_nested:
-    - users.keys()
+    - "{{users.keys()}}"
     - ['nauka', 'misc', 'work', 'media' ]
     - ['big', 'small']
   when: item[0] in local_users and users[item[0]]['is_me']

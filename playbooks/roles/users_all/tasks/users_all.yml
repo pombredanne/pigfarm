@@ -4,7 +4,7 @@
     name: "{{ item.key }}"
     gid: "{{ item.value.gid }}"
     state: present
-  with_dict: users
+  with_dict: '{{users}}'
   when: item.key in local_users and item.key != 'root'
 
 - name: create non-root users
@@ -14,14 +14,14 @@
     group: "{{ item.key }}"
     createhome: yes
     state: present
-  with_dict: users
+  with_dict: '{{users}}'
   when: item.key in local_users and item.key != 'root'
 
 - name: Protect users home directories
   file:
     name: "/{{ item.key if item.key == 'root' else 'home/' + item.key }}"
     mode: 0750
-  with_dict: users
+  with_dict: '{{users}}'
   when: item.key in local_users or item.key == 'root'
 
 - name: enable sudoing for selected users
@@ -29,7 +29,7 @@
     name: "{{ item.key }}"
     groups: '{{ distribution_specific[ansible_distribution]["sudo_group_name"] }}'
     append: yes
-  with_dict: users
+  with_dict: '{{users}}'
   when: >
     item.key in local_users and
     item.key != 'root' and
@@ -41,7 +41,7 @@
     manage_dir: yes
     state: "{{ item.state }}"
     key: "{{ login_key[item.host] }}"
-  with_items: authorized_login_keys
+  with_items: '{{authorized_login_keys}}'
   when: >
     item.user in local_users and
     users[item.user]['ssh_login_permitted'] == True or
@@ -53,7 +53,7 @@
     manage_dir: yes
     state: absent
     key: "{{ login_key[item.host] }}"
-  with_items: authorized_login_keys
+  with_items: '{{authorized_login_keys}}'
   when: >
     (item.user != 'root' and users[item.user]['ssh_login_permitted'] == False) or
     item.state != 'present'

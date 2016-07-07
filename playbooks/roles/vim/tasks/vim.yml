@@ -65,7 +65,7 @@
     mode: 0640
     owner: "{{ item.key }}"
     group: "{{ item.key }}"
-  with_dict: users
+  with_dict: "{{users}}"
   when: >
     (item.key in local_users or item.key == 'root') and
     item['value']['is_vim_user'] == True
@@ -79,7 +79,7 @@
     group: "{{ item[1] }}"
   with_nested:
     - ['.vim', '.vim/colors', '.vim/autoload', '.vim/bundle', '.vim/ftplugin']
-    - users.keys()
+    - "{{users.keys()}}"
   when: >
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
@@ -92,8 +92,8 @@
     owner: "{{ item[1] }}"
     group: "{{ item[1] }}"
   with_nested:
-    - vim_native_plugins
-    - users.keys()
+    - "{{vim_native_plugins}}"
+    - "{{users.keys()}}"
   when: >
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
@@ -103,8 +103,8 @@
     path: "/{{ item[1] if item[1] == 'root' else 'home/' + item[1] }}/.vim/{{ item[0].location }}/{{ item[0].name }}"
     state: absent
   with_nested:
-    - vim_removed_native_plugins
-    - users.keys()
+    - "{{vim_removed_native_plugins}}"
+    - "{{users.keys()}}"
   when: >
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
@@ -116,8 +116,8 @@
     accept_hostkey: yes
     version: "{{ vim_external_plugins[item[0]]['version'] }}"
   with_nested:
-    - vim_external_plugins.keys()
-    - users.keys()
+    - "{{vim_external_plugins.keys()}}"
+    - "{{users.keys()}}"
   when: >
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
@@ -129,8 +129,8 @@
     group: "{{ item[1] }}"
     recurse: yes
   with_nested:
-    - vim_external_plugins.keys()
-    - users.keys()
+    - "{{vim_external_plugins.keys()}}"
+    - "{{users.keys()}}"
   when: >
     (item[1] in local_users or item[1] == 'root') and
     users[item[1]]['is_vim_user'] == True
@@ -140,7 +140,7 @@
   changed_when: false
   always_run: true
   register: vim_current_git_plugins
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_vim_user'] == True
@@ -160,7 +160,7 @@
   file:
     name: "/{{ item.item_key if item.item_key == 'root' else 'home/' + item.item_key }}/.vim/bundle/{{ item.item_val }}"
     state: absent
-  with_items: vim_redundant_plugins
+  with_items: "{{vim_redundant_plugins}}"
 
 - name: Set vim as default editor for Debian
   alternatives:

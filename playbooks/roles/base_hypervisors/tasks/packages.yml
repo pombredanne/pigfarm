@@ -5,13 +5,13 @@
     name: "{{ item }}"
     state: present
   with_flattened:
-    - base_hypervisor_added_packages['common']
-    - base_hypervisor_added_packages[ansible_os_family]['common']
-    - base_hypervisor_added_packages[ansible_os_family][ansible_distribution]['common']
+    - "{{ base_hypervisor_added_packages['common'] }}"
+    - "{{ base_hypervisor_added_packages[ansible_os_family]['common'] }}"
+    - "{{ base_hypervisor_added_packages[ansible_os_family][ansible_distribution]['common'] }}"
     - "{{ base_hypervisor_added_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"
-    - base_hypervisor_extra_added_packages['common']
-    - base_hypervisor_extra_added_packages[ansible_os_family]['common']
-    - base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution]['common']
+    - "{{ base_hypervisor_extra_added_packages['common'] }}"
+    - "{{ base_hypervisor_extra_added_packages[ansible_os_family]['common'] }}"
+    - "{{ base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution]['common'] }}"
     - "{{ base_hypervisor_extra_added_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"
 
 - name: Remove redundant packages from base
@@ -20,11 +20,11 @@
     name: "{{ item }}"
     state: absent
   with_flattened:
-    - base_hypervisor_removed_packages['common']
-    - base_hypervisor_removed_packages[ansible_os_family]['common']
-    - base_hypervisor_removed_packages[ansible_os_family][ansible_distribution]['common']
+    - "{{ base_hypervisor_removed_packages['common'] }}"
+    - "{{ base_hypervisor_removed_packages[ansible_os_family]['common'] }}"
+    - "{{ base_hypervisor_removed_packages[ansible_os_family][ansible_distribution]['common'] }}"
     - "{{ base_hypervisor_removed_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"
-    - base_hypervisor_extra_removed_packages['common']
-    - base_hypervisor_extra_removed_packages[ansible_os_family]['common']
-    - base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution]['common']
+    - "{{ base_hypervisor_extra_removed_packages['common'] }}"
+    - "{{ base_hypervisor_extra_removed_packages[ansible_os_family]['common'] }}"
+    - "{{ base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution]['common'] }}"
     - "{{ base_hypervisor_extra_removed_packages[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] }}"

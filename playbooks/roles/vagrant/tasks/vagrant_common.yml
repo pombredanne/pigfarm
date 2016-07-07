@@ -18,9 +18,9 @@
 - name: Install missing vagrant plugins
   command: "vagrant plugin install {{ item[2] }}"
   with_nested:
-    - vagrant_installed_plugins.results
-    - local_users
-    - vagrant_required_plugins
+    - "{{ vagrant_installed_plugins.results }}"
+    - "{{ local_users }}"
+    - "{{ vagrant_required_plugins }}"
   become: yes
   become_user: "{{ item[1] }}"
   when: >
@@ -43,5 +43,5 @@
   command: "vagrant plugin uninstall {{ item.item_val }}"
   become: yes
   become_user: "{{ item.item_key }}"
-  with_items: vagrant_redundant_plugins
+  with_items: "{{ vagrant_redundant_plugins }}"
   when: item.item_val != 'vagrant-share'

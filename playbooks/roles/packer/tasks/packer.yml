@@ -15,7 +15,12 @@
     packer_stat.stat.isreg == True
 
 - name: Find the current version of packer available
-  shell: curl "{{ packer_base_download_url }}" -s | grep href | grep packer| sort -rn | head -n 1 | cut -d\" -f 2 | cut -d\/ -f 3
+  shell: >
+    curl "{{ packer_base_download_url }}" -s | 
+    grep href | grep packer| sort -rn | 
+    head -n 1 | cut -d\" -f 2 | cut -d\/ -f 3
+  args:
+    warn: no
   always_run: true
   changed_when: false
   register: packer_version_available

@@ -101,7 +101,7 @@
     name: "syncthing@{{ item }}.service"
     enabled: true
     state: running
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: >
     item in local_users and
     users[item]['is_syncthing_user'] == True

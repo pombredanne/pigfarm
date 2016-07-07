@@ -24,7 +24,7 @@
     name: "{{ item }}"
     groups: sftp
     append: yes
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_sftp_user'] == True and

@@ -13,7 +13,7 @@
     state: stopped
     enabled: false
   ignore_errors: True
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: item in local_users or item == 'root'
 
 - name: Remove old ssh-agent service file
@@ -32,7 +32,7 @@
     group: root
     mode: 0640
   notify: reload systemd
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   register: unitfile_updated
   when: >
     (item in local_users or item == 'root') and
@@ -42,7 +42,7 @@
   service:
     name: "ssh-agent-{{ item }}.service"
     state: restarted
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: >
     unitfile_updated.changed and
     (item in local_users or item == 'root') and
@@ -53,7 +53,7 @@
     name: "ssh-agent-{{ item }}.service"
     state: running
     enabled: true
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: >
     (item in local_users or item == 'root') and
     users[item]["is_sshagent_user"] == True
@@ -74,7 +74,7 @@
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0640
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   notify: assemble user profile files
   when: >
     (item in local_users or item == 'root') and

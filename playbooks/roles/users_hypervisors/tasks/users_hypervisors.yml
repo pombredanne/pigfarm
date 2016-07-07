@@ -4,7 +4,7 @@
     name: "{{ item }}"
     groups: "{{users_hypervisors_user_groups | join(',')}}"
     append: yes
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: item in local_users and item != 'root'
 
 - name: add users to selected groups (hypervisor specific)
@@ -12,42 +12,42 @@
     name: "{{ item }}"
     groups: "{{users_hypervisors_user_groups_hypervisor_specific | join(',')}}"
     append: yes
-  with_items: users.keys()
+  with_items: "{{users.keys()}}"
   when: item in local_users and item != 'root'
 
 #- name: add users to selected groups (common to all distros)
   #user:
     #name: "{{ item }}"
     #groups: "{{users_hypervisors_extra_user_groups['common'] | join(',')}}"
-  #with_items: users.keys()
+  #with_items: "{{users.keys()}}"
   #when: item != 'root'
 
 #- name: add users to selected groups (common to all family of distro)
   #user:
     #name: "{{ item }}"
     #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family]['common'] | join(',')}}"
-  #with_items: users.keys()
+  #with_items: "{{users.keys()}}"
   #when: item != 'root'
 
 #- name: add users to selected groups (common to all flavours of distro)
   #user:
     #name: "{{ item }}"
     #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution]['common'] | join(',')}}"
-  #with_items: users.keys()
+  #with_items: "{{users.keys()}}"
   #when: item != 'root'
 
 #- name: add users to selected groups (distro specific)
   #user:
     #name: "{{ item }}"
     #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] | join(',')}}"
-  #with_items: users.keys()
+  #with_items: "{{users.keys()}}"
   #when: item != 'root'
 
 #- name: add users to selected groups (per-user per distro)
   #user:
     #name: "{{ item }}"
     #groups: "{{users_hypervisors_extra_user_groups[ansible_os_family][ansible_distribution][ansible_distribution_major_version|int] | join(',')}}"
-  #with_items: users.keys()
+  #with_items: "{{users.keys()}}"
   #when: >
     #item != 'root' and
     #item in users_hypervisors_user_specific_groups and
