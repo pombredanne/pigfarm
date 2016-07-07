@@ -63,14 +63,10 @@
     syncthing_version_installed.stdout != syncthing_version_available.stdout
 
 - name: Unpack newest version of syncthing
-  unarchive:
-    copy: false
-    dest: /opt/
+  command: tar -xf "{{ '/tmp/syncthing-linux-amd64-' + syncthing_version_available.stdout + '.tar.gz' }}"
+  args:
+    chdir: /opt/
     creates: "{{ '/opt/syncthing-linux-amd64-' + syncthing_version_available.stdout + '/'}}"
-    mode: 0755
-    owner: root
-    group: root
-    src: "{{ '/tmp/syncthing-linux-amd64-' + syncthing_version_available.stdout + '.tar.gz' }}"
   when: >
     syncthing_stat.stat.exists == False or
     syncthing_stat.stat.isdir == False or

@@ -47,14 +47,10 @@
   when: syncthing_inotify_downloaded.changed
 
 - name: Unpack newest version of syncthing-inotify
-  unarchive:
-    copy: false
-    dest: /opt/
-    creates: "/opt/syncthing-inotify"
-    mode: 0755
-    owner: root
-    group: root
-    src: "{{ '/tmp/syncthing-inotify-linux-amd64-' + syncthing_inotify_version_available.stdout + '.tar.gz'}}"
+  command: tar -xf "{{ '/tmp/syncthing-inotify-linux-amd64-' + syncthing_inotify_version_available.stdout + '.tar.gz'}}"
+  args:
+    chdir: /opt/
+    creates: /opt/syncthing-inotify
   when: syncthing_inotify_downloaded.changed
   notify: restart syncthing-inotify
 
