@@ -38,7 +38,7 @@
     mode: 0644
   notify:
     - reload systemd
-    - Restart Docker.socket
+    - Restart Docker
 
 - name: Enable Docker service
   service:
