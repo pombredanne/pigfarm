@@ -1,5 +1,5 @@
 #!/bin/bash
 
-/opt/docker-clean.sh
+/opt/docker-clean.sh run -c -i -net -l
 
 docker images -qf dangling=true | xargs -r docker rmi
