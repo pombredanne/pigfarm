@@ -46,6 +46,12 @@
     enabled: true
     state: started
 
+- name: Disable storage setup service
+  service:
+    name: docker-storage-setup
+    enabled: false
+    state: stopped
+
 - name: Set docker env variables per-profile
   template:
     src: docker-profile.sh.j2
