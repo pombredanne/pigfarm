@@ -50,3 +50,24 @@
     owner: root
     group: root
     mode: 0755
+
+- name: Set ansible env variables per-profile
+  template:
+    src: ansible-profile.sh.j2
+    dest: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/ansible.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0640
+  with_items: "{{users.keys()}}"
+  notify: assemble user profile files
+  when: >
+    item == 'root' or (item in local_users and users[item]["is_ansible_user"] == True)
+
+- name: Remove ansible env vars for users that do not use Go
+  file:
+    name: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/ansible.sh"
+    state: absent
+  with_items: "{{users.keys()}}"
+  notify: assemble user profile files
+  when: >
+    item != 'root' and users[item]["is_ansible_user"] == False

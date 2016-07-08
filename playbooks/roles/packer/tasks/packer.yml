@@ -91,3 +91,24 @@
   file:
     name: "/tmp/packer-linux-amd64-{{ packer_version_available.stdout }}.zip"
     state: absent
+
+- name: Set packer env variables per-profile
+  template:
+    src: packer-profile.sh.j2
+    dest: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/packer.sh"
+    owner: "{{ item }}"
+    group: "{{ item }}"
+    mode: 0640
+  with_items: "{{users.keys()}}"
+  notify: assemble user profile files
+  when: >
+    item == 'root' or (item in local_users and users[item]["is_packer_user"] == True)
+
+- name: Remove packer env vars for users that do not use Go
+  file:
+    name: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/packer.sh"
+    state: absent
+  with_items: "{{users.keys()}}"
+  notify: assemble user profile files
+  when: >
+    item != 'root' and users[item]["is_packer_user"] == False

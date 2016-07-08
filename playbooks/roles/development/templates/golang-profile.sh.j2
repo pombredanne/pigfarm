@@ -1,0 +1,9 @@
+{% set home = '/root' if item == 'root' else '/home/' + item %}
+# Golang related stuff:
+export GOPATH={{ home }}/{{ "" if item == 'root' else 'nauka/programming/' }}golang/workspace/
+export GOROOT=/opt/go/
+export GOBIN=$GOPATH/bin/
+export PATH=$GOBIN:$GOROOT/bin/:$PATH
+
+alias gml="gometalinter -j 1 --deadline=60s"
+
