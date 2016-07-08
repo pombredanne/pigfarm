@@ -43,6 +43,7 @@ base_all_added_packages:
       - setools-console
       - pykickstart
       - policycoreutils-python
+      - policycoreutils-python-utils
       - iputils
       - xorg-x11-xauth
     CentOS:
