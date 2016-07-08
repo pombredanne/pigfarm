@@ -38,6 +38,9 @@ base_hypervisor_added_packages:
       21: []
       22: []
       23: []
+      24: []
+      25: []
+      26: []
   Debian:
     common: []
 
@@ -54,5 +57,8 @@ base_hypervisor_removed_packages:
       21: []
       22: []
       23: []
+      24: []
+      25: []
+      26: []
   Debian:
     common: []

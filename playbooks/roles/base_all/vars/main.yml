@@ -63,6 +63,9 @@ base_all_added_packages:
       21: []
       22: []
       23: []
+      24: []
+      25: []
+      26: []
   Debian:
     common:
       - aptitude
@@ -101,6 +104,9 @@ base_all_removed_packages:
       21: []
       22: []
       23: []
+      24: []
+      25: []
+      26: []
   Debian:
     common: []
     Debian:
