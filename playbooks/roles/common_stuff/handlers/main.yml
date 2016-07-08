@@ -1,7 +1,119 @@
 ---
-- include: networking.yml
-- include: package-mangers.yml
-- include: misc.yml
-- include: fw.yml
-- include: apache2.yml
-- include: profile.yml
+# Ansible does not support including handlers and it also silently ignores
+# import problems :/ Check https://github.com/ansible/ansible/issues/11766
+- name: restart RHEL/CentOS networking
+  service:
+    name: network
+    state: restarted
+
+- name: restart Debian networking
+  assert:
+    that: True
+  notify:
+    - restart Debian networking - Debian 7
+    - restart Debian networking - Debian 8
+    - restart Debian networking - Ubuntu 14
+
+- name: restart Debian networking - Debian 7
+  shell: /etc/init.d/networking stop && /etc/init.d/networking start
+  when: ansible_distribution_release == 'wheezy'
+
+- name: restart Debian networking - Debian 8
+  service:
+    name: network
+    state: restarted
+  when: ansible_distribution_release == 'jessie'
+
+- name: restart Debian networking - Ubuntu 14
+  shell: ifdown eth0 && ifup eth0
+  when: ansible_distribution_release == 'trusty'
+
+- name: Debian update repos
+  apt:
+    update_cache: yes
+
+- name: reload systemd
+  command: systemctl daemon-reload
+
+- name: sysctl reload
+  command: sysctl -p --system
+
+- name: udev reload
+  command: udevadm control --reload-rules
+
+- name: restart sshd
+  service:
+    name: '{{ distribution_specific[ansible_distribution]["sshd_service_name"] }}'
+    state: restarted
+
+- name: restart cobbler
+  service:
+    name: cobblerd
+    state: restarted
+
+- name: restart httpd
+  service:
+    name: cobblerd
+    state: restarted
+
+- name: restart journalctl
+  service:
+    name: systemd-journald
+    state: restarted
+
+- name: reload named
+  service:
+    name: named
+    state: reloaded
+
+- name: restart named
+  service:
+    name: named
+    state: restarted
+
+- name: restart syncthing
+  service:
+    name: "syncthing@{{ item }}.service"
+    state: restarted
+  with_items: users.keys()
+  when: >
+    item in local_users and
+    users[item]['is_syncthing_user'] == True
+
+- name: restart syncthing-inotify
+  service:
+    name: "syncthing-inotify@{{ item }}.service"
+    state: restarted
+  with_items: users.keys()
+  when: >
+    item in local_users and
+    users[item]['is_syncthing_user'] == True
+- name: restart ferm
+  service:
+    name: ferm
+    state: restarted
+
+- name: reload ferm
+  service:
+    name: ferm
+    state: reloaded
+
+- name: Restart apache
+  service:
+    name: "{{ apache2_base_daemon[ansible_os_family] }}"
+    state: restarted
+
+- name: Reload apache
+  service:
+    name: "{{ apache2_base_daemon[ansible_os_family] }}"
+    state: reloaded
+
+- name: assemble user profile files
+  assemble:
+    dest: "/{{ 'root' if item == 'root' else 'home/' + item }}/.profile"
+    mode: 0750
+    owner: "{{ item  }}"
+    group: "{{ item  }}"
+    src: "/{{ 'root' if item == 'root' else 'home/' + item }}/.profile.d/"
+  with_items: "{{ users.keys() }}"
+  when: item in local_users or item == 'root'
