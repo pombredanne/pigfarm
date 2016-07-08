@@ -1,0 +1,8 @@
+---
+- include: "docker_{{ ansible_distribution }}.yml"
+  tags: docker
+
+- include: "docker_common.yml"
+  tags: docker
+
+- meta: flush_handlers

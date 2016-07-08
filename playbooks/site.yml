@@ -28,6 +28,7 @@
     - syncthing
     - development
     - ansible
+    - docker
 
 - hosts: budrys
   become: True

@@ -1,0 +1,22 @@
+---
+- name: Upload docker-clean cleanup script
+  copy:
+    src: docker-clean.sh
+    dest: /opt/docker-clean.sh
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Setup a cron job for docker containers cleanup
+  copy:
+    src: docker-cleanup.sh-cronjob
+    dest: /etc/cron.hourly/docker-cleanup.sh
+    owner: root
+    group: root
+    mode: 0744
+
+- name: Enable Docker service
+  service:
+    name: docker
+    enabled: true
+    state: started
