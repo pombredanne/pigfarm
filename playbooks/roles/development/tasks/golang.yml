@@ -30,7 +30,13 @@
   register: current_golang_version
   changed_when: False
   always_run: True
+  environment:
+    GOROOT: /opt/go/
   when: golang_installed.stat.exists == True
+
+- debug: var=current_golang_version.stdout
+
+- debug: var=development_golang_pinned_version
 
 - name: Download golang compiler
   get_url:
@@ -57,6 +63,17 @@
   args:
     chdir: /opt/
     creates: /opt/go
+    warn: no
+  when: >
+    golang_installed.stat.exists == False or
+    development_golang_pinned_version != current_golang_version.stdout
+
+- name: Fix /opt/go dir permissions after extracting archive
+  file:
+    path: /opt/go
+    owner: root
+    group: root
+    mode: 0755
   when: >
     golang_installed.stat.exists == False or
     development_golang_pinned_version != current_golang_version.stdout
