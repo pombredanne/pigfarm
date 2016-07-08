@@ -18,3 +18,16 @@
     module: "{{ ansible_pkg_mgr }}"
     name: docker-engine
     state: present
+
+- name: Autoload overlay module at boot
+  copy:
+    content: overlay
+    dest: /etc/modules-load.d/overlay.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: Make sure overlay module is loaded now
+  modprobe:
+    name: overlay
+    state: present

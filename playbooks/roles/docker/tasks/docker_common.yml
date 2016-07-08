@@ -1,4 +1,9 @@
 ---
+# $ lvcreate --wipesignatures y -n thinpool docker -l 95%VG
+# $ lvcreate --wipesignatures y -n thinpoolmeta docker -l 1%VG
+# lvconvert -y --zero n -c 512K --thinpool vg-main/docker-thinpool
+# --poolmetadata vg-main/docker-thinpool-meta
+
 - name: Upload docker-clean cleanup script
   copy:
     src: docker-clean.sh
@@ -14,6 +19,26 @@
     owner: root
     group: root
     mode: 0744
+
+- name: Upload docker configuration
+  copy:
+    src: daemon.json
+    dest: /etc/docker/daemon.json
+    owner: root
+    group: root
+    mode: 0644
+  notify: Restart Docker
+
+- name: Tune Docker socket configuration
+  copy:
+    src: docker.socket
+    dest: /usr/lib/systemd/system/docker.socket
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - reload systemd
+    - Restart Docker.socket
 
 - name: Enable Docker service
   service:

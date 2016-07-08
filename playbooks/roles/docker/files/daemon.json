@@ -1,0 +1,8 @@
+ {
+     "storage-driver": "devicemapper",
+     "bip": "172.22.0.1/16",
+     "storage-opts": [
+         "dm.thinpooldev=/dev/mapper/vg--main-sys--docker--thinpool",
+         "dm.use_deferred_removal=true"
+     ]
+ }
