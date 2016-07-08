@@ -1,0 +1,21 @@
+
+module ssh_agent 1.0;
+
+require {
+	type ssh_agent_exec_t;
+	type init_t;
+	type ssh_home_t;
+	class dir { add_name remove_name write };
+	class sock_file { create unlink };
+	class file { execute execute_no_trans open read };
+}
+
+#============= init_t ==============
+
+allow init_t ssh_agent_exec_t:file { execute execute_no_trans open read };
+allow init_t ssh_home_t:dir remove_name;
+
+allow init_t ssh_home_t:dir { add_name write };
+
+allow init_t ssh_home_t:sock_file create;
+allow init_t ssh_home_t:sock_file unlink;

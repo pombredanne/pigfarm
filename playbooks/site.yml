@@ -29,6 +29,7 @@
     - development
     - ansible
     - docker
+    - selinux
 
 - hosts: budrys
   become: True

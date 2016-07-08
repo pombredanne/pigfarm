@@ -1,0 +1,5 @@
+---
+- include: "selinux_{{ ansible_distribution }}.yml"
+  tags: selinux
+
+- meta: flush_handlers

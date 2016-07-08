@@ -1,0 +1,13 @@
+
+module modules-load 1.0;
+
+require {
+	type init_t;
+	type kernel_t;
+	class capability sys_module;
+	class unix_stream_socket { read write };
+}
+
+#============= init_t ==============
+allow init_t kernel_t:unix_stream_socket { read write };
+allow init_t self:capability sys_module;

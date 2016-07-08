@@ -1,0 +1,77 @@
+---
+# Based on https://www.nogatez.com/post/compile-pp-module-from-te-file/
+- name: Check if ssh_agent semodule is installed
+  shell: semodule -l | grep -q ssh_agent
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: ssh_agent_module
+
+- name: Copy ssh_agent module to temporary location
+  copy:
+    src: ssh_agent.te
+    dest: /tmp/ssh_agent.te
+    owner: root
+    group: root
+    mode: 0600
+  when: ssh_agent_module | failed
+
+- name: Create mod package for ssh_agent
+  command: checkmodule -M -m -o /tmp/ssh_agent.mod /tmp/ssh_agent.te
+  when: ssh_agent_module | failed
+
+- name: Compile mod package for ssh_agent into pp
+  command: semodule_package -m /tmp/ssh_agent.mod -o /tmp/ssh_agent.pp
+  when: ssh_agent_module | failed
+
+- name: Install ssh_agent
+  command: semodule -i /tmp/ssh_agent.pp
+  when: ssh_agent_module | failed
+
+- name: Remove temporary files for ssh_agent module
+  file:
+    path: "/tmp/ssh_agent.{{ item }}"
+    state: absent
+  with_items:
+    - te
+    - pp
+    - mod
+
+# Only temporary, until https://bugzilla.redhat.com/show_bug.cgi?id=1322625
+# is fixed
+- name: Check if modules-load patch is installed
+  shell: semodule -l | grep -q modules-load
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: modules_load_patch
+
+- name: Copy ssh_agent module to temporary location
+  copy:
+    src: modules-load.te
+    dest: /tmp/modules-load.te
+    owner: root
+    group: root
+    mode: 0600
+  when: modules_load_patch | failed
+
+- name: Create mod package for modules-load
+  command: checkmodule -M -m -o /tmp/modules-load.mod /tmp/modules-load.te
+  when: modules_load_patch | failed
+
+- name: Compile mod package for modules-load into pp
+  command: semodule_package -m /tmp/modules-load.mod -o /tmp/modules-load.pp
+  when: modules_load_patch | failed
+
+- name: Install modules-load
+  command: semodule -i /tmp/modules-load.pp
+  when: modules_load_patch | failed
+
+- name: Remove temporary files for modules-load module
+  file:
+    path: "/tmp/modules-load.{{ item }}"
+    state: absent
+  with_items:
+    - te
+    - pp
+    - mod
