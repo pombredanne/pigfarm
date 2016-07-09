@@ -75,3 +75,41 @@
     - te
     - pp
     - mod
+
+# Docker is sad without it
+- name: Check if svirt_lxc_userhome patch is installed
+  shell: semodule -l | grep -q svirt_lxc_userhome
+  always_run: true
+  changed_when: false
+  ignore_errors: true
+  register: svirt_lxc_userhome_exists
+
+- name: Copy ssh_agent module to temporary location
+  copy:
+    src: svirt_lxc_userhome.te
+    dest: /tmp/svirt_lxc_userhome.te
+    owner: root
+    group: root
+    mode: 0600
+  when: svirt_lxc_userhome_exists | failed
+
+- name: Create mod package for svirt_lxc_userhome
+  command: checkmodule -M -m -o /tmp/svirt_lxc_userhome.mod /tmp/svirt_lxc_userhome.te
+  when: svirt_lxc_userhome_exists | failed
+
+- name: Compile mod package for svirt_lxc_userhome into pp
+  command: semodule_package -m /tmp/svirt_lxc_userhome.mod -o /tmp/svirt_lxc_userhome.pp
+  when: svirt_lxc_userhome_exists | failed
+
+- name: Install svirt_lxc_userhome
+  command: semodule -i /tmp/svirt_lxc_userhome.pp
+  when: svirt_lxc_userhome_exists | failed
+
+- name: Remove temporary files for svirt_lxc_userhome module
+  file:
+    path: "/tmp/svirt_lxc_userhome.{{ item }}"
+    state: absent
+  with_items:
+    - te
+    - pp
+    - mod

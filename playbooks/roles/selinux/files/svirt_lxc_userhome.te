@@ -1,0 +1,18 @@
+
+module svirt_lxc_userhome 1.0;
+
+require {
+	type user_home_t;
+	type svirt_lxc_net_t;
+	class file { create getattr ioctl open read rename setattr unlink write };
+	class dir { add_name create read remove_name write };
+}
+
+#============= svirt_lxc_net_t ==============
+
+#!!!! This avc is allowed in the current policy
+allow svirt_lxc_net_t user_home_t:dir { add_name create read remove_name write };
+allow svirt_lxc_net_t user_home_t:file unlink;
+
+#!!!! This avc is allowed in the current policy
+allow svirt_lxc_net_t user_home_t:file { create getattr ioctl open read rename setattr write };
