@@ -5,6 +5,7 @@ base_hypervisor_added_packages:
     - audacious-plugins
     - audacious-plugins-freeworld-mp3
     - azureus
+    - calibre
     - clipit
     - dia
     - digikam
