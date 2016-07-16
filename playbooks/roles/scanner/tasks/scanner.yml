@@ -1,0 +1,32 @@
+---
+- name: install scanner packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - sane-backends
+    - sane-backends-drivers-scanners
+    - xsane
+
+- name: create group scanner
+  group:
+    gid: 1024
+    name: scanner
+    state: present
+
+- name: add all non-root users to scanner group
+  user:
+    name: "{{ item }}"
+    groups: scanner
+    append: yes
+  with_items: "{{users.keys()}}"
+  when: item in local_users and item != 'root'
+
+- name: make sure udev marks scanner device accordingly
+  copy:
+    src: 53-sane.rules
+    dest: /etc/udev/rules.d/53-sane.rules
+    owner: root
+    group: root
+    mode: 0644

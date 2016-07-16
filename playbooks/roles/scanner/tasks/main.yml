@@ -1,0 +1,5 @@
+---
+- include: scanner.yml
+  tags: scanner
+
+- meta: flush_handlers
