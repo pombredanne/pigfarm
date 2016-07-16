@@ -75,7 +75,7 @@
   service:
     name: "syncthing@{{ item }}.service"
     state: restarted
-  with_items: users.keys()
+  with_items: "{{ users.keys() }}"
   when: >
     item in local_users and
     users[item]['is_syncthing_user'] == True
@@ -84,7 +84,7 @@
   service:
     name: "syncthing-inotify@{{ item }}.service"
     state: restarted
-  with_items: users.keys()
+  with_items: "{{ users.keys() }}"
   when: >
     item in local_users and
     users[item]['is_syncthing_user'] == True
