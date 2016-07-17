@@ -1,0 +1,2 @@
+ATTRS{idVendor}=="04f3", ATTRS{idProduct}=="0103", ENV{ID_SEAT}="seat-kam"
+ATTRS{idVendor}=="046d", ATTRS{idProduct}=="c31c", ENV{ID_SEAT}="seat-ves"

@@ -1,0 +1,115 @@
+---
+- name: install NVIDIA drivers and related packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - akmod-nvidia
+    - vdpauinfo
+    - libva-vdpau-driver
+    - libva-utils
+    - lightdm-kde
+
+- name: blacklist nouveau driver
+  copy:
+    content: "blacklist nouveau"
+    dest: /etc/modprobe.d/nouveau.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: configure intel driver
+  copy:
+    content: "options i915 modeset=1"
+    dest: /etc/modprobe.d/i915.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: enable ctrl_alt_bksp sequence
+  copy:
+    src: 00-keyboard.conf.xorg
+    dest: /etc/X11/xorg.conf.d/00-keyboard.conf
+    owner: root
+    group: root
+    mode: 0644
+
+# This step is required due to rpm install scripts
+# overriding this file after each update. The config
+# for the card resides in per-seat Xorg config
+- name: provide dummy nvidia config file
+  copy:
+    src: 99-nvidia.conf.xorg
+    dest: /etc/X11/xorg.conf.d/99-nvidia.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: add LD_PRELOD stuff for kam
+  copy:
+    content: "export LD_PRELOAD=/lib64/libGL.so.1"
+    dest: /home/kamila/.profile.d/libGL.sh
+    owner: kamila
+    group: kamila
+    mode: 0644
+  notify: assemble user profile files
+
+- name: upload per-seat config for X
+  copy:
+    src: "xorg.seat-{{ item }}.conf.xorg"
+    dest: "/etc/X11/xorg.seat-{{ item }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - ves
+    - kam
+
+- name: upload lightdm configuration
+  template:
+    src: "{{ item }}.conf.j2"
+    dest: "/etc/lightdm/{{ item }}.conf"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - lightdm
+    - users
+
+- name: disable sddm DM
+  service:
+    name: sddm
+    enabled: false
+
+- name: enable lightdm
+  service:
+    name: lightdm
+    enabled: true
+
+- name: upload udev seat configuration
+  copy:
+    src: "{{ item }}.rules.udev"
+    dest: "/etc/udev/rules.d/{{ item }}.rules"
+    owner: root
+    group: root
+    mode: 0644
+  with_items:
+    - 70-audio-cards
+    - 70-graphic-cards
+    - 70-keyboards
+    - 72-seat-input-pci-0000_00_14_0-usb-0_5_1_0
+    - 72-seat-sound-pci-0000_00_14_0-usb-0_5_1_2
+    - 72-seat-usb-pci-0000_00_14_0-usb-0_10
+    - 72-seat-usb-pci-0000_00_1a_0
+    - 72-seat-usb-pci-0000_00_1d_0-usb-0_1_6
+    - 72-seat-video4linux-pci-0000_00_14_0-usb-0_5_1_0
+  notify: udev reload
+
+- name: hide sftp user from login screen
+  copy:
+    content: "[User]\nSystemAccount=true\n"
+    dest: /var/lib/AccountsService/users/sftp
+    owner: root
+    group: root
+    mode: 0644

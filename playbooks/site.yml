@@ -38,6 +38,7 @@
     - vlaned_bridges
     - scanner
     - multiseat
+    - X
 
 - hosts: vms
   roles:

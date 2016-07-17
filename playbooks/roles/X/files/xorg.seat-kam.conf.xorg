@@ -1,0 +1,9 @@
+Section "Files"
+	ModulePath   "/usr/lib64/xorg/modules"
+EndSection
+
+Section "Device"
+        Identifier      "VGA kam"
+        Driver          "intel"
+        BusID           "PCI:0:2:0"
+EndSection

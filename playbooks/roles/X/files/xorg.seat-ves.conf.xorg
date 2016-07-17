@@ -1,0 +1,14 @@
+Section "Files"
+	ModulePath   "/usr/lib64/nvidia/xorg"
+	ModulePath   "/usr/lib64/xorg/modules"
+EndSection
+
+Section "Module"
+    Disable "glamoregl"
+EndSection
+
+Section "Device"
+        Identifier      "VGA ves"
+        Driver          "nvidia"
+        BusID           "PCI:1:0:0"
+EndSection

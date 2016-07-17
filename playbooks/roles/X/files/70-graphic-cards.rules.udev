@@ -1,0 +1,2 @@
+KERNELS=="0000:01:00.0", ENV{ID_SEAT}="seat-ves", TAG+="seat", TAG+="master-of-seat"
+KERNELS=="0000:00:02.0", ENV{ID_SEAT}="seat-kam", TAG+="seat", TAG+="master-of-seat"

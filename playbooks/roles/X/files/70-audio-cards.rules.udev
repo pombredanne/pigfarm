@@ -1,0 +1,11 @@
+# hda-intel
+ATTRS{vendor}=="0x8086", ATTRS{device}=="0x8ca0", ENV{ID_SEAT}="seat-ves"
+# Xonar
+ATTRS{vendor}=="0x13f6", ATTRS{device}=="0x8788", ENV{ID_SEAT}="seat-kam"
+# HDMI - ves
+#  integrated/intel-hda:
+ATTRS{vendor}=="0x8086", ATTRS{device}=="0x0c0c", ENV{ID_SEAT}="seat-ves"
+#  nvidia:
+ATTRS{vendor}=="0x10de", ATTRS{device}=="0x0fbb", ENV{ID_SEAT}="seat-ves"
+#HDMI - kam
+# autoincluded by graphics card
