@@ -1,0 +1,37 @@
+ONBOOT="yes"
+VLAN=yes
+TYPE="Ethernet"
+VLAN_NAME_TYPE=VLAN_PLUS_VID_NO_PAD
+DEVICE=vlan1
+VID=1
+PHYSDEV="{{ vlaned_bridges_mainif }}"
+
+#Whether the device is disabled if IPv4/6 configuration fails.
+IPV4_FAILURE_FATAL="no"
+IPV6_FAILURE_FATAL="no"
+
+#Do not use DHCP
+BOOTPROTO="static"
+
+#No IPV6 for now
+IPV6INIT="no"
+IPV6_AUTOCONF="no"
+
+#Whether this interface is the default route
+DEFROUTE="no"
+IPV6_DEFROUTE="no"
+
+#Obtain routing from the DHCP server.
+PEERROUTES="no"
+IPV6_PEERROUTES="no"
+
+#Modify the /etc/resolv.conf:
+PEERDNS="no"
+IPV6_PEERDNS="no"
+
+#Adressing:
+IPADDR={{ vlaned_bridges_netconfig['vlan1']['ip'] }}
+NETMASK={{ vlaned_bridges_netconfig['vlan1']['mask_long'] }}
+
+#Do not let Network manager to modify this interface:
+NM_CONTROLLED="no"

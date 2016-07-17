@@ -1,0 +1,12 @@
+########
+#Konfiguracja vlan/br:
+http://docs.fedoraproject.org/en-US/Fedora/18/html/System_Administrators_Guide/s1-networkscripts-static-routes.html
+http://www.tummy.com/blogs/2006/11/30/configuring-vlans-under-fedorarhelcentos/
+http://docs.fedoraproject.org/en-US/Fedora/18/html/System_Administrators_Guide/s2-networkscripts-interfaces_network-bridge.html
+
+########
+#Yum - corrupted metadata:
+yum clean metadata
+
+########
+#

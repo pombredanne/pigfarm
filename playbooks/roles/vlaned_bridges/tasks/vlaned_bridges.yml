@@ -1,0 +1,59 @@
+---
+- name: disable NetworkManager
+  service:
+    name: NetworkManager
+    enabled: false
+    state: stopped
+
+- name: enable networking
+  service:
+    name: network
+    enabled: true
+    state: started
+
+- name: install necessary packages
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - openvswitch
+    - bridge-utils
+
+- name: configure main interface
+  template:
+    src: ifcfg-main.j2
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ vlaned_bridges_mainif }}"
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart RHEL/CentOS networking
+
+- name: configure vlans and bridges
+  template:
+    src: '{{ "ifcfg-" + item + ".j2" }}'
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ item }}"
+    owner: root
+    group: root
+    mode: 0640
+  with_items:
+    - br-isolated
+    - br-trusted
+    - br-os-adm
+    - br-os-pub
+    - br-os-trunk
+    - vlan1
+    - vlan2
+    - vlan3
+    - vlan4
+    - vlan5
+  notify: restart RHEL/CentOS networking
+
+- name: configure default route
+  template:
+    src: route-vlan1.j2
+    dest: /etc/sysconfig/network-scripts/route-vlan1
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart RHEL/CentOS networking
