@@ -7,21 +7,6 @@
     (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int < 15) or
     (ansible_distribution == 'Debian' and ansible_distribution_major_version|int < 8)
 
-- name: Stop old ssh-agent service
-  service:
-    name: "ssh-agent@{{ item  }}.service"
-    state: stopped
-    enabled: false
-  ignore_errors: True
-  with_items: "{{users.keys()}}"
-  when: item in local_users or item == 'root'
-
-- name: Remove old ssh-agent service file
-  file:
-    name: /etc/systemd/system/ssh-agent@.service
-    state: absent
-  notify: reload systemd
-
 # Systemd's instances will not cut it here - no way to reliably
 # determine the home dir of instance's user home dir
 - name: Upload ssh-agent's unit file
