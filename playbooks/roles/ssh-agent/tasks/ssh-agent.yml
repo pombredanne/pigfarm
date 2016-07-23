@@ -1,12 +1,4 @@
 ---
-- fail: msg="This role requires systemd based distro"
-  when: >
-    ansible_os_family == 'RedHat' and
-    (ansible_distribution == 'CentOS' and ansible_distribution_major_version|int < 7) or
-    ansible_os_family == 'Debian' and
-    (ansible_distribution == 'Ubuntu' and ansible_distribution_major_version|int < 15) or
-    (ansible_distribution == 'Debian' and ansible_distribution_major_version|int < 8)
-
 # Systemd's instances will not cut it here - no way to reliably
 # determine the home dir of instance's user home dir
 - name: Upload ssh-agent's unit file
