@@ -47,10 +47,12 @@
     state: started
 
 - name: Disable storage setup service
-  service:
-    name: docker-storage-setup
-    enabled: false
-    state: stopped
+  copy:
+    contents: STORAGE_DRIVER=""
+    dest: /etc/sysconfig/docker-storage-setup
+    owner: root
+    group: root
+    mode: 0644
 
 - name: Set docker env variables per-profile
   template:
