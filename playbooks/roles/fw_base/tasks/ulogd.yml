@@ -1,0 +1,23 @@
+---
+- name: Install required packages
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item  }}"
+    state: present
+  with_items:
+    - ulogd
+
+- name: Setup ulogd
+  copy:
+    src: ulogd.conf
+    dest: /etc/ulogd.conf
+    owner: root
+    group: root
+    mode: 0640
+  notify: restart ulogd
+
+- name: Enable ulogd service
+  service:
+    name: ulogd
+    state: started
+    enabled: true

@@ -1,5 +1,15 @@
 @include 'conf.d/';
 
+## Tarpit: blacklisted hosts:
+@hook pre 'ipset -exist create tarpit-blacklist-set hash:ip family inet hashsize 2048 maxelem 65536';
+@hook pre 'ipset flush tarpit-blacklist-set; cat /etc/tarpit-blacklist.ipset | xargs -d"\n" -I{} echo "add tarpit-blacklist-set {}" | ipset - 1>/dev/null';
+@hook flush 'ipset flush tarpit-blacklist-set';
+
+## Tarpit: whitelisted hosts:
+@hook pre 'ipset -exist create tarpit-whitelist-set hash:ip family inet hashsize 1024 maxelem 65536';
+@hook pre 'ipset flush tarpit-whitelist-set; cat /etc/tarpit-whitelist.ipset | xargs -d"\n" -I{} echo "add tarpit-whitelist-set {}" | ipset - 1>/dev/null';
+@hook flush 'ipset flush tarpit-whitelist-set';
+
 table filter {
 
     chain INPUT {
@@ -12,14 +22,26 @@ table filter {
         # allow local packets
         interface lo ACCEPT;
 
-        # Main chain:
-        proto udp mod state state NEW @subchain "SERVICES" {
-        }
-        proto tcp mod state state NEW @subchain "SERVICES" {
-        }
+		# tarpit
+		proto all @subchain "TARPIT" {
+			mod set set tarpit-whitelist-set src RETURN;
+			mod set set tarpit-blacklist-set src {
+        		mod limit limit 15/minute limit-burst 10 NFLOG nflog-group 1 nflog-prefix "TARPIT DROP: ";
+				DROP;
+			}
+		}
 
         # allow ping
-        proto icmp icmp-type echo-request mod connlimit connlimit-above !5 ACCEPT;
+        proto icmp icmp-type echo-request mod connlimit connlimit-above !3 ACCEPT;
+
+        # Services chain:
+        proto (tcp udp) mod state state NEW @subchain "SERVICES" {
+        }
+
+        # Log dropped packets.
+        NFLOG nflog-group 1 nflog-prefix "INPUT DROP: ";
+
+        DROP;
     }
 
     chain OUTPUT {

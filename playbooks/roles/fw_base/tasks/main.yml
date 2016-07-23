@@ -2,4 +2,7 @@
 - include: base.yml
   tags: fw
 
+- include: ulogd.yml
+  tags: fw
+
 - meta: flush_handlers

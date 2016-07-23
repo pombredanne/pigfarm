@@ -1,0 +1,13 @@
+---
+- name: Upload services configuration/chains
+  template:
+    src: services.ferm.conf.j2
+    dest: /etc/ferm/rules.d/services.ferm.conf
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - reload ferm
+  tags: fw
+
+- meta: flush_handlers

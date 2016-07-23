@@ -1,26 +1,80 @@
 ---
-- name: make sure firewalld is not installed on RHEL/CentOS7
+- block:
+    - block:
+        - name: Disable firewalld on CentOS 7
+          service:
+            name: firewalld
+            state: stopped
+            enabled: false
+        - name: Upload systemd service file CentOS 7
+          copy:
+            src: ferm.service
+            dest: /usr/lib/systemd/system/
+            owner: root
+            group: root
+            mode: 0644
+          notify: restart ferm
+      when: ansible_distribution_major_version == '7'
+
+    - block:
+        - name: disable old iptables scripts on CentOS 6
+          service:
+              name: "{{ item }}"
+              state: stopped
+              enabled: no
+          with_items:
+              - iptables
+              - ip6tables
+        - name: Upload ferm init script CentOS 6
+          copy:
+            src: ferm.init.centos6
+            dest: /etc/init.d/ferm
+            owner: root
+            group: root
+            mode: 0755
+          notify: restart ferm
+      when: ansible_distribution_major_version == '6'
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'CentOS'
+
+- block:
+    # To many packages depend on firewalld to remove it :(
+    - name: Disable firewalld on Fedora
+      service:
+        name: firewalld
+        state: stopped
+        enabled: false
+    - name: patch ferm systemd unit
+      copy:
+        src: ferm.service.fedora
+        dest: /usr/lib/systemd/system/ferm.service
+        owner: root
+        group: root
+        mode: 0644
+      notify: reload systemd
+    - meta: flush_handlers
+  when: ansible_os_family == 'RedHat' and ansible_distribution == 'Fedora'
+
+- name: Upload ferm startup configuration (Debian 7)
+  copy:
+    src: ferm.default.debian
+    dest: /etc/default/ferm
+    owner: root
+    group: root
+    mode: 0660
+  notify:
+    - restart ferm
+  when: >
+    ansible_os_family == 'Debian' or
+    ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
+
+- name: Install required packages
   action:
     module: "{{ ansible_pkg_mgr  }}"
-    name: firewalld
-    state: absent
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
-
-- name: disable old iptables scripts on RHEL/CentOS6
-  service:
-    name: "{{ item }}"
-    state: stopped
-    enabled: no
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
-  with_items:
-    - iptables
-    - ip6tables
-
-- name: Install Ferm
-  action:
-    module: "{{ ansible_pkg_mgr }}"
-    name: ferm
+    name: "{{ item  }}"
     state: present
+  with_items:
+    - ferm
+    - ipset
 
 - name: Create ferm directories
   file:
@@ -35,39 +89,6 @@
     - { name: "/etc/ferm/rules.d/", mode: "0770"}
     - { name: "/var/cache/ferm/", mode: "0755"}
 
-- name: Upload ferm init script (RHEL/CentOS 6)
-  copy:
-    src: ferm.init.centos6
-    dest: /etc/init.d/ferm
-    owner: root
-    group: root
-    mode: 0755
-  notify:
-    - restart ferm
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
-
-- name: Upload systemd service file (RHEL/CentOS 7)
-  copy:
-    src: ferm.service
-    dest: /usr/lib/systemd/system/
-    owner: root
-    group: root
-    mode: 0644
-  notify:
-    - restart ferm
-  when: ansible_os_family == 'RedHat' and ansible_distribution_major_version == '7'
-
-- name: Upload ferm startup configuration (Debian 7)
-  copy:
-    src: ferm.default.debian
-    dest: /etc/default/ferm
-    owner: root
-    group: root
-    mode: 0660
-  notify:
-    - restart ferm
-  when: ansible_os_family == 'Debian' or ansible_os_family == 'RedHat' and ansible_distribution_major_version == '6'
-
 - name: Upload ferm configuration/base chains
   template:
     src: ferm.conf.j2
@@ -76,10 +97,41 @@
     group: root
     mode: 0660
   notify:
-    - reload ferm
+    - restart ferm
 
-- name: Enable ferm service on boot (RHEL/CentOS 7)
+- name: Enable ferm service on boot
   service:
     name: ferm
     state: started
     enabled: true
+
+- name: Check if /etc/tarpit-whitelist.ipset exists
+  stat:
+    path: /etc/tarpit-whitelist.ipset
+  register: whitelist_ipset_file
+  always_run: True
+
+- name: Create empty whitelist file if one does not exists
+  copy:
+    content: ""
+    dest: /etc/tarpit-whitelist.ipset
+    owner: root
+    group: root
+    mode: 0640
+  when: whitelist_ipset_file.stat.exists == False
+
+- name: Check if /etc/tarpit-blacklist.ipset exists
+  stat:
+    path: /etc/tarpit-blacklist.ipset
+  register: blacklist_ipset_file
+  always_run: True
+
+- name: Create default blacklist file if one does not exists
+  copy:
+    src: tarpit-blacklist.ipset
+    dest: /etc/tarpit-blacklist.ipset
+    owner: root
+    group: root
+    mode: 0640
+  when: whitelist_ipset_file.stat.exists == False
+

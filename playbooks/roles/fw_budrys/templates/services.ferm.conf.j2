@@ -1,0 +1,30 @@
+table filter {
+    chain "SERVICES" {
+        # Only vlan1
+        interface ! vlan1 RETURN;
+
+        # Synthing:
+        proto tcp mod multiport destination-ports (22000 22001) {
+            mod comment comment "syncthing" ACCEPT;
+        }
+        # This needs some tunning though:
+        proto udp mod multiport destination-ports (21025) {
+            mod comment comment "syncthing" ACCEPT;
+        }
+
+        # BT:
+        proto (tcp udp) dport 58198 {
+            mod comment comment "bittorrent" ACCEPT;
+        }
+
+        # Samba (tcp udp)
+        saddr {{ network_configuration['trusted']['net'] }}/{{ network_configuration['trusted']['mask_short'] }} proto (tcp udp) mod multiport destination-ports (137 138 139 445) {
+            mod comment comment "samba" ACCEPT;
+        }
+
+        # SSH
+        proto tcp dport 22 {
+            mod comment comment "ssh" ACCEPT;
+        }
+    }
+}

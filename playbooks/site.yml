@@ -35,6 +35,8 @@
   become_method: sudo
   roles:
     - net_budrys
+    - fw_base
+    - fw_budrys
     - scanner
     - multiseat
     - X

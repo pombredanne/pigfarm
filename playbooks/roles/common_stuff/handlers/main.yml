@@ -46,6 +46,11 @@
     name: '{{ distribution_specific[ansible_distribution]["sshd_service_name"] }}'
     state: restarted
 
+- name: reload iptables
+  service:
+    name: iptables
+    state: reloaded
+
 - name: restart cobbler
   service:
     name: cobblerd

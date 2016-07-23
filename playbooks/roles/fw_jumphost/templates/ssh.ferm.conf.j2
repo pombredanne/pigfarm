@@ -2,11 +2,6 @@ table filter {
     chain "SERVICES" {
         proto tcp dport ( 22 ) @subchain "SSH_PERMITTED" {
             ACCEPT;
-{#
-{% for host in fw_sshtrusted %}
-                saddr {{ host }}/32 ACCEPT;
-{% endfor %}
-#}
         }
     }
 }
