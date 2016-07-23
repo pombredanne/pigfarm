@@ -46,6 +46,14 @@ patching koan in order to fix generic26 bug:
                  # osinfo based virt-install only knows about major.minor
                  # variants, not just major variants like it used to. Default
 
+tech-debt:
+=======
+- docker 1.12 for fedora 24
+- selinux hacks
+  * init_t->ssh_agent_t transition
+  * bug with fedora selinux policy
+
+
 notes
 =======
 ### Playbook:
