@@ -1,4 +1,10 @@
 ---
+- fail: msg="This role requires Fedora >=24"
+  when: >
+    ansible_os_family != 'RedHat' or
+    ansible_distribution != 'Fedora' or
+    ansible_distribution_major_version|int < 24
+
 - include: "docker_{{ ansible_distribution }}.yml"
   tags: docker
 

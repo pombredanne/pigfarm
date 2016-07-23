@@ -1,7 +1,4 @@
 ---
-- fail: msg="This role currently supports only Fedora"
-  when: ansible_distribution != 'Fedora'
-
 - name: Install bind
   action:
     module: "{{ ansible_pkg_mgr  }}"

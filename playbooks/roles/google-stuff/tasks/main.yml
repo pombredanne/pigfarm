@@ -1,4 +1,7 @@
 ---
+- fail: msg="This role currently supports only Fedora"
+  when: ansible_os_family != 'RedHat'
+
 - include: google-stuff.yml
   tags: google-stuff
 

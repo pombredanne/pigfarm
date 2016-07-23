@@ -1,7 +1,4 @@
 ---
-- fail: msg="This role currently supports only Fedora"
-  when: ansible_distribution != 'Fedora'
-
 - name: Install ClamAv packages
   action:
     module: "{{ ansible_pkg_mgr }}"

@@ -1,4 +1,7 @@
 ---
+- fail: msg="This role currently supports only Fedora"
+  when: ansible_distribution != 'Fedora'
+
 - include: clamav.yml
   tags: clamav
 

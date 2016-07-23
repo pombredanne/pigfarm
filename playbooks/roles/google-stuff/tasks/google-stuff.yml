@@ -1,7 +1,4 @@
 ---
-- fail: msg="This role currently supports only Fedora"
-  when: ansible_os_family != 'RedHat'
-
 #http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
 - name: Import GPG key for RPM repo (RedHat)
   copy:
