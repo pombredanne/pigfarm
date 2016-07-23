@@ -8,7 +8,7 @@ table filter {
             mod comment comment "syncthing" ACCEPT;
         }
         # This needs some tunning though:
-        proto udp mod multiport destination-ports (21025) {
+        proto udp mod multiport destination-ports (21025 21026) {
             mod comment comment "syncthing" ACCEPT;
         }
 

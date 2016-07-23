@@ -7,7 +7,7 @@
     group: root
     mode: 0660
   notify:
-    - reload ferm
+    - restart ferm
   tags: fw
 
 - meta: flush_handlers
