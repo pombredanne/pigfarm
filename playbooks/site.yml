@@ -34,7 +34,7 @@
   become: True
   become_method: sudo
   roles:
-    - vlaned_bridges
+    - net_budrys
     - scanner
     - multiseat
     - X

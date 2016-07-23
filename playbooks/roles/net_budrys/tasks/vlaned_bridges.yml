@@ -23,7 +23,7 @@
 - name: configure main interface
   template:
     src: ifcfg-main.j2
-    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ vlaned_bridges_mainif }}"
+    dest: "/etc/sysconfig/network-scripts/ifcfg-{{ net_budrys_mainif }}"
     owner: root
     group: root
     mode: 0640

@@ -1,5 +1,0 @@
----
-- include: vlaned_bridges.yml
-  tags: vlaned_bridges
-
-- meta: flush_handlers
