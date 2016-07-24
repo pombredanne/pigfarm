@@ -10,6 +10,8 @@ base_hypervisor_added_packages:
     - dia
     - digikam
     - firefox
+    - fuse-exfat
+    - geeqie
     - gimp
     - gstreamer-ffmpeg
     - gstreamer-plugins-bad
