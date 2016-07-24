@@ -48,7 +48,7 @@
 
 - name: Disable storage setup service
   copy:
-    contents: STORAGE_DRIVER=""
+    content: STORAGE_DRIVER=""
     dest: /etc/sysconfig/docker-storage-setup
     owner: root
     group: root
