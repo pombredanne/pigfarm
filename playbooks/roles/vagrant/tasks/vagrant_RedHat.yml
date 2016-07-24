@@ -26,10 +26,10 @@
     - redhat-rpm-config
 
 #http://serverfault.com/questions/733319/ansible-enable-repo-and-add-pgp-key-on-centos-7
-- name: install virtualbox repository key (redhat)
+- name: install virtualbox repository key (RedHat)
   copy:
     src: oracle_vbox.asc
-    dest: /etc/pki/rpm-gpg/rpm-gpg-key-oracle-vbox
+    dest: /etc/pki/rpm-gpg/RPM-GPG-KEY-oracle-vbox
     owner: root
     group: root
     mode: 0644
