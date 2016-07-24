@@ -4,7 +4,7 @@ TYPE="Ethernet"
 VLAN_NAME_TYPE=VLAN_PLUS_VID_NO_PAD
 DEVICE=vlan1
 VID=1
-PHYSDEV="{{ vlaned_bridges_mainif }}"
+PHYSDEV="{{ net_budrys_mainif }}"
 
 #Whether the device is disabled if IPv4/6 configuration fails.
 IPV4_FAILURE_FATAL="no"
@@ -30,8 +30,8 @@ PEERDNS="no"
 IPV6_PEERDNS="no"
 
 #Adressing:
-IPADDR={{ vlaned_bridges_netconfig['vlan1']['ip'] }}
-NETMASK={{ vlaned_bridges_netconfig['vlan1']['mask_long'] }}
+IPADDR={{ net_budrys_netconfig['vlan1']['ip'] }}
+NETMASK={{ net_budrys_netconfig['vlan1']['mask_long'] }}
 
 #Do not let Network manager to modify this interface:
 NM_CONTROLLED="no"
