@@ -28,6 +28,7 @@ base_hypervisor_added_packages:
     - smartmontools
     - smplayer
     - thunderbird
+    - vim-X11
     - vlc
     - wireshark
     - youtube-dl
