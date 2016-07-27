@@ -31,6 +31,7 @@ base_hypervisor_added_packages:
     - vim-X11
     - vlc
     - wireshark
+    - wireshark-qt
     - youtube-dl
   RedHat:
     common: []
