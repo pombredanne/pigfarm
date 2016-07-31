@@ -7,6 +7,12 @@
     group: root
     mode: 0644
 
+- name: Make sure that Fedora docker package is not installed
+  action:
+    module: "{{ ansible_pkg_mgr }}"
+    name: docker
+    state: absent
+
 - name: Install Docker
   action:
     module: "{{ ansible_pkg_mgr }}"
