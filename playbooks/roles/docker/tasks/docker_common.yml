@@ -20,6 +20,14 @@
     group: root
     mode: 0744
 
+- name: Upload genconf purging script
+  copy:
+    src: docker-purge-old.sh
+    dest: /opt/docker-purge-old.sh
+    owner: root
+    group: root
+    mode: 0755
+
 - name: Upload docker configuration
   copy:
     src: daemon.json
