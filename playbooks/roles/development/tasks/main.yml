@@ -1,4 +1,7 @@
 ---
+- include: python/pyenv.yml
+  tags: development
+
 - include: python/Debian.yml
   when: ansible_os_family == 'Debian'
   tags: development
