@@ -22,7 +22,7 @@
     dest: "/{{ item if item == 'root' else 'home/' + item  }}/.pyenv/"
     accept_hostkey: yes
     version: "{{ development_penv_version }}"
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_python_user'] == True
@@ -33,7 +33,7 @@
     dest: "/{{ item if item == 'root' else 'home/' + item  }}/.pyenv/plugins/pyenv-virtualenv"
     accept_hostkey: yes
     version: "{{ development_penv_virtualenv_version }}"
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_python_user'] == True
@@ -43,7 +43,7 @@
     name: "/{{ item if item == 'root' else 'home/' + item  }}/.pyenv/"
     owner: "{{ item }}"
     group: "{{ item }}"
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_python_user'] == True
@@ -52,7 +52,7 @@
   file:
     state: absent
     name: "/{{ item if item == 'root' else 'home/' + item  }}/.pyenv/"
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_python_user'] == False
@@ -64,14 +64,14 @@
     owner: "{{ item }}"
     group: "{{ item }}"
     mode: 0640
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   notify: assemble user profile files
 
 - name: Remove pyenv profile files
   file:
     name: "/{{ 'root' if item == 'root' else 'home/' + item  }}/.profile.d/pyenv.sh"
     state: absent
-  with_items: "{{ users.keys() }}"
+  with_items: "{{ local_users }}"
   when: >
     (item in local_users or item == 'root') and
     users[item]['is_python_user'] == False
