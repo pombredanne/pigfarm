@@ -38,7 +38,6 @@
     - fw_base
     - fw_budrys
     - scanner
-    - multiseat
     - X
 
 - hosts: vms

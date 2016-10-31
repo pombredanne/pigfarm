@@ -6,6 +6,7 @@
     state: present
   with_items:
     - akmod-nvidia
+    - xorg-x11-drv-nvidia-libs.i686
     - vdpauinfo
     - libva-vdpau-driver
     - libva-utils
