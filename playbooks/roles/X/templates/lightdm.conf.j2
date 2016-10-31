@@ -129,7 +129,7 @@ session-wrapper=/etc/X11/xinit/Xsession
 #
 [Seat:0]
 #xserver-command=X -background none
-xserver-command=/usr/bin/X -background none -sharevts -novtswitch -isolateDevice PCI:1:0:0
+xserver-command=/usr/bin/env LD_PRELOAD=/usr/lib64/libglvnd/libGL.so.1 /usr/bin/X -background none -sharevts -novtswitch -isolateDevice PCI:1:0:0
 xserver-config=/etc/X11/xorg.seat-ves.conf
 xdg-seat=seat-ves
 

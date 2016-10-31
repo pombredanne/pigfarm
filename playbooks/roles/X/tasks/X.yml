@@ -46,12 +46,21 @@
     group: root
     mode: 0644
 
-- name: add LD_PRELOD stuff for kam
+- name: add LD_PRELOAD stuff for kam
   copy:
     content: "export LD_PRELOAD=/lib64/libGL.so.1"
     dest: /home/kamila/.profile.d/libGL.sh
     owner: kamila
     group: kamila
+    mode: 0644
+  notify: assemble user profile files
+
+- name: add LD_PRELOAD stuff for ves
+  copy:
+    content: "export LD_PRELOAD=/usr/lib64/libglvnd/libGL.so.1"
+    dest: /home/vespian/.profile.d/libGL.sh
+    owner: vespian
+    group: vespian
     mode: 0644
   notify: assemble user profile files
 
