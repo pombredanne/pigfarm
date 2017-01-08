@@ -1,4 +1,16 @@
 ---
+- name: Remove Python development packages that were renamed to python2-*
+  action:
+    module: "{{ ansible_pkg_mgr  }}"
+    name: "{{ item }}"
+    state: absent
+  with_items:
+    - python-coverage
+    - python-devel
+    - python-dns
+    - python-mock
+    - python-nose
+
 - name: Install Python development packages for RHEL family distros
   action:
     module: "{{ ansible_pkg_mgr  }}"
@@ -9,11 +21,11 @@
     - libyaml
     - libyaml-devel
     - pytest
-    - python-coverage
-    - python-devel
-    - python-dns
-    - python-mock
-    - python-nose
+    - python2-coverage
+    - python2-devel
+    - python2-dns
+    - python2-mock
+    - python2-nose
 
 - name: Install Python development packages for Fedora based distros
   action:
