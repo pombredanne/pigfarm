@@ -92,3 +92,4 @@
     mode: 04755
     owner: root
     group: root
+    follow: true
