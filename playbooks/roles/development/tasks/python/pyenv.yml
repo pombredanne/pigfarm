@@ -5,6 +5,7 @@
     name: "{{ item }}"
     state: present
   with_items:
+    - openssl-devel
     - sqlite-devel
     - libsq3-devel
     - readline-devel
