@@ -109,7 +109,7 @@
   stat:
     path: /etc/tarpit-whitelist.ipset
   register: whitelist_ipset_file
-  always_run: True
+  check_mode: no
 
 - name: Create empty whitelist file if one does not exists
   copy:
@@ -124,7 +124,7 @@
   stat:
     path: /etc/tarpit-blacklist.ipset
   register: blacklist_ipset_file
-  always_run: True
+  check_mode: no
 
 - name: Create default blacklist file if one does not exists
   copy:

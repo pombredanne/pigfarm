@@ -10,7 +10,7 @@
   shell: curl "{{ syncthing_inotify_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
   args:
     warn: false
-  always_run: true
+  check_mode: no
   changed_when: false
   register: syncthing_inotify_version_available
 
@@ -18,7 +18,7 @@
 
 - name: Find currently instaled version of syncthing-inotify
   shell: /opt/syncthing-inotify -version | awk '{print $2}'
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: syncthing_inotify_version_installed

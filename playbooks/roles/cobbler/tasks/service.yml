@@ -13,7 +13,7 @@
   args:
     chdir: /etc/cobbler/power/
   register: power_scripts
-  always_run: true
+  check_mode: no
   changed_when: false
 
 - name: Remove default fencing scripts

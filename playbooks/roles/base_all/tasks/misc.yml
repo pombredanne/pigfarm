@@ -58,7 +58,7 @@
 - name: Check vconsole keyboard layout settings
   shell: localectl status | grep 'VC Keymap' | grep pl2
   ignore_errors: true
-  always_run: true
+  check_mode: no
   changed_when: false
   register: pl2_layout_present
   when: >
@@ -82,7 +82,7 @@
 
 - name: Find the location of ping binary
   shell: which ping
-  always_run: true
+  check_mode: no
   changed_when: false
   register: ping_location
 

@@ -21,7 +21,7 @@
     head -n 1 | cut -d\" -f 2 | cut -d\/ -f 3
   args:
     warn: no
-  always_run: true
+  check_mode: no
   changed_when: false
   register: packer_version_available
 
@@ -29,7 +29,7 @@
 
 - name: Find currently instaled version of packer
   shell: /opt/packer/packer -v
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: packer_version_installed

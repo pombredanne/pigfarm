@@ -29,7 +29,7 @@
   shell: /opt/go/bin/go version | awk '{print $3}'
   register: current_golang_version
   changed_when: False
-  always_run: True
+  check_mode: no
   environment:
     GOROOT: /opt/go/
   when: golang_installed.stat.exists == True

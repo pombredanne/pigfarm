@@ -14,7 +14,7 @@
 
 - name: Find files/dirs that need linking
   shell: "ls -1 /home/{{ item[0]  }}/{{ item[1]  }}/_shared-{{ item[1]  }}-{{ item[2]  }}/"
-  always_run: true
+  check_mode: no
   changed_when: false
   register: shared_dirs_contents
   with_nested:

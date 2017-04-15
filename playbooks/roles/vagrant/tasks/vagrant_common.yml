@@ -5,14 +5,14 @@
   shell: vagrant -v
   register: vagrant_ok
   changed_when: false
-  always_run: true
+  check_mode: no
   ignore_errors: true
 
 - name: Find out version of vagrant
   shell: vagrant -v | awk '{ print $2 }'
   register: vagrant_ver
   changed_when: false
-  always_run: true
+  check_mode: no
   when: vagrant_ok|succeeded
 
 - name: Find out the newest version of vagrant available
@@ -21,7 +21,7 @@
     warn: false
   register: vagrant_latest
   changed_when: false
-  always_run: true
+  check_mode: no
 
 - name: Set vagrant download URL (RedHat)
   set_fact:
@@ -47,7 +47,7 @@
 - name: Find installed plugins
   shell: "vagrant plugin list | grep -v 'No plugins installed' | cut -d' ' -f 1"
   register: vagrant_installed_plugins
-  always_run: true
+  check_mode: no
   changed_when: False
   become: yes
   become_user: "{{ item }}"

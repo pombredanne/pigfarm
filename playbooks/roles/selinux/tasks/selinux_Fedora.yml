@@ -2,7 +2,7 @@
 # Based on https://www.nogatez.com/post/compile-pp-module-from-te-file/
 - name: Check if ssh_agent semodule is installed
   shell: semodule -l | grep -q ssh_agent
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: ssh_agent_module
@@ -41,7 +41,7 @@
 # is fixed
 - name: Check if modules-load patch is installed
   shell: semodule -l | grep -q modules-load
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: modules_load_patch
@@ -79,7 +79,7 @@
 # Docker is sad without it
 - name: Check if svirt_lxc_userhome patch is installed
   shell: semodule -l | grep -q svirt_lxc_userhome
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: svirt_lxc_userhome_exists

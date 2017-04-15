@@ -36,7 +36,7 @@
 - name: check if fcontext rule are present
   shell: semanage fcontext -C -l -n | grep named_log_t
   register: named_fcontext_rules
-  always_run: true
+  check_mode: no
   ignore_errors: true
   changed_when: false
 

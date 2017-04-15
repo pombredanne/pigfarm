@@ -18,7 +18,7 @@
   shell: curl "{{ syncthing_download_url }}" -s -L -I -o /dev/null -w '%{url_effective}' | sed -e 's#.*/##g'
   args:
     warn: no
-  always_run: true
+  check_mode: no
   changed_when: false
   register: syncthing_version_available
 
@@ -26,7 +26,7 @@
 
 - name: Find currently instaled version of Syncthing
   shell: /opt/syncthing/syncthing -version | awk '{print $2}'
-  always_run: true
+  check_mode: no
   changed_when: false
   ignore_errors: true
   register: syncthing_version_installed

@@ -21,7 +21,7 @@
   shell: semanage fcontext -C -l -n | grep named_log_t
   register: named_fcontext_rules
   ignore_errors: true
-  always_run: true
+  check_mode: no
   changed_when: false
 
 - name: add fcontext rule
