@@ -18,7 +18,7 @@
     name: "kernel-devel-{{ ansible_kernel }}"
     state: present
 
-- name: Install sysdig (Debian)
+- name: Install sysdig (RHEL/CentOS/Fedora)
   action:
     module: "{{ ansible_pkg_mgr }}"
     name: sysdig
